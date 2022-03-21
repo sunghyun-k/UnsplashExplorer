@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Search
-struct Search: Decodable {
+struct SearchResult: Decodable {
     let total, totalPages: Int
     let results: [Photo]
 }
