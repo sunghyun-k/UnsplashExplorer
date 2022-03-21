@@ -13,7 +13,7 @@ protocol ImageSearchable {
         byKeyword keyword: String,
         page: Int,
         perPage: Int
-    ) -> Single<Result<SearchResult, Error>>
+    ) -> Single<Result<SearchResult, ImageSearcherError>>
 }
 
 class ImageSearcher {
