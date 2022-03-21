@@ -17,9 +17,9 @@
 		F2648D5927E824050071ADCF /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F2648D5827E824050071ADCF /* SnapKit */; };
 		F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6727E8F30800DCEBA3 /* Responses.swift */; };
 		F284BE6A27E8FC8700DCEBA3 /* ImageSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6927E8FC8700DCEBA3 /* ImageSearcher.swift */; };
-		F284BE6C27E900DF00DCEBA3 /* UnsplashAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6B27E900DF00DCEBA3 /* UnsplashAPI.swift */; };
-		F284BE6E27E901DF00DCEBA3 /* AccessKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6D27E901DF00DCEBA3 /* AccessKey.swift */; };
 		F284BE7127E905F100DCEBA3 /* ImageSearcherError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE7027E905F100DCEBA3 /* ImageSearcherError.swift */; };
+		F284BE7327E908BF00DCEBA3 /* keys.json in Resources */ = {isa = PBXBuildFile; fileRef = F284BE7227E908BF00DCEBA3 /* keys.json */; };
+		F284BE7527E909B300DCEBA3 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE7427E909B300DCEBA3 /* Parsing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,9 +32,9 @@
 		F2648D5127E81EAE0071ADCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F284BE6727E8F30800DCEBA3 /* Responses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Responses.swift; sourceTree = "<group>"; };
 		F284BE6927E8FC8700DCEBA3 /* ImageSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearcher.swift; sourceTree = "<group>"; };
-		F284BE6B27E900DF00DCEBA3 /* UnsplashAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsplashAPI.swift; sourceTree = "<group>"; };
-		F284BE6D27E901DF00DCEBA3 /* AccessKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessKey.swift; sourceTree = "<group>"; };
 		F284BE7027E905F100DCEBA3 /* ImageSearcherError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearcherError.swift; sourceTree = "<group>"; };
+		F284BE7227E908BF00DCEBA3 /* keys.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = keys.json; sourceTree = "<group>"; };
+		F284BE7427E909B300DCEBA3 /* Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +73,7 @@
 				F2648D4327E81EAE0071ADCF /* AppDelegate.swift */,
 				F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */,
 				F2648D4727E81EAE0071ADCF /* ViewController.swift */,
-				F284BE6727E8F30800DCEBA3 /* Responses.swift */,
+				F284BE7427E909B300DCEBA3 /* Parsing.swift */,
 				F284BE6F27E9059800DCEBA3 /* UnsplashAPI */,
 				F2648D4C27E81EAE0071ADCF /* Assets.xcassets */,
 				F2648D4E27E81EAE0071ADCF /* LaunchScreen.storyboard */,
@@ -87,8 +87,8 @@
 			children = (
 				F284BE6927E8FC8700DCEBA3 /* ImageSearcher.swift */,
 				F284BE7027E905F100DCEBA3 /* ImageSearcherError.swift */,
-				F284BE6B27E900DF00DCEBA3 /* UnsplashAPI.swift */,
-				F284BE6D27E901DF00DCEBA3 /* AccessKey.swift */,
+				F284BE6727E8F30800DCEBA3 /* Responses.swift */,
+				F284BE7227E908BF00DCEBA3 /* keys.json */,
 			);
 			path = UnsplashAPI;
 			sourceTree = "<group>";
@@ -160,6 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F284BE7327E908BF00DCEBA3 /* keys.json in Resources */,
 				F2648D5027E81EAE0071ADCF /* LaunchScreen.storyboard in Resources */,
 				F2648D4D27E81EAE0071ADCF /* Assets.xcassets in Resources */,
 			);
@@ -172,13 +173,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F284BE7527E909B300DCEBA3 /* Parsing.swift in Sources */,
 				F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */,
-				F284BE6E27E901DF00DCEBA3 /* AccessKey.swift in Sources */,
 				F2648D4827E81EAE0071ADCF /* ViewController.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,
 				F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */,
 				F284BE7127E905F100DCEBA3 /* ImageSearcherError.swift in Sources */,
-				F284BE6C27E900DF00DCEBA3 /* UnsplashAPI.swift in Sources */,
 				F284BE6A27E8FC8700DCEBA3 /* ImageSearcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

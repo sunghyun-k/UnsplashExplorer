@@ -10,4 +10,5 @@ import Foundation
 enum ImageSearcherError: Error {
     case parsing(description: String)
     case network(description: String)
+    case url(description: String)
 }
