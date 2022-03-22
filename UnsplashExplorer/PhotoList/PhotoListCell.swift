@@ -10,9 +10,24 @@ import SnapKit
 import Kingfisher
 
 final class PhotoListCell: UICollectionViewCell {
-    private let thumbnailImageView = UIImageView()
-    private let profileImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-    private let usernameLabel = UILabel()
+    private let thumbnailImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    private let profileImageView: UIImageView = {
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        imageView.layer.cornerRadius = 15
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+    private let usernameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 12)
+        return label
+    }()
     
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -22,7 +37,6 @@ final class PhotoListCell: UICollectionViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        attribute()
         layout()
     }
     
@@ -41,24 +55,23 @@ final class PhotoListCell: UICollectionViewCell {
         profileImageView.kf.setImage(with: profileImageURL)
     }
     
-    private func attribute() {
-        usernameLabel.textColor = .white
-        usernameLabel.font = .systemFont(ofSize: 12)
-    }
-    
     private func layout() {
+        thumbnailImageView.clipsToBounds = true
+        
         let userInfoStackView = UIStackView(arrangedSubviews: [profileImageView, usernameLabel])
         userInfoStackView.axis = .horizontal
         userInfoStackView.alignment = .center
-        userInfoStackView.spacing = 8
+        userInfoStackView.spacing = 15
         
-        [thumbnailImageView, userInfoStackView]
-            .forEach { contentView.addSubview($0) }
+        [
+            thumbnailImageView,
+            userInfoStackView
+        ].forEach { contentView.addSubview($0) }
         
         thumbnailImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         userInfoStackView.snp.makeConstraints { make in
             make.leading.bottom.equalToSuperview().inset(20)
         }

@@ -20,27 +20,34 @@ class PhotoListCollectionViewController: UICollectionViewController {
         
         photoInfos = loadSample()
         collectionView.collectionViewLayout = layout()
+        
     }
     
     //MARK: UICollectionViewCompositionalLayout
     
     private func layout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout {
-            sectionNumber, environment -> NSCollectionLayoutSection? in
-//            guard let self = self else { return nil }
-            
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45), heightDimension: .fractionalWidth(0.45))
-            let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-            
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(1))
-            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
-            
-            let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .continuous
-            section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-            return section
-        }
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalHeight(1)
+        )
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1),
+            heightDimension: .fractionalWidth(2/3)
+        )
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitem: item,
+            count: 2
+        )
+        
+        let section = NSCollectionLayoutSection(group: group)
+//        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        return layout
     }
     
     // MARK: UICollectionViewDataSource
