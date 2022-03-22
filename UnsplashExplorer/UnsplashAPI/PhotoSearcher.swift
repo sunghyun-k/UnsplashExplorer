@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 protocol PhotoSearchable {
-    func searchPhoto(
+    func searchPhotos(
         byKeyword keyword: String,
         page: Int,
         perPage: Int
@@ -26,7 +26,7 @@ class PhotoSearcher {
 }
 
 extension PhotoSearcher: PhotoSearchable {
-    func searchPhoto(
+    func searchPhotos(
         byKeyword keyword: String,
         page: Int,
         perPage: Int
