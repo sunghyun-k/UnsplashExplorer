@@ -19,7 +19,10 @@ class PhotoListCollectionViewController: UICollectionViewController {
         collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         photoInfos = loadSample()
-        collectionView.collectionViewLayout = layout()
+        
+        let layout = PhotoListCollectionViewLayout()
+        layout.delegate = self
+        collectionView.collectionViewLayout = layout
         
     }
     
@@ -61,7 +64,7 @@ class PhotoListCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let photoInfo = photoInfos[indexPath.row]
+        let photoInfo = photoInfos[indexPath.item]
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PhotoListCell
         cell.setup(
@@ -78,5 +81,11 @@ private extension PhotoListCollectionViewController {
     func loadSample() -> [PhotoInfo] {
         let sample: PhotoSearchResult = UnsplashExplorer.load("sample.json")
         return sample.results
+    }
+}
+
+extension PhotoListCollectionViewController: PhotoListLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        CGFloat([50,900].randomElement()!)
     }
 }

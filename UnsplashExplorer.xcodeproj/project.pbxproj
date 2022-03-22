@@ -24,6 +24,7 @@
 		F297B3BA27E98D88007F8769 /* PhotoListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3B927E98D88007F8769 /* PhotoListCollectionViewController.swift */; };
 		F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3BC27E9931E007F8769 /* String+CGColor.swift */; };
 		F297B3BF27E99AD3007F8769 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F297B3BE27E99AD3007F8769 /* sample.json */; };
+		F297B3C127E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		F297B3B927E98D88007F8769 /* PhotoListCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCollectionViewController.swift; sourceTree = "<group>"; };
 		F297B3BC27E9931E007F8769 /* String+CGColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CGColor.swift"; sourceTree = "<group>"; };
 		F297B3BE27E99AD3007F8769 /* sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample.json; sourceTree = "<group>"; };
+		F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCollectionViewLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				F297B3B927E98D88007F8769 /* PhotoListCollectionViewController.swift */,
+				F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */,
 				F297B3B427E97A64007F8769 /* PhotoListCell.swift */,
 			);
 			path = PhotoList;
@@ -269,6 +272,7 @@
 				F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */,
 				F297B3BA27E98D88007F8769 /* PhotoListCollectionViewController.swift in Sources */,
 				F284BE6A27E8FC8700DCEBA3 /* PhotoSearcher.swift in Sources */,
+				F297B3C127E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
