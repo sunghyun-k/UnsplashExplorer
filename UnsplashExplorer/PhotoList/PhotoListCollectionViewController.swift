@@ -12,6 +12,8 @@ private let reuseIdentifier = "PhotoListCell"
 class PhotoListCollectionViewController: UICollectionViewController {
     
     var photoInfos = [PhotoInfo]()
+    var cellPadding: CGFloat = 5
+    var numberOfColumns = 2
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,35 +24,11 @@ class PhotoListCollectionViewController: UICollectionViewController {
         
         let layout = PhotoListCollectionViewLayout()
         layout.delegate = self
+        layout.cellPadding = self.cellPadding
+        layout.numberOfColumns = self.numberOfColumns
         collectionView.collectionViewLayout = layout
         
-    }
-    
-    //MARK: UICollectionViewCompositionalLayout
-    
-    private func layout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalHeight(1)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1),
-            heightDimension: .fractionalWidth(2/3)
-        )
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitem: item,
-            count: 2
-        )
-        
-        let section = NSCollectionLayoutSection(group: group)
-//        section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
-        let layout = UICollectionViewCompositionalLayout(section: section)
-        return layout
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
     }
     
     // MARK: UICollectionViewDataSource
@@ -86,6 +64,11 @@ private extension PhotoListCollectionViewController {
 
 extension PhotoListCollectionViewController: PhotoListLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        CGFloat([50,900].randomElement()!)
+        let photoItem = photoInfos[indexPath.item]
+        
+        let inset = collectionView.contentInset
+        let columnWidth = (collectionView.bounds.width - inset.right - inset.bottom - (self.cellPadding * CGFloat(self.numberOfColumns) * 2)) / CGFloat(self.numberOfColumns)
+        let aspectRatio = CGFloat(photoItem.height) / CGFloat(photoItem.width)
+        return columnWidth * aspectRatio
     }
 }

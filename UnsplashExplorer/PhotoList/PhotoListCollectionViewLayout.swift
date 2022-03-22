@@ -16,7 +16,7 @@ class PhotoListCollectionViewLayout: UICollectionViewLayout {
     weak var delegate: PhotoListLayoutDelegate?
     
     var numberOfColumns = 2
-    var cellPadding: CGFloat = 5
+    var cellPadding: CGFloat = 10
     
     private var cache = [UICollectionViewLayoutAttributes]()
     
