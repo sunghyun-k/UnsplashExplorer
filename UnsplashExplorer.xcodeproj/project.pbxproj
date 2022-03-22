@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F25D473127E8475D003B6D27 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = F25D473027E8475D003B6D27 /* RxCocoa */; };
-		F25D473327E8475D003B6D27 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F25D473227E8475D003B6D27 /* RxSwift */; };
+		BA40E7C9B3EEC6CA2EC30CD5 /* Pods_UnsplashExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D144A1E8A79BC58E3C92D73D /* Pods_UnsplashExplorer.framework */; };
 		F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4327E81EAE0071ADCF /* AppDelegate.swift */; };
 		F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */; };
 		F2648D4827E81EAE0071ADCF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4727E81EAE0071ADCF /* ViewController.swift */; };
@@ -16,13 +15,16 @@
 		F2648D5027E81EAE0071ADCF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2648D4E27E81EAE0071ADCF /* LaunchScreen.storyboard */; };
 		F2648D5927E824050071ADCF /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F2648D5827E824050071ADCF /* SnapKit */; };
 		F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6727E8F30800DCEBA3 /* Responses.swift */; };
-		F284BE6A27E8FC8700DCEBA3 /* ImageSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6927E8FC8700DCEBA3 /* ImageSearcher.swift */; };
-		F284BE7127E905F100DCEBA3 /* ImageSearcherError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE7027E905F100DCEBA3 /* ImageSearcherError.swift */; };
+		F284BE6A27E8FC8700DCEBA3 /* PhotoSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6927E8FC8700DCEBA3 /* PhotoSearcher.swift */; };
+		F284BE7127E905F100DCEBA3 /* PhotoSearcherError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE7027E905F100DCEBA3 /* PhotoSearcherError.swift */; };
 		F284BE7327E908BF00DCEBA3 /* keys.json in Resources */ = {isa = PBXBuildFile; fileRef = F284BE7227E908BF00DCEBA3 /* keys.json */; };
 		F284BE7527E909B300DCEBA3 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE7427E909B300DCEBA3 /* Parsing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		28A6A3BF7F4544FF717CCCBD /* Pods-UnsplashExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsplashExplorer.release.xcconfig"; path = "Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer.release.xcconfig"; sourceTree = "<group>"; };
+		8A2A0CFFEFF8485EA7292332 /* Pods-UnsplashExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsplashExplorer.debug.xcconfig"; path = "Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer.debug.xcconfig"; sourceTree = "<group>"; };
+		D144A1E8A79BC58E3C92D73D /* Pods_UnsplashExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsplashExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2648D4027E81EAE0071ADCF /* UnsplashExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2648D4327E81EAE0071ADCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,8 +33,8 @@
 		F2648D4F27E81EAE0071ADCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F2648D5127E81EAE0071ADCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F284BE6727E8F30800DCEBA3 /* Responses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Responses.swift; sourceTree = "<group>"; };
-		F284BE6927E8FC8700DCEBA3 /* ImageSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearcher.swift; sourceTree = "<group>"; };
-		F284BE7027E905F100DCEBA3 /* ImageSearcherError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSearcherError.swift; sourceTree = "<group>"; };
+		F284BE6927E8FC8700DCEBA3 /* PhotoSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSearcher.swift; sourceTree = "<group>"; };
+		F284BE7027E905F100DCEBA3 /* PhotoSearcherError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSearcherError.swift; sourceTree = "<group>"; };
 		F284BE7227E908BF00DCEBA3 /* keys.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = keys.json; sourceTree = "<group>"; };
 		F284BE7427E909B300DCEBA3 /* Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -42,20 +44,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F25D473127E8475D003B6D27 /* RxCocoa in Frameworks */,
 				F2648D5927E824050071ADCF /* SnapKit in Frameworks */,
-				F25D473327E8475D003B6D27 /* RxSwift in Frameworks */,
+				BA40E7C9B3EEC6CA2EC30CD5 /* Pods_UnsplashExplorer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1261310525D5B9EB5041E6FC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				8A2A0CFFEFF8485EA7292332 /* Pods-UnsplashExplorer.debug.xcconfig */,
+				28A6A3BF7F4544FF717CCCBD /* Pods-UnsplashExplorer.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		B21DDF43A1D4F42027EB1044 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D144A1E8A79BC58E3C92D73D /* Pods_UnsplashExplorer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		F2648D3727E81EAE0071ADCF = {
 			isa = PBXGroup;
 			children = (
 				F2648D4227E81EAE0071ADCF /* UnsplashExplorer */,
 				F2648D4127E81EAE0071ADCF /* Products */,
+				1261310525D5B9EB5041E6FC /* Pods */,
+				B21DDF43A1D4F42027EB1044 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,8 +105,8 @@
 		F284BE6F27E9059800DCEBA3 /* UnsplashAPI */ = {
 			isa = PBXGroup;
 			children = (
-				F284BE6927E8FC8700DCEBA3 /* ImageSearcher.swift */,
-				F284BE7027E905F100DCEBA3 /* ImageSearcherError.swift */,
+				F284BE6927E8FC8700DCEBA3 /* PhotoSearcher.swift */,
+				F284BE7027E905F100DCEBA3 /* PhotoSearcherError.swift */,
 				F284BE6727E8F30800DCEBA3 /* Responses.swift */,
 				F284BE7227E908BF00DCEBA3 /* keys.json */,
 			);
@@ -100,9 +120,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F2648D5427E81EAE0071ADCF /* Build configuration list for PBXNativeTarget "UnsplashExplorer" */;
 			buildPhases = (
+				08C758462D9664FFB8BFF672 /* [CP] Check Pods Manifest.lock */,
 				F2648D3C27E81EAE0071ADCF /* Sources */,
 				F2648D3D27E81EAE0071ADCF /* Frameworks */,
 				F2648D3E27E81EAE0071ADCF /* Resources */,
+				8756866FE4235901F9F79946 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -111,8 +133,6 @@
 			name = UnsplashExplorer;
 			packageProductDependencies = (
 				F2648D5827E824050071ADCF /* SnapKit */,
-				F25D473027E8475D003B6D27 /* RxCocoa */,
-				F25D473227E8475D003B6D27 /* RxSwift */,
 			);
 			productName = UnsplashExplorer;
 			productReference = F2648D4027E81EAE0071ADCF /* UnsplashExplorer.app */;
@@ -144,7 +164,6 @@
 			mainGroup = F2648D3727E81EAE0071ADCF;
 			packageReferences = (
 				F2648D5727E824050071ADCF /* XCRemoteSwiftPackageReference "SnapKit" */,
-				F25D472F27E8475D003B6D27 /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = F2648D4127E81EAE0071ADCF /* Products */;
 			projectDirPath = "";
@@ -168,6 +187,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		08C758462D9664FFB8BFF672 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-UnsplashExplorer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8756866FE4235901F9F79946 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		F2648D3C27E81EAE0071ADCF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -178,8 +239,8 @@
 				F2648D4827E81EAE0071ADCF /* ViewController.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,
 				F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */,
-				F284BE7127E905F100DCEBA3 /* ImageSearcherError.swift in Sources */,
-				F284BE6A27E8FC8700DCEBA3 /* ImageSearcher.swift in Sources */,
+				F284BE7127E905F100DCEBA3 /* PhotoSearcherError.swift in Sources */,
+				F284BE6A27E8FC8700DCEBA3 /* PhotoSearcher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +374,7 @@
 		};
 		F2648D5527E81EAE0071ADCF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8A2A0CFFEFF8485EA7292332 /* Pods-UnsplashExplorer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -340,6 +402,7 @@
 		};
 		F2648D5627E81EAE0071ADCF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 28A6A3BF7F4544FF717CCCBD /* Pods-UnsplashExplorer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -389,14 +452,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		F25D472F27E8475D003B6D27 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.5.0;
-			};
-		};
 		F2648D5727E824050071ADCF /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -408,16 +463,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		F25D473027E8475D003B6D27 /* RxCocoa */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F25D472F27E8475D003B6D27 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxCocoa;
-		};
-		F25D473227E8475D003B6D27 /* RxSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F25D472F27E8475D003B6D27 /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
-		};
 		F2648D5827E824050071ADCF /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F2648D5727E824050071ADCF /* XCRemoteSwiftPackageReference "SnapKit" */;
