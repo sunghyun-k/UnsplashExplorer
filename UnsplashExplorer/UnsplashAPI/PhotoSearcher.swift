@@ -52,7 +52,9 @@ extension PhotoSearcher: PhotoSearchable {
                 }
             }
             .catch { error in
-                    .just(.failure(.network(description: "네트워크 로드 오류: \(error.localizedDescription)")))
+                    .just(.failure(.network(
+                        description: "네트워크 로드 오류: \(error.localizedDescription)"
+                    )))
             }
     }
 }
