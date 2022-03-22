@@ -11,48 +11,86 @@ import Foundation
 struct PhotoSearchResult: Decodable {
     let total, totalPages: Int
     let results: [PhotoInfo]
+    
+    enum CodingKeys: String, CodingKey {
+        case total
+        case totalPages = "total_pages"
+        case results
+    }
 }
 
 // MARK: - PhotoInfo
 struct PhotoInfo: Decodable {
     let id: String
-    let createdAt: Date
+    let createdAt: String
     let width, height: Int
-    let color, blurHash: String
+    let color: String
     let likes: Int
     let likedByUser: Bool
-    let photoDescription: String
+    let photoDescription: String?
     let user: User
-    let urls: URLs
-    let links: PhotoLinks
+    let photoImageUrls: PhotoImageURLs
+    let photoLinks: PhotoLinks
+    
+    enum CodingKeys: String, CodingKey {
+        case id, likes, user
+        case createdAt = "created_at"
+        case width, height, color
+        case photoDescription = "description"
+        case photoImageUrls = "urls"
+        case photoLinks = "links"
+        case likedByUser = "liked_by_user"
+    }
 }
 
 // MARK: - PhotoLinks
 struct PhotoLinks: Decodable {
-    let linksSelf: String
-    let html, download: String
+    let api, html, download: String
+    let downloadLocation: String
+    
+    enum CodingKeys: String, CodingKey {
+        case api = "self"
+        case html, download
+        case downloadLocation = "download_location"
+    }
 }
 
 // MARK: - Urls
-struct URLs: Decodable {
+struct PhotoImageURLs: Decodable {
     let raw, full, regular, small: String
-    let thumb: String
+    let thumb, smallS3: String
+    
+    enum CodingKeys: String, CodingKey {
+        case raw, full, regular, small, thumb
+        case smallS3 = "small_s3"
+    }
 }
 
 // MARK: - User
 struct User: Decodable {
     let id, username, name, firstName: String
-    let lastName, instagramUsername, twitterUsername: String
-    let portfolioURL: String
+    let lastName: String
     let profileImage: ProfileImageURLs
-    let links: UserLinks
+    let userLinks: UserLinks
+    
+    enum CodingKeys: String, CodingKey {
+        case id, username, name
+        case userLinks = "links"
+        case firstName = "first_name"
+        case lastName = "last_name"
+        case profileImage = "profile_image"
+    }
 }
 
 // MARK: - UserLinks
 struct UserLinks: Decodable {
-    let linksSelf: String
-    let html: String
-    let photos, likes: String
+    let api, html, photos, likes: String
+    let portfolio, following, followers: String
+    
+    enum CodingKeys: String, CodingKey {
+        case api = "self"
+        case html, photos, likes, portfolio, following, followers
+    }
 }
 
 // MARK: - ProfileImage

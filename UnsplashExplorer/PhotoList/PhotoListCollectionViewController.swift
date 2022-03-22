@@ -16,9 +16,31 @@ class PhotoListCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         photoInfos = loadSample()
+        collectionView.collectionViewLayout = layout()
+    }
+    
+    //MARK: UICollectionViewCompositionalLayout
+    
+    private func layout() -> UICollectionViewLayout {
+        return UICollectionViewCompositionalLayout {
+            sectionNumber, environment -> NSCollectionLayoutSection? in
+//            guard let self = self else { return nil }
+            
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.45), heightDimension: .fractionalWidth(0.45))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            item.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+            
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.9), heightDimension: .fractionalHeight(1))
+            let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 2)
+            
+            let section = NSCollectionLayoutSection(group: group)
+            section.orthogonalScrollingBehavior = .continuous
+            section.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+            return section
+        }
     }
     
     // MARK: UICollectionViewDataSource
@@ -38,15 +60,15 @@ class PhotoListCollectionViewController: UICollectionViewController {
         cell.setup(
             backgroundColor: photoInfo.color.cgColor,
             username: photoInfo.user.name,
-            thumbnailImageURL: URL(string: photoInfo.urls.thumb),
+            thumbnailImageURL: URL(string: photoInfo.photoImageUrls.thumb),
             profileImageURL: URL(string: photoInfo.user.profileImage.small)
         )
         return cell
     }
 }
 
-extension PhotoListCollectionViewController {
-    private func loadSample() -> [PhotoInfo] {
+private extension PhotoListCollectionViewController {
+    func loadSample() -> [PhotoInfo] {
         let sample: PhotoSearchResult = UnsplashExplorer.load("sample.json")
         return sample.results
     }
