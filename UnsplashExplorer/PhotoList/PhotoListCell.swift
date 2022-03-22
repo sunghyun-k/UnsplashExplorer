@@ -20,15 +20,18 @@ final class PhotoListCell: UICollectionViewCell {
         profileImageView.kf.cancelDownloadTask()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        attribute()
+        layout()
+    }
+    
     func setup(
         backgroundColor: CGColor?,
         username: String,
-        thumbnailImageURL: URL,
-        profileImageURL: URL
+        thumbnailImageURL: URL?,
+        profileImageURL: URL?
     ) {
-        attribute()
-        layout()
-        
         self.backgroundColor = UIColor(
             cgColor: backgroundColor
             ?? CGColor(red: 1, green: 1, blue: 1, alpha: 1)

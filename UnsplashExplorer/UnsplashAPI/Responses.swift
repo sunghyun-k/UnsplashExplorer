@@ -10,11 +10,11 @@ import Foundation
 // MARK: - PhotoSearchResult
 struct PhotoSearchResult: Decodable {
     let total, totalPages: Int
-    let results: [Photo]
+    let results: [PhotoInfo]
 }
 
-// MARK: - Photo
-struct Photo: Decodable {
+// MARK: - PhotoInfo
+struct PhotoInfo: Decodable {
     let id: String
     let createdAt: Date
     let width, height: Int
