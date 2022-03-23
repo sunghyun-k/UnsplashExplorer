@@ -58,6 +58,7 @@ class PhotoListCollectionViewLayout: UICollectionViewLayout {
             ) ?? 200
             let height = cellPadding * 2 + imageHeight
             
+            /// yOffset 최솟값의 인덱스를 새로 추가할 column으로 설정한다.
             let column = yOffset.enumerated().min {
                 $0.element < $1.element
             }?.offset ?? 0

@@ -25,6 +25,7 @@
 		F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3BC27E9931E007F8769 /* String+CGColor.swift */; };
 		F297B3BF27E99AD3007F8769 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F297B3BE27E99AD3007F8769 /* sample.json */; };
 		F297B3C127E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */; };
+		F297B3C327EA0A0B007F8769 /* PhotoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		F297B3BC27E9931E007F8769 /* String+CGColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CGColor.swift"; sourceTree = "<group>"; };
 		F297B3BE27E99AD3007F8769 /* sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample.json; sourceTree = "<group>"; };
 		F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCollectionViewLayout.swift; sourceTree = "<group>"; };
+		F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				F2648D4727E81EAE0071ADCF /* ViewController.swift */,
 				F284BE7427E909B300DCEBA3 /* Parsing.swift */,
 				F297B3BC27E9931E007F8769 /* String+CGColor.swift */,
+				F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */,
 				F297B3BB27E98D8F007F8769 /* PhotoList */,
 				F284BE6F27E9059800DCEBA3 /* UnsplashAPI */,
 				F2648D4C27E81EAE0071ADCF /* Assets.xcassets */,
@@ -263,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F284BE7527E909B300DCEBA3 /* Parsing.swift in Sources */,
+				F297B3C327EA0A0B007F8769 /* PhotoListViewModel.swift in Sources */,
 				F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */,
 				F2648D4827E81EAE0071ADCF /* ViewController.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,
