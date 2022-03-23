@@ -11,7 +11,7 @@ protocol PhotoListLayoutDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat
 }
 
-class PhotoListCollectionViewLayout: UICollectionViewLayout {
+final class PhotoListCollectionViewLayout: UICollectionViewLayout {
     
     weak var delegate: PhotoListLayoutDelegate?
     

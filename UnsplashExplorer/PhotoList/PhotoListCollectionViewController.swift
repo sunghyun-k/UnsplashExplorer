@@ -11,12 +11,13 @@ import RxCocoa
 
 private let reuseIdentifier = "PhotoListCell"
 
-class PhotoListCollectionViewController: UIViewController {
+final class PhotoListCollectionViewController: UIViewController {
     var viewModel: PhotoListViewModel
     
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     
-    lazy var collectionView: UICollectionView = {
+    // MARK: Views
+    private lazy var collectionView: UICollectionView = {
         let layout = PhotoListCollectionViewLayout()
         layout.delegate = self
         layout.cellPadding = self.cellPadding
@@ -24,13 +25,16 @@ class PhotoListCollectionViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         return collectionView
+    }()
+    
+    private lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        return searchBar
     }()
     
     init(viewModel: PhotoListViewModel) {
         self.viewModel = viewModel
-        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -45,7 +49,7 @@ class PhotoListCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupLayout()
+        layout()
         bind(viewModel: viewModel)
         
         viewModel.searchPhoto(byKeyword: "apple", page: 1, perPage: 10)
@@ -68,11 +72,24 @@ class PhotoListCollectionViewController: UIViewController {
         .disposed(by: disposeBag)
     }
     
-    private func setupLayout() {
-        view.addSubview(collectionView)
-        collectionView.snp.makeConstraints { make in
-            make.leading.trailing.top.bottom.equalToSuperview()
+    private func layout() {
+        [
+            collectionView,
+            searchBar
+        ].forEach {
+            view.addSubview($0)
         }
+        
+        collectionView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: cellPadding, bottom: 0, right: cellPadding)
     }
 }
 
