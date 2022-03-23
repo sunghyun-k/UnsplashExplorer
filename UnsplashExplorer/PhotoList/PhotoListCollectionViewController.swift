@@ -33,6 +33,15 @@ final class PhotoListCollectionViewController: UIViewController {
         return searchBar
     }()
     
+    private lazy var backgroundTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = .systemFont(ofSize: 20)
+        textView.textColor = .gray
+        textView.textAlignment = .center
+        textView.text = "검색 결과 없음"
+        return textView
+    }()
+    
     init(viewModel: PhotoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -79,11 +88,24 @@ final class PhotoListCollectionViewController: UIViewController {
                 viewModel.searchQuery.onNext(text)
             })
             .disposed(by: disposeBag)
+        
+        _ = viewModel.dataSource
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] data in
+            guard let self = self else { return }
+            if data.isEmpty {
+                self.backgroundTextView.isHidden = false
+            } else {
+                self.backgroundTextView.isHidden = true
+            }
+        })
     }
     
     private func layout() {
         [
+            
             collectionView,
+            backgroundTextView,
             searchBar
         ].forEach {
             view.addSubview($0)
@@ -96,6 +118,12 @@ final class PhotoListCollectionViewController: UIViewController {
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
+        }
+        
+        backgroundTextView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(50)
+            make.height.equalTo(50)
         }
         
         collectionView.contentInset = UIEdgeInsets(top: 0, left: cellPadding, bottom: 0, right: cellPadding)
