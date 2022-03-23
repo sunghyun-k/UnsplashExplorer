@@ -11,7 +11,7 @@ import RxCocoa
 
 class PhotoListViewModel {
     // MARK: Configuration
-    var loadPerPage = 10
+    var loadPerPage = 20
     var currentPage: Int {
         dataSource.value.count / loadPerPage
     }

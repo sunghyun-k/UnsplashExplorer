@@ -63,6 +63,7 @@ final class PhotoListCollectionViewController: UIViewController {
     }
     
     private func bind(viewModel: PhotoListViewModel) {
+        // collectionView 데이터 소스
         viewModel.dataSource
             .bind(
                 to: collectionView.rx.items(
@@ -79,16 +80,14 @@ final class PhotoListCollectionViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        // searchBar 텍스트를 viewModel에 전달한다.
         searchBar.rx.text
-            .subscribe(onNext: {
-                guard let text = $0 else {
-                    viewModel.searchQuery.onNext("")
-                    return
-                }
-                viewModel.searchQuery.onNext(text)
+            .subscribe(onNext: { text in
+                viewModel.searchQuery.onNext(text ?? "")
             })
             .disposed(by: disposeBag)
         
+        // dataSource가 비어있는지 여부에 따라 배경 메시지를 토글한다.
         viewModel.dataSource
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
@@ -101,10 +100,13 @@ final class PhotoListCollectionViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // 스크롤 맨 밑에 도달 시 추가로 결과를 로드한다.
         collectionView.rx.contentOffset
             .bind(onNext: { [weak self] contentOffset in
-                guard viewModel.loadRequestedPage <= viewModel.currentPage,
-                      let self = self else { return }
+                guard let self = self else {
+                    return
+                }
+                
                 let contentHeight = self.collectionView.contentSize.height
                 if contentOffset.y > contentHeight - self.collectionView.frame.height {
                     viewModel.loadMore()
