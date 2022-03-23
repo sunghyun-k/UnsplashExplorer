@@ -27,14 +27,18 @@ class PhotoListViewModel {
         self.photoSearcher = photoSearcher
         _ = searchQuery
             .skip(1)
-            .throttle(.milliseconds(500), latest: false, scheduler: scheduler)
-            .subscribe { [weak self] query in
-                self?.searchPhoto(
+            .throttle(.milliseconds(1000), latest: true, scheduler: scheduler)
+            .subscribe(onNext: { [weak self] query in
+                guard let self = self,
+                      !query.isEmpty else {
+                    return
+                }
+                self.searchPhoto(
                     byKeyword: query,
                     page: 1,
                     perPage: 10
                 )
-            }
+            })
     }
     
     func searchPhoto(

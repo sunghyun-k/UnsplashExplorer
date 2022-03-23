@@ -51,8 +51,6 @@ final class PhotoListCollectionViewController: UIViewController {
         
         layout()
         bind(viewModel: viewModel)
-        
-        viewModel.searchPhoto(byKeyword: "apple", page: 1, perPage: 10)
     }
     
     private func bind(viewModel: PhotoListViewModel) {
@@ -70,6 +68,17 @@ final class PhotoListCollectionViewController: UIViewController {
             )
         }
         .disposed(by: disposeBag)
+        
+        _ = searchBar.rx.text
+            .subscribe(onNext: {
+                guard let text = $0,
+                      !text.isEmpty else {
+                    viewModel.dataSource.onNext([])
+                    return
+                }
+                viewModel.searchQuery.onNext(text)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func layout() {
