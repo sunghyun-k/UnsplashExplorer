@@ -63,47 +63,58 @@ final class PhotoListCollectionViewController: UIViewController {
     }
     
     private func bind(viewModel: PhotoListViewModel) {
-        viewModel.dataSource.bind(
-            to: collectionView.rx.items(
-                cellIdentifier: reuseIdentifier,
-                cellType: PhotoListCell.self
-            )
-        ) { (index, photoInfo, cell) in
-            cell.setup(
-                backgroundColor: photoInfo.color.cgColor,
-                username: photoInfo.user.name,
-                thumbnailImageURL: URL(string: photoInfo.photoImageUrls.thumb),
-                profileImageURL: URL(string: photoInfo.user.profileImage.small)
-            )
-        }
-        .disposed(by: disposeBag)
+        viewModel.dataSource
+            .bind(
+                to: collectionView.rx.items(
+                    cellIdentifier: reuseIdentifier,
+                    cellType: PhotoListCell.self
+                )
+            ) { index, photoInfo, cell in
+                cell.setup(
+                    backgroundColor: photoInfo.color.cgColor,
+                    username: photoInfo.user.name,
+                    thumbnailImageURL: URL(string: photoInfo.photoImageUrls.thumb),
+                    profileImageURL: URL(string: photoInfo.user.profileImage.small)
+                )
+            }
+            .disposed(by: disposeBag)
         
-        _ = searchBar.rx.text
+        searchBar.rx.text
             .subscribe(onNext: {
-                guard let text = $0,
-                      !text.isEmpty else {
-                    viewModel.dataSource.onNext([])
+                guard let text = $0 else {
+                    viewModel.searchQuery.onNext("")
                     return
                 }
                 viewModel.searchQuery.onNext(text)
             })
             .disposed(by: disposeBag)
         
-        _ = viewModel.dataSource
+        viewModel.dataSource
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
-            guard let self = self else { return }
-            if data.isEmpty {
-                self.backgroundTextView.isHidden = false
-            } else {
-                self.backgroundTextView.isHidden = true
-            }
-        })
+                guard let self = self else { return }
+                if data.isEmpty {
+                    self.backgroundTextView.isHidden = false
+                } else {
+                    self.backgroundTextView.isHidden = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.contentOffset
+            .bind(onNext: { [weak self] contentOffset in
+                guard viewModel.loadRequestedPage <= viewModel.currentPage,
+                      let self = self else { return }
+                let contentHeight = self.collectionView.contentSize.height
+                if contentOffset.y > contentHeight - self.collectionView.frame.height {
+                    viewModel.loadMore()
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func layout() {
         [
-            
             collectionView,
             backgroundTextView,
             searchBar
@@ -134,9 +145,7 @@ final class PhotoListCollectionViewController: UIViewController {
 
 extension PhotoListCollectionViewController: PhotoListLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        guard let photoInfo = try? viewModel.dataSource.value()[indexPath.item] else {
-            return 0
-        }
+        let photoInfo = viewModel.dataSource.value[indexPath.item]
         
         let inset = collectionView.contentInset
         let columnWidth = (collectionView.bounds.width - inset.right - inset.bottom - (self.cellPadding * CGFloat(self.numberOfColumns) * 2)) / CGFloat(self.numberOfColumns)

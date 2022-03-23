@@ -10,13 +10,19 @@ import RxSwift
 import RxCocoa
 
 class PhotoListViewModel {
+    // MARK: Configuration
+    var loadPerPage = 10
+    var currentPage: Int {
+        dataSource.value.count / loadPerPage
+    }
+    var loadRequestedPage = 1
+    
     let searchQuery = BehaviorSubject<String>(value: "")
-    let currentPage = BehaviorSubject<Int>(value: 0)
-    let dataSource = BehaviorSubject<[PhotoInfo]>(value: [])
+    let dataSource = BehaviorRelay<[PhotoInfo]>(value: [])
     let errorMessage = BehaviorSubject<String>(value: "")
     
     private let photoSearcher: PhotoSearchable
-    private var disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     
     init(
         photoSearcher: PhotoSearchable,
@@ -25,20 +31,22 @@ class PhotoListViewModel {
         )
     ) {
         self.photoSearcher = photoSearcher
-        _ = searchQuery
+        searchQuery
             .skip(1)
             .throttle(.milliseconds(1000), latest: true, scheduler: scheduler)
             .subscribe(onNext: { [weak self] query in
                 guard let self = self,
                       !query.isEmpty else {
+                    self?.dataSource.accept([])
                     return
                 }
                 self.searchPhoto(
                     byKeyword: query,
                     page: 1,
-                    perPage: 10
+                    perPage: self.loadPerPage
                 )
             })
+            .disposed(by: disposeBag)
     }
     
     func searchPhoto(
@@ -56,7 +64,7 @@ class PhotoListViewModel {
             guard let self = self else { return }
             switch value {
             case .success(let result):
-                self.dataSource.onNext(result.results)
+                self.dataSource.accept(result.results)
             case .failure(let error):
                 self.errorMessage.onNext("오류: \(error.localizedDescription)")
             }
@@ -64,8 +72,32 @@ class PhotoListViewModel {
         .disposed(by: disposeBag)
     }
     
+    func loadMore() {
+        guard loadRequestedPage <= currentPage else {
+            return
+        }
+        loadRequestedPage = currentPage + 1
+        photoSearcher.searchPhotos(
+            byKeyword: (try? searchQuery.value()) ?? "",
+            page: currentPage + 1,
+            perPage: loadPerPage
+        )
+        .subscribe(on: MainScheduler.instance)
+        .subscribe(onNext: { [weak self] value in
+            guard let self = self else { return }
+            switch value {
+            case .success(let result):
+                self.dataSource.accept(self.dataSource.value + result.results)
+            case .failure(let error):
+                self.errorMessage.onNext("오류: \(error.localizedDescription)")
+            }
+        })
+        .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Sample
     func loadSample() {
-        dataSource.onNext(sample())
+        dataSource.accept(sample())
     }
     
     private func sample() -> [PhotoInfo] {

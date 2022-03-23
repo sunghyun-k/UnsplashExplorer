@@ -35,8 +35,11 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
     }
     
     override func prepare() {
-        guard cache.isEmpty,
-              let collectionView = collectionView else {
+        guard let collectionView = collectionView else {
+            return
+        }
+        
+        guard cache.count < collectionView.numberOfItems(inSection: 0) else {
             return
         }
         
@@ -45,7 +48,6 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
         let xOffset = (0..<numberOfColumns).map { column in
             CGFloat(column) * columnWidth
         }
-        
         /// column의 가장 아래 좌표를 저장한다. 이 값이 가장 작은 곳에 새로운 cell을 추가한다.
         var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
         
@@ -58,7 +60,7 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
             ) ?? 200
             let height = cellPadding * 2 + imageHeight
             
-            /// yOffset 최솟값의 인덱스를 새로 추가할 column으로 설정한다.
+            /// yOffset 최솟값 구하기
             let column = yOffset.enumerated().min {
                 $0.element < $1.element
             }?.offset ?? 0
