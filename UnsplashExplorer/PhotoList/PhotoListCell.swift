@@ -33,6 +33,11 @@ final class PhotoListCell: UICollectionViewCell {
         super.prepareForReuse()
         thumbnailImageView.kf.cancelDownloadTask()
         profileImageView.kf.cancelDownloadTask()
+        
+        thumbnailImageView.image = nil
+        profileImageView.image = nil
+        usernameLabel.text = nil
+        backgroundColor = .white
     }
     
     override func layoutSubviews() {

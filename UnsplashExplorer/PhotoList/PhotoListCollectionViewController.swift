@@ -6,69 +6,87 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 private let reuseIdentifier = "PhotoListCell"
 
-class PhotoListCollectionViewController: UICollectionViewController {
+class PhotoListCollectionViewController: UIViewController {
+    var viewModel: PhotoListViewModel
     
-    var photoInfos = [PhotoInfo]()
+    let disposeBag = DisposeBag()
+    
+    lazy var collectionView: UICollectionView = {
+        let layout = PhotoListCollectionViewLayout()
+        layout.delegate = self
+        layout.cellPadding = self.cellPadding
+        layout.numberOfColumns = self.numberOfColumns
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        return collectionView
+    }()
+    
+    init(viewModel: PhotoListViewModel) {
+        self.viewModel = viewModel
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Configuration
     var cellPadding: CGFloat = 5
     var numberOfColumns = 2
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        setupLayout()
+        bind(viewModel: viewModel)
         
-        photoInfos = loadSample()
-        
-        let layout = PhotoListCollectionViewLayout()
-        layout.delegate = self
-        layout.cellPadding = self.cellPadding
-        layout.numberOfColumns = self.numberOfColumns
-        collectionView.collectionViewLayout = layout
-        
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        viewModel.searchPhoto(byKeyword: "apple", page: 1, perPage: 10)
     }
     
-    // MARK: UICollectionViewDataSource
-    
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+    private func bind(viewModel: PhotoListViewModel) {
+        viewModel.dataSource.bind(
+            to: collectionView.rx.items(
+                cellIdentifier: reuseIdentifier,
+                cellType: PhotoListCell.self
+            )
+        ) { (index, photoInfo, cell) in
+            cell.setup(
+                backgroundColor: photoInfo.color.cgColor,
+                username: photoInfo.user.name,
+                thumbnailImageURL: URL(string: photoInfo.photoImageUrls.thumb),
+                profileImageURL: URL(string: photoInfo.user.profileImage.small)
+            )
+        }
+        .disposed(by: disposeBag)
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photoInfos.count
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let photoInfo = photoInfos[indexPath.item]
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PhotoListCell
-        cell.setup(
-            backgroundColor: photoInfo.color.cgColor,
-            username: photoInfo.user.name,
-            thumbnailImageURL: URL(string: photoInfo.photoImageUrls.thumb),
-            profileImageURL: URL(string: photoInfo.user.profileImage.small)
-        )
-        return cell
+    private func setupLayout() {
+        view.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.leading.trailing.top.bottom.equalToSuperview()
+        }
     }
 }
 
-private extension PhotoListCollectionViewController {
-    func loadSample() -> [PhotoInfo] {
-        let sample: PhotoSearchResult = UnsplashExplorer.load("sample.json")
-        return sample.results
-    }
-}
+// MARK: - PhotoListLayoutDelegate
 
 extension PhotoListCollectionViewController: PhotoListLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        let photoItem = photoInfos[indexPath.item]
+        guard let photoInfo = try? viewModel.dataSource.value()[indexPath.item] else {
+            return 0
+        }
         
         let inset = collectionView.contentInset
         let columnWidth = (collectionView.bounds.width - inset.right - inset.bottom - (self.cellPadding * CGFloat(self.numberOfColumns) * 2)) / CGFloat(self.numberOfColumns)
-        let aspectRatio = CGFloat(photoItem.height) / CGFloat(photoItem.width)
+        let aspectRatio = CGFloat(photoInfo.height) / CGFloat(photoInfo.width)
         return columnWidth * aspectRatio
     }
 }

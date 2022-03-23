@@ -17,8 +17,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        let layout = UICollectionViewFlowLayout()
-        let photoListViewController = PhotoListCollectionViewController(collectionViewLayout: layout)
+        let photoSearcher = PhotoSearcher()
+        let viewModel = PhotoListViewModel(photoSearcher: photoSearcher)
+        let photoListViewController = PhotoListCollectionViewController(viewModel: viewModel)
         
         window?.backgroundColor = .systemBackground
         window?.rootViewController = photoListViewController

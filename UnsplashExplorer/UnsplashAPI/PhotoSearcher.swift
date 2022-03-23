@@ -47,8 +47,8 @@ extension PhotoSearcher: PhotoSearchable {
                 do {
                     let photoData = try JSONDecoder().decode(PhotoSearchResult.self, from: data)
                     return .success(photoData)
-                } catch {
-                    return .failure(.parsing(description: "데이터 파싱 오류"))
+                } catch let error {
+                    return .failure(.parsing(description: error.localizedDescription))
                 }
             }
             .catch { error in
@@ -64,7 +64,7 @@ private extension PhotoSearcher {
         static let scheme = "https"
         static let host = "api.unsplash.com"
         static let accessKey: String = {
-            let data: [String: String] = load("keys")
+            let data: [String: String] = load("keys.json")
             return data["accessKey"]!
         }()
     }

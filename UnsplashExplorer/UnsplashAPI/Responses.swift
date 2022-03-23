@@ -69,7 +69,7 @@ struct PhotoImageURLs: Decodable {
 // MARK: - User
 struct User: Decodable {
     let id, username, name, firstName: String
-    let lastName: String
+    let lastName: String?
     let profileImage: ProfileImageURLs
     let userLinks: UserLinks
     

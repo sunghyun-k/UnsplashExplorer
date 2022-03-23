@@ -10,13 +10,13 @@ import RxSwift
 import RxCocoa
 
 class PhotoListViewModel {
-    let searchQuery = PublishSubject<String>()
-    let currentPage = PublishSubject<Int>()
-    let dataSource = PublishSubject<[PhotoInfo]>()
-    let errorMessage = PublishSubject<String>()
+    let searchQuery = BehaviorSubject<String>(value: "")
+    let currentPage = BehaviorSubject<Int>(value: 0)
+    let dataSource = BehaviorSubject<[PhotoInfo]>(value: [])
+    let errorMessage = BehaviorSubject<String>(value: "")
     
     private let photoSearcher: PhotoSearchable
-    private var disposables = DisposeBag()
+    private var disposeBag = DisposeBag()
     
     init(
         photoSearcher: PhotoSearchable,
@@ -57,6 +57,15 @@ class PhotoListViewModel {
                 self.errorMessage.onNext("오류: \(error.localizedDescription)")
             }
         })
-        .disposed(by: disposables)
+        .disposed(by: disposeBag)
+    }
+    
+    func loadSample() {
+        dataSource.onNext(sample())
+    }
+    
+    private func sample() -> [PhotoInfo] {
+        let sample: PhotoSearchResult = UnsplashExplorer.load("sample.json")
+        return sample.results
     }
 }
