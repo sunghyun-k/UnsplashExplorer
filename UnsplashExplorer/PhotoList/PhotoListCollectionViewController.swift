@@ -82,15 +82,8 @@ final class PhotoListCollectionViewController: UIViewController {
         
         // searchBar 텍스트를 viewModel에 전달한다.
         searchBar.rx.text
-            .subscribe(onNext: { [weak self] text in
-                guard (try? viewModel.searchText.value()) != text else { return }
-                guard let self = self else { return }
+            .subscribe(onNext: { text in
                 viewModel.searchText.onNext(text ?? "")
-                self.removeLayoutCache()
-                if self.collectionView.numberOfItems(inSection: 0) > 0 {
-                    let indexPath = IndexPath(row: 0, section: 0)
-                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
-                }
             })
             .disposed(by: disposeBag)
         
@@ -103,8 +96,14 @@ final class PhotoListCollectionViewController: UIViewController {
         
         // search 버튼이 눌렸을 때 검색을 수행
         searchBar.rx.searchButtonClicked
-            .subscribe(onNext: {
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
                 viewModel.searchPhoto()
+                self.removeLayoutCache()
+                if self.collectionView.numberOfItems(inSection: 0) > 0 {
+                    let indexPath = IndexPath(row: 0, section: 0)
+                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
+                }
             })
             .disposed(by: disposeBag)
         
