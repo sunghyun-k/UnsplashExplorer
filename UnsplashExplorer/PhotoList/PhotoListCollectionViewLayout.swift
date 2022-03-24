@@ -98,10 +98,13 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+        guard !cache.isEmpty else { return nil }
         return cache[indexPath.item]
     }
     
     func removeLayoutCache() {
         cache.removeAll()
+        contentHeight = 0
+        yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
     }
 }

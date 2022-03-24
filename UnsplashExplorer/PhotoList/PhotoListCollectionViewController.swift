@@ -86,6 +86,10 @@ final class PhotoListCollectionViewController: UIViewController {
                 guard let self = self else { return }
                 viewModel.searchText.onNext(text ?? "")
                 self.removeLayoutCache()
+                if self.collectionView.numberOfItems(inSection: 0) > 0 {
+                    let indexPath = IndexPath(row: 0, section: 0)
+                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -161,6 +165,7 @@ final class PhotoListCollectionViewController: UIViewController {
             return
         }
         layout.removeLayoutCache()
+        collectionView.contentSize.height = 0
     }
 }
 
@@ -168,7 +173,9 @@ final class PhotoListCollectionViewController: UIViewController {
 
 extension PhotoListCollectionViewController: PhotoListLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        let photoInfo = viewModel.dataSource.value[indexPath.item]
+        let dataSource = self.viewModel.dataSource.value
+        guard dataSource.count > indexPath.item else { return 0 }
+        let photoInfo = dataSource[indexPath.item]
         
         let inset = collectionView.contentInset
         let columnWidth = (collectionView.bounds.width - inset.right - inset.bottom - (self.cellPadding * CGFloat(self.numberOfColumns) * 2)) / CGFloat(self.numberOfColumns)
