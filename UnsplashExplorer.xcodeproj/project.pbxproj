@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		BA40E7C9B3EEC6CA2EC30CD5 /* Pods_UnsplashExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D144A1E8A79BC58E3C92D73D /* Pods_UnsplashExplorer.framework */; };
+		F226C51D27EC1BCC0008FFD3 /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C51C27EC1BCC0008FFD3 /* PhotoDetailViewController.swift */; };
+		F226C51F27EC1D840008FFD3 /* TitleInfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C51E27EC1D840008FFD3 /* TitleInfoLabel.swift */; };
+		F226C52127EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */; };
 		F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4327E81EAE0071ADCF /* AppDelegate.swift */; };
 		F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */; };
 		F2648D4827E81EAE0071ADCF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4727E81EAE0071ADCF /* ViewController.swift */; };
@@ -32,6 +35,9 @@
 		28A6A3BF7F4544FF717CCCBD /* Pods-UnsplashExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsplashExplorer.release.xcconfig"; path = "Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		8A2A0CFFEFF8485EA7292332 /* Pods-UnsplashExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsplashExplorer.debug.xcconfig"; path = "Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer.debug.xcconfig"; sourceTree = "<group>"; };
 		D144A1E8A79BC58E3C92D73D /* Pods_UnsplashExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsplashExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F226C51C27EC1BCC0008FFD3 /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
+		F226C51E27EC1D840008FFD3 /* TitleInfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleInfoLabel.swift; sourceTree = "<group>"; };
+		F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconAndDescriptionLabel.swift; sourceTree = "<group>"; };
 		F2648D4027E81EAE0071ADCF /* UnsplashExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2648D4327E81EAE0071ADCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +116,9 @@
 				F284BE7427E909B300DCEBA3 /* Parsing.swift */,
 				F297B3BC27E9931E007F8769 /* String+CGColor.swift */,
 				F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */,
+				F226C51C27EC1BCC0008FFD3 /* PhotoDetailViewController.swift */,
+				F226C51E27EC1D840008FFD3 /* TitleInfoLabel.swift */,
+				F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */,
 				F297B3BB27E98D8F007F8769 /* PhotoList */,
 				F284BE6F27E9059800DCEBA3 /* UnsplashAPI */,
 				F2648D4C27E81EAE0071ADCF /* Assets.xcassets */,
@@ -270,11 +279,14 @@
 				F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */,
 				F2648D4827E81EAE0071ADCF /* ViewController.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,
+				F226C51D27EC1BCC0008FFD3 /* PhotoDetailViewController.swift in Sources */,
 				F297B3B527E97A64007F8769 /* PhotoListCell.swift in Sources */,
+				F226C51F27EC1D840008FFD3 /* TitleInfoLabel.swift in Sources */,
 				F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */,
 				F284BE7127E905F100DCEBA3 /* PhotoSearcherError.swift in Sources */,
 				F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */,
 				F297B3BA27E98D88007F8769 /* PhotoListCollectionViewController.swift in Sources */,
+				F226C52127EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift in Sources */,
 				F284BE6A27E8FC8700DCEBA3 /* PhotoSearcher.swift in Sources */,
 				F297B3C127E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift in Sources */,
 			);
