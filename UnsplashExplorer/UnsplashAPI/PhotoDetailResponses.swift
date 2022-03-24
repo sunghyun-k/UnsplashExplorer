@@ -34,9 +34,9 @@ struct PhotoDetailInfo: Decodable {
 
 // MARK: - Exif
 struct Exif: Codable {
-    let maker, model, name, exposureTime: String
-    let aperture, focalLength: String
-    let iso: Int
+    let maker, model, name: String?
+    let exposureTime, aperture, focalLength: String?
+    let iso: Int?
 
     enum CodingKeys: String, CodingKey {
         case maker = "make"

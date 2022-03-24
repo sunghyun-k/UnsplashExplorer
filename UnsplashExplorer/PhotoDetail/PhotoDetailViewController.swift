@@ -29,6 +29,7 @@ class PhotoDetailViewController: UIViewController {
     private lazy var userProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = profileImageSize / 2
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -88,9 +89,9 @@ class PhotoDetailViewController: UIViewController {
         bind(viewModel: viewModel)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        resetViews()
     }
     
     private func bind(viewModel: PhotoListViewModel) {
@@ -169,8 +170,14 @@ class PhotoDetailViewController: UIViewController {
         if let backgroundColor = photoDetail.color.cgColor {
             photoImageView.backgroundColor = UIColor(cgColor: backgroundColor)
         }
-        
-        self.photoImageView.kf.setImage(with: URL(string: photoDetail.imageURLs.regular))
+        let scale = CGFloat(photoDetail.height) / CGFloat(photoDetail.width)
+        photoImageView.snp.makeConstraints { make in
+            make.height.equalTo(photoImageView.snp.width).multipliedBy(scale)
+        }
+        self.photoImageView.kf.setImage(
+            with: URL(string: photoDetail.imageURLs.regular),
+            options: [.transition(.fade(0.5))]
+        )
         self.userProfileImageView.kf.setImage(
             with: URL(string: photoDetail.user.profileImageURLs.medium),
             options: [.transition(.fade(0.5))]
@@ -199,6 +206,7 @@ class PhotoDetailViewController: UIViewController {
     
     private func resetViews() {
         photoImageView.image = nil
+        photoImageView.backgroundColor = .lightGray
         userProfileImageView.image = nil
         nameLabel.text = nil
         usernameLabel.text = nil
