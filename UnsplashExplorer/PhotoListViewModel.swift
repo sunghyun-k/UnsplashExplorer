@@ -20,6 +20,8 @@ class PhotoListViewModel {
     let dataSource = BehaviorRelay<[PhotoInfo]>(value: [])
     let errorMessage = BehaviorSubject<String>(value: "")
     
+    let photoDetail = BehaviorSubject<PhotoDetailInfo?>(value: nil)
+    
     private var isFetching = false
     
     private let photoSearcher: PhotoSearchable

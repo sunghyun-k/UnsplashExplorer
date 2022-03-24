@@ -26,7 +26,6 @@ struct PhotoInfo: Decodable {
     let width, height: Int
     let color: String
     let likes: Int
-    let likedByUser: Bool
     let photoDescription: String?
     let user: User
     let photoImageUrls: PhotoImageURLs
@@ -39,7 +38,6 @@ struct PhotoInfo: Decodable {
         case photoDescription = "description"
         case photoImageUrls = "urls"
         case photoLinks = "links"
-        case likedByUser = "liked_by_user"
     }
 }
 

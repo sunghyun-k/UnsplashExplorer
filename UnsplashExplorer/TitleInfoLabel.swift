@@ -42,7 +42,6 @@ class TitleInfoLabel: UIView {
         
         stackView.snp.makeConstraints { make in
             make.height.equalToSuperview()
-//            make.leading.equalToSuperview()
         }
         
         self.snp.makeConstraints { make in

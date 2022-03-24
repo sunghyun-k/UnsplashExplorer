@@ -15,6 +15,8 @@ protocol PhotoSearchable {
         page: Int,
         perPage: Int
     ) -> Observable<Result<PhotoSearchResult, PhotoSearcherError>>
+    
+    func photoDetail(id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>>
 }
 
 class PhotoSearcher {
@@ -36,7 +38,7 @@ extension PhotoSearcher: PhotoSearchable {
             page: page,
             perPage: perPage
         ).url else {
-            return .just(.failure(.url(description:"")))
+            return .just(.failure(.network(description:"URL 생성 오류")))
         }
         
         var request = URLRequest(url: url)
@@ -52,9 +54,28 @@ extension PhotoSearcher: PhotoSearchable {
                 }
             }
             .catch { error in
-                    .just(.failure(.network(
-                        description: "네트워크 로드 오류: \(error.localizedDescription)"
-                    )))
+                    return .just(.failure(.network(description: error.localizedDescription)))
+            }
+    }
+    
+    func photoDetail(id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>> {
+        guard let url = makePhotoDetailComponents(id: id).url else {
+            return .just(.failure(.network(description: "URL 생성 오류")))
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        return session.rx.data(request: request)
+            .map { data in
+                do {
+                    let photoDetail = try JSONDecoder().decode(PhotoDetailInfo.self, from: data)
+                    return .success(photoDetail)
+                } catch let error {
+                    return .failure(.parsing(description: error.localizedDescription))
+                }
+            }
+            .catch { error in
+                    return .just(.failure(.network(description: error.localizedDescription)))
             }
     }
 }
@@ -86,6 +107,15 @@ private extension PhotoSearcher {
             ("per_page", "\(perPage)")
         ].map { URLQueryItem(name: $0.0, value: $0.1) }
         
+        return components
+    }
+    
+    func makePhotoDetailComponents(id: String) -> URLComponents {
+        var components = URLComponents()
+        components.scheme = UnsplashAPI.scheme
+        components.host = UnsplashAPI.host
+        components.path = "/photos/\(id)"
+        components.queryItems = [URLQueryItem(name: "client_id", value: UnsplashAPI.accessKey)]
         return components
     }
 }

@@ -5,12 +5,17 @@
 //  Created by Sunghyun Kim on 2022/03/24.
 //
 
-import UIKit
-import SnapKit
 import SwiftUI
 
+import UIKit
+import SnapKit
+import RxCocoa
+import RxSwift
+
 class PhotoDetailViewController: UIViewController {
+    var viewModel: PhotoListViewModel
     
+    // MARK: Views
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .green
@@ -40,7 +45,7 @@ class PhotoDetailViewController: UIViewController {
     
     private lazy var viewsLabel: TitleInfoLabel = {
         let label = TitleInfoLabel()
-        label.setup(title: "Views", info: "1")
+        label.setup(title: "Views", info: "1134141241212")
         return label
     }()
     private lazy var downloadsLabel: TitleInfoLabel = {
@@ -65,9 +70,23 @@ class PhotoDetailViewController: UIViewController {
         return label
     }()
     
+    init(viewModel: PhotoListViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         layout()
+        bind(viewModel: viewModel)
+    }
+    
+    private func bind(viewModel: PhotoListViewModel) {
+        
     }
     
     private func layout() {
@@ -128,23 +147,23 @@ class PhotoDetailViewController: UIViewController {
     
 }
 
-struct PhotoDetailViewController_Preview: PreviewProvider {
-    static var previews: some View {
-        Container()
-    }
-    
-    struct Container: UIViewControllerRepresentable {
-        func makeUIViewController(context: Context) -> UIViewController {
-            
-            let viewController = PhotoDetailViewController()
-            return UINavigationController(rootViewController: viewController)
-        }
-        
-        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-            
-        }
-        
-        typealias UIVIewControllerType = UIViewController
-    }
-    
-}
+//struct PhotoDetailViewController_Preview: PreviewProvider {
+//    static var previews: some View {
+//        Container()
+//    }
+//    
+//    struct Container: UIViewControllerRepresentable {
+//        func makeUIViewController(context: Context) -> UIViewController {
+//            
+//            let viewController = PhotoDetailViewController()
+//            return UINavigationController(rootViewController: viewController)
+//        }
+//        
+//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+//            
+//        }
+//        
+//        typealias UIVIewControllerType = UIViewController
+//    }
+//    
+//}
