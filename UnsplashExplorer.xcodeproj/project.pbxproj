@@ -14,7 +14,6 @@
 		F226C54327EC5CE40008FFD3 /* PhotoDetailResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C54227EC5CE40008FFD3 /* PhotoDetailResponses.swift */; };
 		F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4327E81EAE0071ADCF /* AppDelegate.swift */; };
 		F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */; };
-		F2648D4827E81EAE0071ADCF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4727E81EAE0071ADCF /* ViewController.swift */; };
 		F2648D4D27E81EAE0071ADCF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2648D4C27E81EAE0071ADCF /* Assets.xcassets */; };
 		F2648D5027E81EAE0071ADCF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2648D4E27E81EAE0071ADCF /* LaunchScreen.storyboard */; };
 		F2648D5927E824050071ADCF /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F2648D5827E824050071ADCF /* SnapKit */; };
@@ -43,7 +42,6 @@
 		F2648D4027E81EAE0071ADCF /* UnsplashExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2648D4327E81EAE0071ADCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F2648D4727E81EAE0071ADCF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		F2648D4C27E81EAE0071ADCF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F2648D4F27E81EAE0071ADCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F2648D5127E81EAE0071ADCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,13 +112,9 @@
 			children = (
 				F2648D4327E81EAE0071ADCF /* AppDelegate.swift */,
 				F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */,
-				F2648D4727E81EAE0071ADCF /* ViewController.swift */,
-				F284BE7427E909B300DCEBA3 /* Parsing.swift */,
-				F297B3BC27E9931E007F8769 /* String+CGColor.swift */,
+				F2BA59BB27EC80D90071B62F /* Utilities */,
 				F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */,
-				F226C51C27EC1BCC0008FFD3 /* PhotoDetailViewController.swift */,
-				F226C51E27EC1D840008FFD3 /* TitleInfoLabel.swift */,
-				F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */,
+				F2BA59BC27EC81350071B62F /* PhotoDetail */,
 				F297B3BB27E98D8F007F8769 /* PhotoList */,
 				F284BE6F27E9059800DCEBA3 /* UnsplashAPI */,
 				F2648D4C27E81EAE0071ADCF /* Assets.xcassets */,
@@ -151,6 +145,25 @@
 				F297B3B427E97A64007F8769 /* PhotoListCell.swift */,
 			);
 			path = PhotoList;
+			sourceTree = "<group>";
+		};
+		F2BA59BB27EC80D90071B62F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				F284BE7427E909B300DCEBA3 /* Parsing.swift */,
+				F297B3BC27E9931E007F8769 /* String+CGColor.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		F2BA59BC27EC81350071B62F /* PhotoDetail */ = {
+			isa = PBXGroup;
+			children = (
+				F226C51C27EC1BCC0008FFD3 /* PhotoDetailViewController.swift */,
+				F226C51E27EC1D840008FFD3 /* TitleInfoLabel.swift */,
+				F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */,
+			);
+			path = PhotoDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,7 +293,6 @@
 				F284BE7527E909B300DCEBA3 /* Parsing.swift in Sources */,
 				F297B3C327EA0A0B007F8769 /* PhotoListViewModel.swift in Sources */,
 				F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */,
-				F2648D4827E81EAE0071ADCF /* ViewController.swift in Sources */,
 				F226C54327EC5CE40008FFD3 /* PhotoDetailResponses.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,
 				F226C51D27EC1BCC0008FFD3 /* PhotoDetailViewController.swift in Sources */,

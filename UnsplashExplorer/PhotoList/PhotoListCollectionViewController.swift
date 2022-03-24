@@ -82,8 +82,10 @@ final class PhotoListCollectionViewController: UIViewController {
         
         // searchBar 텍스트를 viewModel에 전달한다.
         searchBar.rx.text
-            .subscribe(onNext: { text in
-                viewModel.searchQuery.onNext(text ?? "")
+            .subscribe(onNext: { [weak self] text in
+                guard let self = self else { return }
+                viewModel.searchText.onNext(text ?? "")
+                self.removeLayoutCache()
             })
             .disposed(by: disposeBag)
         
@@ -152,6 +154,13 @@ final class PhotoListCollectionViewController: UIViewController {
         }
         
         collectionView.contentInset = UIEdgeInsets(top: 0, left: cellPadding, bottom: 0, right: cellPadding)
+    }
+    
+    private func removeLayoutCache() {
+        guard let layout = collectionView.collectionViewLayout as? PhotoListCollectionViewLayout else {
+            return
+        }
+        layout.removeLayoutCache()
     }
 }
 

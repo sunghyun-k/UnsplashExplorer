@@ -33,6 +33,9 @@ extension PhotoSearcher: PhotoSearchable {
         page: Int,
         perPage: Int
     ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>> {
+        guard !keyword.isEmpty else {
+            return .just(.failure(.network(description: "쿼리 내용 없음")))
+        }
         guard let url = makePhotoSearchComponents(
             byKeyword: keyword,
             page: page,

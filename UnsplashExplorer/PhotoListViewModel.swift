@@ -13,15 +13,18 @@ class PhotoListViewModel {
     // MARK: Configuration
     var loadPerPage = 20
     var currentPage: Int {
-        dataSource.value.count / loadPerPage
+        dataSource.value.count / loadPerPage + (dataSource.value.count % loadPerPage > 0 ? 1 : 0)
     }
     
-    let searchQuery = BehaviorSubject<String>(value: "")
+    // MARK: Publishing
+    let searchText = BehaviorSubject<String>(value: "")
     let dataSource = BehaviorRelay<[PhotoInfo]>(value: [])
     let errorMessage = BehaviorSubject<String>(value: "")
     
     let photoDetail = BehaviorSubject<PhotoDetailInfo?>(value: nil)
     
+    // MARK: Properies
+    private var totalPages = 0
     private var isFetching = false
     
     private let photoSearcher: PhotoSearchable
@@ -34,33 +37,22 @@ class PhotoListViewModel {
         )
     ) {
         self.photoSearcher = photoSearcher
-        searchQuery
+        searchText
             .skip(1)
             .throttle(.milliseconds(1000), latest: true, scheduler: scheduler)
             .subscribe(onNext: { [weak self] query in
-                guard let self = self,
-                      !query.isEmpty else {
-                    self?.dataSource.accept([])
-                    return
-                }
-                self.searchPhoto(
-                    byKeyword: query,
-                    page: 1,
-                    perPage: self.loadPerPage
-                )
+                guard let self = self else { return }
+                self.searchPhoto(byKeyword: query)
             })
             .disposed(by: disposeBag)
     }
     
-    func searchPhoto(
-        byKeyword keyword: String,
-        page: Int,
-        perPage: Int
-    ) {
+    private func searchPhoto(byKeyword keyword: String) {
+        
         photoSearcher.searchPhotos(
             byKeyword: keyword,
-            page: page,
-            perPage: perPage
+            page: 1,
+            perPage: self.loadPerPage
         )
         .subscribe(on: MainScheduler.instance)
         .subscribe(onNext: { [weak self] value in
@@ -68,7 +60,9 @@ class PhotoListViewModel {
             switch value {
             case .success(let result):
                 self.dataSource.accept(result.results)
+                self.totalPages = result.totalPages
             case .failure(let error):
+                self.dataSource.accept([])
                 self.errorMessage.onNext("오류: \(error.localizedDescription)")
             }
         })
@@ -76,9 +70,9 @@ class PhotoListViewModel {
     }
     
     func loadMore() {
-        guard let keyword = try? searchQuery.value(),
-              !keyword.isEmpty,
-              !isFetching else {
+        guard let keyword = try? searchText.value(),
+              !isFetching,
+              totalPages > currentPage else {
             return
         }
         isFetching = true
