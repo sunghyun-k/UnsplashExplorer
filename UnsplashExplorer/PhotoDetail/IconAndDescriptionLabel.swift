@@ -26,6 +26,15 @@ class IconAndDescriptionLabel: UIView {
         layout()
     }
     
+    var icon: UIImage? {
+        get { iconImageView.image }
+        set { iconImageView.image = newValue }
+    }
+    var text: String? {
+        get { descriptionLabel.text }
+        set { descriptionLabel.text = newValue }
+    }
+    
     func setup(icon: UIImage, description: String) {
         iconImageView.image = icon
         descriptionLabel.text = description

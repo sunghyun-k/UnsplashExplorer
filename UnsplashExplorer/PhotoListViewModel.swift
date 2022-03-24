@@ -21,7 +21,7 @@ class PhotoListViewModel {
     let dataSource = BehaviorRelay<[PhotoInfo]>(value: [])
     let errorMessage = BehaviorSubject<String>(value: "")
     
-    let photoDetail = BehaviorSubject<PhotoDetailInfo?>(value: nil)
+    let photoDetailInfo = BehaviorSubject<PhotoDetailInfo?>(value: nil)
     
     // MARK: Properies
     private var totalPages = 0
@@ -67,6 +67,25 @@ class PhotoListViewModel {
             }
         })
         .disposed(by: disposeBag)
+    }
+    
+    func fetchPhotoDetail(id: String) {
+        photoSearcher.photoDetail(id: id)
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self else { return }
+                switch value {
+                case .success(let photoDetailInfo):
+                    self.photoDetailInfo.onNext(photoDetailInfo)
+                case .failure(let error):
+                    self.errorMessage.onNext("오류: \(error.localizedDescription)")
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func removeDetail() {
+        photoDetailInfo.onNext(nil)
     }
     
     func loadMore() {

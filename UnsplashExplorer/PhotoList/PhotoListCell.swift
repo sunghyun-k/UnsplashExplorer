@@ -56,7 +56,10 @@ final class PhotoListCell: UICollectionViewCell {
             ?? CGColor(red: 1, green: 1, blue: 1, alpha: 1)
         )
         usernameLabel.text = username
-        thumbnailImageView.kf.setImage(with: thumbnailImageURL)
+        thumbnailImageView.kf.setImage(
+            with: thumbnailImageURL,
+            options: [.transition(.fade(0.5))]
+        )
         profileImageView.kf.setImage(with: profileImageURL)
     }
     

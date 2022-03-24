@@ -11,33 +11,35 @@ import UIKit
 import SnapKit
 import RxCocoa
 import RxSwift
+import Kingfisher
 
 class PhotoDetailViewController: UIViewController {
     var viewModel: PhotoListViewModel
     
+    private let disposeBag = DisposeBag()
+    
     // MARK: Views
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .green
+        imageView.backgroundColor = .lightGray
         return imageView
     }()
     
+    private lazy var profileImageSize: CGFloat = 40
     private lazy var userProfileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person.crop.circle.fill")
+        imageView.layer.cornerRadius = profileImageSize / 2
         return imageView
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Priscilla Du Preez"
         label.font = .systemFont(ofSize: 18, weight: .semibold)
         return label
     }()
     
     private lazy var usernameLabel: UILabel = {
         let label = UILabel()
-        label.text = "@priscilladupreez"
         label.font = .systemFont(ofSize: 14)
         label.textColor = .darkGray
         return label
@@ -45,28 +47,28 @@ class PhotoDetailViewController: UIViewController {
     
     private lazy var viewsLabel: TitleInfoLabel = {
         let label = TitleInfoLabel()
-        label.setup(title: "Views", info: "1134141241212")
+        label.title = "Views"
         return label
     }()
     private lazy var downloadsLabel: TitleInfoLabel = {
         let label = TitleInfoLabel()
-        label.setup(title: "Downloads", info: "941")
+        label.title = "Downloads"
         return label
     }()
     
     private lazy var dateLabel: IconAndDescriptionLabel = {
         let label = IconAndDescriptionLabel()
-        label.setup(icon: UIImage(systemName: "calendar")!, description: "Published on November 20, 2019")
+        label.icon = UIImage(systemName: "calendar")!
         return label
     }()
     private lazy var gearLabel: IconAndDescriptionLabel = {
         let label = IconAndDescriptionLabel()
-        label.setup(icon: UIImage(systemName: "camera")!, description: "Canon, EOS 6D")
+        label.icon = UIImage(systemName: "camera")!
         return label
     }()
     private lazy var lisenceLabel: IconAndDescriptionLabel = {
         let label = IconAndDescriptionLabel()
-        label.setup(icon: UIImage(systemName: "checkmark.shield")!, description: "Free to use under the Unsplash License ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇ")
+        label.setup(icon: UIImage(systemName: "checkmark.shield")!, description: "Free to use under the Unsplash License")
         return label
     }()
     
@@ -81,12 +83,30 @@ class PhotoDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         layout()
         bind(viewModel: viewModel)
     }
     
-    private func bind(viewModel: PhotoListViewModel) {
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         
+    }
+    
+    private func bind(viewModel: PhotoListViewModel) {
+        viewModel.photoDetailInfo
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] photo in
+                guard let self = self else {
+                    return
+                }
+                guard let photo = photo else {
+                    self.dismiss(animated: true)
+                    return
+                }
+                self.setup(photoDetail: photo)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func layout() {
@@ -96,7 +116,7 @@ class PhotoDetailViewController: UIViewController {
         nameStackView.spacing = 2
         userProfileImageView.contentMode = .scaleAspectFit
         userProfileImageView.snp.makeConstraints { make in
-            make.width.equalTo(40)
+            make.width.equalTo(profileImageSize)
             make.height.equalTo(userProfileImageView.snp.width)
         }
         let profileStackView = UIStackView(arrangedSubviews: [userProfileImageView, nameStackView])
@@ -141,8 +161,51 @@ class PhotoDetailViewController: UIViewController {
         
         stackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(10)
-            make.top.equalToSuperview()
+            make.top.equalTo(view.safeAreaLayoutGuide)
         }
+    }
+    
+    private func setup(photoDetail: PhotoDetailInfo) {
+        if let backgroundColor = photoDetail.color.cgColor {
+            photoImageView.backgroundColor = UIColor(cgColor: backgroundColor)
+        }
+        
+        self.photoImageView.kf.setImage(with: URL(string: photoDetail.imageURLs.regular))
+        self.userProfileImageView.kf.setImage(
+            with: URL(string: photoDetail.user.profileImageURLs.medium),
+            options: [.transition(.fade(0.5))]
+        )
+        nameLabel.text = photoDetail.user.name
+        usernameLabel.text = photoDetail.user.username
+        
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let views = numberFormatter.string(from: photoDetail.views as NSNumber)
+        let downloads = numberFormatter.string(from: photoDetail.downloads as NSNumber)
+        
+        viewsLabel.text = views
+        downloadsLabel.text = downloads
+        // 2020-05-20T16:10:22-04:00
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeStyle = .none
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        if let createdAt = dateFormatter.date(from: String(photoDetail.createdAt.dropLast(15))) {
+            dateFormatter.dateStyle = .short
+            let date = dateFormatter.string(from: createdAt)
+            dateLabel.text = "Published on \(date)"
+        }
+        gearLabel.text = photoDetail.exif.name
+    }
+    
+    private func resetViews() {
+        photoImageView.image = nil
+        userProfileImageView.image = nil
+        nameLabel.text = nil
+        usernameLabel.text = nil
+        viewsLabel.text = nil
+        downloadsLabel.text = nil
+        dateLabel.text = nil
+        gearLabel.text = nil
     }
     
 }

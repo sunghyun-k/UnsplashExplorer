@@ -27,6 +27,15 @@ class TitleInfoLabel: UIView {
         layout()
     }
     
+    var title: String? {
+        get { titleLabel.text }
+        set { titleLabel.text = newValue }
+    }
+    var text: String? {
+        get { infoLabel.text }
+        set { infoLabel.text = newValue }
+    }
+    
     func setup(title: String, info: String) {
         titleLabel.text = title
         infoLabel.text = info

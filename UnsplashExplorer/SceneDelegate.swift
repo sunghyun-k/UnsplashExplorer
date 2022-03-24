@@ -21,8 +21,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let viewModel = PhotoListViewModel(photoSearcher: photoSearcher)
         let photoListViewController = PhotoListCollectionViewController(viewModel: viewModel)
         
+        let navigationController = UINavigationController(rootViewController: photoListViewController)
+        
         window?.backgroundColor = .systemBackground
-        window?.rootViewController = photoListViewController
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 

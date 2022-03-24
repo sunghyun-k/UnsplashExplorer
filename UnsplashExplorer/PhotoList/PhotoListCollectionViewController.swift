@@ -74,7 +74,7 @@ final class PhotoListCollectionViewController: UIViewController {
                 cell.setup(
                     backgroundColor: photoInfo.color.cgColor,
                     username: photoInfo.user.name,
-                    thumbnailImageURL: URL(string: photoInfo.imageURLs.thumb),
+                    thumbnailImageURL: URL(string: photoInfo.imageURLs.small),
                     profileImageURL: URL(string: photoInfo.user.profileImageURLs.small)
                 )
             }
@@ -83,6 +83,7 @@ final class PhotoListCollectionViewController: UIViewController {
         // searchBar 텍스트를 viewModel에 전달한다.
         searchBar.rx.text
             .subscribe(onNext: { [weak self] text in
+                guard (try? viewModel.searchText.value()) != text else { return }
                 guard let self = self else { return }
                 viewModel.searchText.onNext(text ?? "")
                 self.removeLayoutCache()
@@ -126,8 +127,9 @@ final class PhotoListCollectionViewController: UIViewController {
             .subscribe(onNext: { [weak self] indexPath in
                 guard let self = self else { return }
                 let item = viewModel.dataSource.value[indexPath.item]
+                viewModel.fetchPhotoDetail(id: item.id)
                 let photoDetailView = PhotoDetailViewController(viewModel: viewModel)
-                self.present(photoDetailView, animated: true)
+                self.navigationController?.pushViewController(photoDetailView, animated: true)
                 
             })
             .disposed(by: disposeBag)
