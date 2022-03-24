@@ -18,6 +18,8 @@ class PhotoListViewModel {
     
     // MARK: Publishing
     let searchText = BehaviorSubject<String>(value: "")
+    let autocompletes = BehaviorRelay<[String]>(value: [])
+    
     let dataSource = BehaviorRelay<[PhotoInfo]>(value: [])
     let errorMessage = BehaviorSubject<String>(value: "")
     
@@ -39,22 +41,35 @@ class PhotoListViewModel {
         self.photoSearcher = photoSearcher
         searchText
             .skip(1)
-            .throttle(.milliseconds(1000), latest: true, scheduler: scheduler)
+            .throttle(.milliseconds(500), latest: true, scheduler: scheduler)
             .subscribe(onNext: { [weak self] query in
                 guard let self = self else { return }
-                self.searchPhoto(byKeyword: query)
+                self.autocomplete(byKeyword: query)
             })
             .disposed(by: disposeBag)
     }
     
-    private func searchPhoto(byKeyword keyword: String) {
+    private func autocomplete(byKeyword keyword: String) {
+        photoSearcher.autocomplete(byKeyword: keyword)
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] autocompletes in
+                guard let self = self else { return }
+                self.autocompletes.accept(autocompletes)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func searchPhoto() {
+        guard let keyword = try? searchText.value() else {
+            return
+        }
         
         photoSearcher.searchPhotos(
             byKeyword: keyword,
             page: 1,
             perPage: self.loadPerPage
         )
-        .subscribe(on: MainScheduler.instance)
+        .observe(on: MainScheduler.instance)
         .subscribe(onNext: { [weak self] value in
             guard let self = self else { return }
             switch value {
@@ -71,7 +86,7 @@ class PhotoListViewModel {
     
     func fetchPhotoDetail(id: String) {
         photoSearcher.photoDetail(id: id)
-            .subscribe(on: MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
                 switch value {
@@ -100,7 +115,7 @@ class PhotoListViewModel {
             page: currentPage + 1,
             perPage: loadPerPage
         )
-        .subscribe(on: MainScheduler.instance)
+        .observe(on: MainScheduler.instance)
         .subscribe(onNext: { [weak self] value in
             guard let self = self else { return }
             switch value {

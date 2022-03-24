@@ -109,3 +109,19 @@ struct UserLinks: Decodable {
 struct ProfileImageURLs: Decodable {
     let small, medium, large: String
 }
+
+// MARK: - AutocompleteResult
+struct AutocompleteResult: Decodable {
+    let fuzzy, autocomplete, didYouMean: [Autocomplete]
+
+    enum CodingKeys: String, CodingKey {
+        case fuzzy, autocomplete
+        case didYouMean = "did_you_mean"
+    }
+}
+
+// MARK: - Autocomplete
+struct Autocomplete: Decodable {
+    let query: String
+    let priority: Int
+}

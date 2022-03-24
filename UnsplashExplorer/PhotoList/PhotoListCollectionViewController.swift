@@ -94,6 +94,20 @@ final class PhotoListCollectionViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
+        // autocompletes를 Subscribe한다
+        viewModel.autocompletes
+            .subscribe(onNext: {
+                print($0)
+            })
+            .disposed(by: disposeBag)
+        
+        // search 버튼이 눌렸을 때 검색을 수행
+        searchBar.rx.searchButtonClicked
+            .subscribe(onNext: {
+                viewModel.searchPhoto()
+            })
+            .disposed(by: disposeBag)
+        
         // dataSource가 비어있는지 여부에 따라 배경 메시지를 토글한다.
         viewModel.dataSource
             .observe(on: MainScheduler.instance)

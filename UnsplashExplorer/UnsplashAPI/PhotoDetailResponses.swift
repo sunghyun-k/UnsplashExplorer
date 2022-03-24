@@ -33,7 +33,7 @@ struct PhotoDetailInfo: Decodable {
 }
 
 // MARK: - Exif
-struct Exif: Codable {
+struct Exif: Decodable {
     let maker, model, name: String?
     let exposureTime, aperture, focalLength: String?
     let iso: Int?
@@ -49,7 +49,7 @@ struct Exif: Codable {
 }
 
 // MARK: - Location
-struct Location: Codable {
+struct Location: Decodable {
     let title, name, city, country: String?
     let position: Position
 }

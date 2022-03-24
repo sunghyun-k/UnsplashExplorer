@@ -10,4 +10,5 @@ import Foundation
 enum PhotoSearcherError: Error {
     case parsing(description: String)
     case network(description: String)
+    case query(description: String)
 }

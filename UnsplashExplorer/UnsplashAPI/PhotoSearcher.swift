@@ -17,6 +17,8 @@ protocol PhotoSearchable {
     ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>>
     
     func photoDetail(id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>>
+    
+    func autocomplete(byKeyword keyword: String) -> Observable<[String]>
 }
 
 class PhotoSearcher {
@@ -28,13 +30,34 @@ class PhotoSearcher {
 }
 
 extension PhotoSearcher: PhotoSearchable {
+    func autocomplete(byKeyword keyword: String) -> Observable<[String]> {
+        guard let url = makeAutocompleteComponents(keyword: keyword).url else {
+            return .just([])
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        return session.rx.data(request: request)
+            .map { data -> AutocompleteResult? in
+                do {
+                    return try JSONDecoder().decode(AutocompleteResult.self, from: data)
+                } catch {
+                    return nil
+                }
+            }
+            .map { result -> [String] in
+                guard let result = result else { return [] }
+                return result.autocomplete.map { $0.query }
+            }
+            
+    }
+    
     func searchPhotos(
         byKeyword keyword: String,
         page: Int,
         perPage: Int
     ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>> {
         guard !keyword.isEmpty else {
-            return .just(.failure(.network(description: "쿼리 내용 없음")))
+            return .just(.failure(.query(description: "쿼리 내용 없음")))
         }
         guard let url = makePhotoSearchComponents(
             byKeyword: keyword,
@@ -86,11 +109,12 @@ extension PhotoSearcher: PhotoSearchable {
 private extension PhotoSearcher {
     struct UnsplashAPI {
         static let scheme = "https"
-        static let host = "api.unsplash.com"
+        static let apiHost = "api.unsplash.com"
         static let accessKey: String = {
             let data: [String: String] = load("keys.json")
             return data["accessKey"]!
         }()
+        static let host = "unsplash.com"
     }
     
     func makePhotoSearchComponents(
@@ -100,7 +124,7 @@ private extension PhotoSearcher {
     ) -> URLComponents {
         var components = URLComponents()
         components.scheme = UnsplashAPI.scheme
-        components.host = UnsplashAPI.host
+        components.host = UnsplashAPI.apiHost
         components.path = "/search/photos"
         
         components.queryItems = [
@@ -116,9 +140,17 @@ private extension PhotoSearcher {
     func makePhotoDetailComponents(id: String) -> URLComponents {
         var components = URLComponents()
         components.scheme = UnsplashAPI.scheme
-        components.host = UnsplashAPI.host
+        components.host = UnsplashAPI.apiHost
         components.path = "/photos/\(id)"
         components.queryItems = [URLQueryItem(name: "client_id", value: UnsplashAPI.accessKey)]
+        return components
+    }
+    
+    func makeAutocompleteComponents(keyword: String) -> URLComponents {
+        var components = URLComponents()
+        components.scheme = UnsplashAPI.scheme
+        components.host = UnsplashAPI.host
+        components.path = "/nautocomplete/\(keyword)"
         return components
     }
 }
