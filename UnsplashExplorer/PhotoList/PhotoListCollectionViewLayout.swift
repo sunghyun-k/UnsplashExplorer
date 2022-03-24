@@ -19,6 +19,9 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
     var cellPadding: CGFloat = 10
     
     private var cache = [UICollectionViewLayoutAttributes]()
+    var numberOfRenderedCells: Int {
+        cache.count
+    }
     
     private var contentHeight: CGFloat = 0
     
@@ -29,6 +32,9 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
         let insets = collectionView.contentInset
         return collectionView.bounds.width - (insets.left + insets.right)
     }
+    
+    /// column의 가장 아래 좌표를 저장한다. 이 값이 가장 작은 곳에 새로운 cell을 추가한다.
+    private lazy var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
     
     override var collectionViewContentSize: CGSize {
         CGSize(width: contentWidth, height: contentHeight)
@@ -48,10 +54,8 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
         let xOffset = (0..<numberOfColumns).map { column in
             CGFloat(column) * columnWidth
         }
-        /// column의 가장 아래 좌표를 저장한다. 이 값이 가장 작은 곳에 새로운 cell을 추가한다.
-        var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
         
-        for item in 0..<collectionView.numberOfItems(inSection: 0) {
+        for item in cache.count..<collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
             
             let imageHeight = delegate?.collectionView(
@@ -84,7 +88,7 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         var visibleLayoutAttributes: [UICollectionViewLayoutAttributes] = []
-        
+
         cache.forEach { attributes in
             if attributes.frame.intersects(rect) {
                 visibleLayoutAttributes.append(attributes)

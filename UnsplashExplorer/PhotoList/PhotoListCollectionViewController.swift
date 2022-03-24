@@ -102,6 +102,7 @@ final class PhotoListCollectionViewController: UIViewController {
         
         // 스크롤 맨 밑에 도달 시 추가로 결과를 로드한다.
         collectionView.rx.contentOffset
+            .throttle(.milliseconds(500), latest: false, scheduler: MainScheduler.instance)
             .bind(onNext: { [weak self] contentOffset in
                 guard let self = self else {
                     return

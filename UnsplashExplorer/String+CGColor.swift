@@ -9,6 +9,7 @@ import Foundation
 import CoreGraphics
 
 extension String {
+    /// "#FFFFFF" -> CGColor
     var cgColor: CGColor? {
         guard count == 7,
               first == "#" else {

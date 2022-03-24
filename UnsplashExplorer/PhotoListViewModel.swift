@@ -15,11 +15,12 @@ class PhotoListViewModel {
     var currentPage: Int {
         dataSource.value.count / loadPerPage
     }
-    var loadRequestedPage = 1
     
     let searchQuery = BehaviorSubject<String>(value: "")
     let dataSource = BehaviorRelay<[PhotoInfo]>(value: [])
     let errorMessage = BehaviorSubject<String>(value: "")
+    
+    private var isFetching = false
     
     private let photoSearcher: PhotoSearchable
     private let disposeBag = DisposeBag()
@@ -73,12 +74,14 @@ class PhotoListViewModel {
     }
     
     func loadMore() {
-        guard loadRequestedPage <= currentPage else {
+        guard let keyword = try? searchQuery.value(),
+              !keyword.isEmpty,
+              !isFetching else {
             return
         }
-        loadRequestedPage = currentPage + 1
+        isFetching = true
         photoSearcher.searchPhotos(
-            byKeyword: (try? searchQuery.value()) ?? "",
+            byKeyword: keyword,
             page: currentPage + 1,
             perPage: loadPerPage
         )
@@ -91,6 +94,7 @@ class PhotoListViewModel {
             case .failure(let error):
                 self.errorMessage.onNext("오류: \(error.localizedDescription)")
             }
+            self.isFetching = false
         })
         .disposed(by: disposeBag)
     }
