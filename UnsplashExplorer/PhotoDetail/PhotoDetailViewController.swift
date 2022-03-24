@@ -19,6 +19,16 @@ class PhotoDetailViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     // MARK: Views
+    private lazy var allViews = [
+        photoImageView,
+        userProfileImageView,
+        nameLabel,
+        usernameLabel,
+        viewsLabel,
+        downloadsLabel,
+        dateLabel,
+        gearLabel
+    ]
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .lightGray
@@ -106,6 +116,7 @@ class PhotoDetailViewController: UIViewController {
                     return
                 }
                 self.setup(photoDetail: photo)
+                self.allViews.forEach { $0.isHidden = false }
             })
             .disposed(by: disposeBag)
     }
@@ -161,7 +172,7 @@ class PhotoDetailViewController: UIViewController {
         }
         
         stackView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(10)
+            make.leading.trailing.equalTo(view.layoutMarginsGuide)
             make.top.equalTo(view.safeAreaLayoutGuide)
         }
     }
@@ -170,10 +181,12 @@ class PhotoDetailViewController: UIViewController {
         if let backgroundColor = photoDetail.color.cgColor {
             photoImageView.backgroundColor = UIColor(cgColor: backgroundColor)
         }
-        let scale = CGFloat(photoDetail.height) / CGFloat(photoDetail.width)
-        photoImageView.snp.makeConstraints { make in
-            make.height.equalTo(photoImageView.snp.width).multipliedBy(scale)
+        let imageRatio = CGFloat(photoDetail.height) / CGFloat(photoDetail.width)
+        photoImageView.snp.remakeConstraints { make in
+            make.width.equalToSuperview()
+            make.height.equalTo(photoImageView.snp.width).multipliedBy(imageRatio)
         }
+        
         self.photoImageView.kf.setImage(
             with: URL(string: photoDetail.imageURLs.regular),
             options: [.transition(.fade(0.5))]
@@ -214,27 +227,7 @@ class PhotoDetailViewController: UIViewController {
         downloadsLabel.text = nil
         dateLabel.text = nil
         gearLabel.text = nil
+        
+        allViews.forEach { $0.isHidden = true }
     }
-    
 }
-
-//struct PhotoDetailViewController_Preview: PreviewProvider {
-//    static var previews: some View {
-//        Container()
-//    }
-//    
-//    struct Container: UIViewControllerRepresentable {
-//        func makeUIViewController(context: Context) -> UIViewController {
-//            
-//            let viewController = PhotoDetailViewController()
-//            return UINavigationController(rootViewController: viewController)
-//        }
-//        
-//        func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-//            
-//        }
-//        
-//        typealias UIVIewControllerType = UIViewController
-//    }
-//    
-//}
