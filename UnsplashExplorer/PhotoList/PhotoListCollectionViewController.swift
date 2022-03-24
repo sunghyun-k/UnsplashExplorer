@@ -74,8 +74,8 @@ final class PhotoListCollectionViewController: UIViewController {
                 cell.setup(
                     backgroundColor: photoInfo.color.cgColor,
                     username: photoInfo.user.name,
-                    thumbnailImageURL: URL(string: photoInfo.photoImageUrls.thumb),
-                    profileImageURL: URL(string: photoInfo.user.profileImage.small)
+                    thumbnailImageURL: URL(string: photoInfo.imageURLs.thumb),
+                    profileImageURL: URL(string: photoInfo.user.profileImageURLs.small)
                 )
             }
             .disposed(by: disposeBag)
@@ -112,6 +112,17 @@ final class PhotoListCollectionViewController: UIViewController {
                 if contentOffset.y > contentHeight - self.collectionView.frame.height {
                     viewModel.loadMore()
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        // 셀 선택 동작 바인딩
+        collectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                let item = viewModel.dataSource.value[indexPath.item]
+                let photoDetailView = PhotoDetailViewController(viewModel: viewModel)
+                self.present(photoDetailView, animated: true)
+                
             })
             .disposed(by: disposeBag)
     }

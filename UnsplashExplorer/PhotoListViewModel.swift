@@ -107,7 +107,7 @@ class PhotoListViewModel {
     }
     
     private func sample() -> [PhotoInfo] {
-        let sample: PhotoSearchResult = UnsplashExplorer.load("sample.json")
+        let sample: SearchPhotosResponse = UnsplashExplorer.load("sample.json")
         return sample.results
     }
 }

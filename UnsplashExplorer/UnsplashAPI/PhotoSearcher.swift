@@ -14,7 +14,7 @@ protocol PhotoSearchable {
         byKeyword keyword: String,
         page: Int,
         perPage: Int
-    ) -> Observable<Result<PhotoSearchResult, PhotoSearcherError>>
+    ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>>
     
     func photoDetail(id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>>
 }
@@ -32,7 +32,7 @@ extension PhotoSearcher: PhotoSearchable {
         byKeyword keyword: String,
         page: Int,
         perPage: Int
-    ) -> Observable<Result<PhotoSearchResult, PhotoSearcherError>> {
+    ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>> {
         guard let url = makePhotoSearchComponents(
             byKeyword: keyword,
             page: page,
@@ -47,7 +47,7 @@ extension PhotoSearcher: PhotoSearchable {
         return session.rx.data(request: request)
             .map { data in
                 do {
-                    let photoData = try JSONDecoder().decode(PhotoSearchResult.self, from: data)
+                    let photoData = try JSONDecoder().decode(SearchPhotosResponse.self, from: data)
                     return .success(photoData)
                 } catch let error {
                     return .failure(.parsing(description: error.localizedDescription))

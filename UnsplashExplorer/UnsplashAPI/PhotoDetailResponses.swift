@@ -13,21 +13,21 @@ struct PhotoDetailInfo: Decodable {
     let width, height: Int
     let color: String
     let likes: Int
-    let photoDescription: String?
-    let user: User
+    let description: String?
+    let user: UserInfo
     let exif: Exif
     let location: Location
-    let photoImageUrls: PhotoImageURLs
-    let photoLinks: PhotoLinks
+    let imageURLs: PhotoImageURLs
+    let links: PhotoLinks
     let views, downloads: Int
     
     enum CodingKeys: String, CodingKey {
         case id, likes, user, exif, location
         case createdAt = "created_at"
         case width, height, color
-        case photoDescription = "description"
-        case photoImageUrls = "urls"
-        case photoLinks = "links"
+        case description
+        case imageURLs = "urls"
+        case links
         case views, downloads
     }
 }
