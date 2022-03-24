@@ -163,17 +163,24 @@ class PhotoDetailViewController: UIViewController {
         stackView.axis = .vertical
         stackView.spacing = 20
         
-        view.addSubview(stackView)
+        let scrollView = UIScrollView()
+        scrollView.addSubview(stackView)
+        
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        stackView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.width.equalTo(view.snp.width).inset(10)
+            make.centerX.equalTo(view.snp.centerX)
+        }
         
         // 사진
         photoImageView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(photoImageView.snp.width)
-        }
-        
-        stackView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(view.layoutMarginsGuide)
-            make.top.equalTo(view.safeAreaLayoutGuide)
         }
     }
     
