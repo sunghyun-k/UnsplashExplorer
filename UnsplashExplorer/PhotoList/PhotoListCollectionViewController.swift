@@ -70,6 +70,16 @@ final class PhotoListCollectionViewController: UIViewController {
         bind(viewModel: viewModel)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        collectionView.contentInset = UIEdgeInsets(
+            top: searchBar.frame.height + cellPadding,
+            left: cellPadding,
+            bottom: 0,
+            right: cellPadding
+        )
+    }
+    
     private func bind(viewModel: PhotoListViewModel) {
         // collectionView 데이터 소스
         viewModel.dataSource
@@ -109,16 +119,30 @@ final class PhotoListCollectionViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        // autocomplete 선택 시 동작
+        autocompletesTableView.rx.itemSelected
+            .subscribe(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                let text = viewModel.autocompletes.value[indexPath.item]
+                self.searchBar.text = text
+                self.finishSearchBar()
+                viewModel.searchPhoto()
+            })
+            .disposed(by: disposeBag)
+        
+        // searchBar가 first responder가 되면 실행
+        searchBar.rx.textDidBeginEditing
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.autocompletesTableView.isHidden = false
+            })
+        
         // search 버튼이 눌렸을 때 검색을 수행
         searchBar.rx.searchButtonClicked
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
+                self.finishSearchBar()
                 viewModel.searchPhoto()
-                self.removeLayoutCache()
-                if self.collectionView.numberOfItems(inSection: 0) > 0 {
-                    let indexPath = IndexPath(row: 0, section: 0)
-                    self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
-                }
             })
             .disposed(by: disposeBag)
         
@@ -151,7 +175,7 @@ final class PhotoListCollectionViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        // 셀 선택 동작 바인딩
+        // 이미지 셀 선택 동작 바인딩
         collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
                 guard let self = self else { return }
@@ -192,8 +216,16 @@ final class PhotoListCollectionViewController: UIViewController {
             make.leading.trailing.equalToSuperview().inset(50)
             make.height.equalTo(50)
         }
-        
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: cellPadding, bottom: 0, right: cellPadding)
+    }
+    
+    private func finishSearchBar() {
+        self.searchBar.endEditing(true)
+        self.autocompletesTableView.isHidden = true
+        self.removeLayoutCache()
+        if self.collectionView.numberOfItems(inSection: 0) > 0 {
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
+        }
     }
     
     private func removeLayoutCache() {
