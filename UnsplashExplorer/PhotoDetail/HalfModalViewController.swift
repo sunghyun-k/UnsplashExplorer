@@ -20,7 +20,7 @@ class HalfModalViewController: UIViewController {
         
         let aperture: String?
         if photoDetail.exif.aperture != nil {
-            aperture = "f/\(photoDetail.exif.aperture!)"
+            aperture = "𝑓/\(photoDetail.exif.aperture!)"
         } else {
             aperture = nil
         }

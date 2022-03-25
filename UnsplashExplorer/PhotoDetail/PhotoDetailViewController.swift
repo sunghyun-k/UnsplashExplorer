@@ -25,7 +25,8 @@ class PhotoDetailViewController: UIViewController {
         viewsLabel,
         downloadsLabel,
         dateLabel,
-        gearLabel
+        gearLabel,
+        infoButton
     ]
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -79,6 +80,11 @@ class PhotoDetailViewController: UIViewController {
         let label = IconAndDescriptionLabel()
         label.setup(icon: UIImage(systemName: "checkmark.shield")!, description: "Free to use under the Unsplash License")
         return label
+    }()
+    private lazy var infoButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "info.circle"), for: .normal)
+        return button
     }()
     
     init(viewModel: PhotoListViewModel) {
@@ -160,14 +166,16 @@ class PhotoDetailViewController: UIViewController {
         let countRecordStackView = UIStackView(arrangedSubviews: [
             viewsLabel,
             downloadsLabel,
-            UIView()
+            UIView(),
+            infoButton
         ])
         countRecordStackView.axis = .horizontal
-        countRecordStackView.spacing = 30
+        countRecordStackView.distribution = .fillEqually
         viewsLabel.snp.makeConstraints { make in
             make.width.greaterThanOrEqualTo(80)
         }
         countRecordStackView.distribution = .fill
+        countRecordStackView.setCustomSpacing(30, after: viewsLabel)
         
         // 사진 상세 정보
         let detailStackView = UIStackView(arrangedSubviews: [dateLabel, gearLabel, lisenceLabel])
@@ -195,8 +203,12 @@ class PhotoDetailViewController: UIViewController {
         
         stackView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.width.equalTo(view.snp.width).inset(10)
-            make.centerX.equalTo(view.snp.centerX)
+            make.width.equalToSuperview().inset(10)
+            make.centerX.equalToSuperview()
+        }
+        
+        countRecordStackView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(10)
         }
         
         // 사진
