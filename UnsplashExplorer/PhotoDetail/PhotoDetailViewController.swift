@@ -153,7 +153,8 @@ class PhotoDetailViewController: UIViewController {
                 guard let self = self else { return }
                 guard let detail = try? viewModel.photoDetailInfo.value() else { return }
                 let halfModal = HalfModalViewController(photoDetail: detail)
-                self.present(halfModal, animated: true)
+                halfModal.modalPresentationStyle = .overCurrentContext
+                self.present(halfModal, animated: false)
             }
             .disposed(by: disposeBag)
     }
