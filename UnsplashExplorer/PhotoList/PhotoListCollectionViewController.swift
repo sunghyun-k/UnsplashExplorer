@@ -206,8 +206,8 @@ final class PhotoListCollectionViewController: UIViewController {
             make.leading.trailing.equalToSuperview()
         }
         autocompletesTableView.snp.makeConstraints { make in
-            make.top.equalTo(300)
-            make.bottom.equalTo(600)
+            make.top.equalTo(searchBar.snp.bottom)
+            make.bottom.equalToSuperview()
             make.width.equalToSuperview()
         }
         
