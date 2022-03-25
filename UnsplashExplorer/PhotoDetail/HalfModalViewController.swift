@@ -41,6 +41,7 @@ class HalfModalViewController: UIViewController {
             forCellWithReuseIdentifier: DetailInfoCollectionViewCell.reuseId
         )
         collectionView.dataSource = self
+        collectionView.isScrollEnabled = false
         return collectionView
     }()
     
@@ -52,10 +53,10 @@ class HalfModalViewController: UIViewController {
         return view
     }()
     
+    private var dimScale: CGFloat = 0.5
     private var dimmedView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
-        view.alpha = 0.6
         return view
     }()
     
@@ -120,14 +121,14 @@ class HalfModalViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        view.addSubview(collectionView)
-//        collectionView.snp.makeConstraints { make in
-//            make.top.bottom.equalToSuperview()
-//            make.leading.trailing.equalToSuperview().inset(20)
-//        }
-        
         layout()
         bindGesture()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        animatePresent()
     }
     
     private func layout() {
@@ -143,17 +144,25 @@ class HalfModalViewController: UIViewController {
         }
         // 높이를 나중에 제스쳐에 따라 업데이트 해야한다.
         modalView.snp.makeConstraints { make in
-            heightConstraint = make.height.equalTo(self.defaultHeight).constraint
+            heightConstraint = make.height.equalTo(0).constraint
+        }
+        
+        modalView.addSubview(collectionView)
+        collectionView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(600)
         }
     }
     
     // MARK: Pan Gesture Bind
     private func bindGesture() {
-        let gesture = UIPanGestureRecognizer()
-        gesture.delaysTouchesBegan = false
-        gesture.delaysTouchesEnded = false
-        modalView.addGestureRecognizer(gesture)
-        gesture.rx.event
+        // Pan Gesture
+        let panGesture = UIPanGestureRecognizer()
+        panGesture.delaysTouchesBegan = false
+        panGesture.delaysTouchesEnded = false
+        modalView.addGestureRecognizer(panGesture)
+        panGesture.rx.event
             .bind(onNext: { [weak self] gesture in
                 guard let self = self else { return }
                 let translatedPoint = gesture.translation(in: self.view)
@@ -167,14 +176,22 @@ class HalfModalViewController: UIViewController {
                     }
                 case .ended:
                     if newHeight < self.dismissThreshold {
-                        // dismiss view로 변경하기
-                        self.animateModal(toHeight: 0)
+                        self.animateDismiss()
                     } else {
                         self.animateModal(toHeight: self.defaultHeight)
                     }
                 default:
                     break
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        // Background Tap Gesture
+        let tapGesture = UITapGestureRecognizer()
+        dimmedView.addGestureRecognizer(tapGesture)
+        tapGesture.rx.event
+            .bind(onNext: { [weak self] _ in
+                self?.animateDismiss()
             })
             .disposed(by: disposeBag)
     }
@@ -186,6 +203,26 @@ class HalfModalViewController: UIViewController {
             self.view.layoutIfNeeded()
         }
         currentModalHeight = height
+    }
+    
+    // MARK: Present, Dismiss
+    private func animatePresent() {
+        dimmedView.alpha = 0
+        heightConstraint?.update(offset: defaultHeight)
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0) {
+            self.view.layoutIfNeeded()
+            self.dimmedView.alpha = self.dimScale
+        }
+    }
+    
+    private func animateDismiss() {
+        heightConstraint?.update(offset: 0)
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0) {
+            self.view.layoutIfNeeded()
+            self.dimmedView.alpha = 0
+        } completion: { _ in
+            self.dismiss(animated: false)
+        }
     }
 }
 
