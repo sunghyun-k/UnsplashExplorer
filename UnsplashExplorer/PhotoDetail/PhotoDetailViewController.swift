@@ -90,6 +90,8 @@ class PhotoDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Prepare
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -103,6 +105,7 @@ class PhotoDetailViewController: UIViewController {
     }
     
     private func bind(viewModel: PhotoListViewModel) {
+        // photoDetail이 fetch되면 뷰에 표시한다
         viewModel.photoDetailInfo
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] photo in
@@ -116,6 +119,27 @@ class PhotoDetailViewController: UIViewController {
                 self.setup(photoDetail: photo)
             })
             .disposed(by: disposeBag)
+        
+        // TODO: 제스쳐 동작 설정
+        let leftGesture = UISwipeGestureRecognizer()
+        leftGesture.direction = .left
+        
+        let rightGesture = UISwipeGestureRecognizer()
+        rightGesture.direction = .right
+        
+        [leftGesture, rightGesture].forEach {
+            view.addGestureRecognizer($0)
+        }
+        
+        leftGesture.rx.event.bind(onNext: { recognizer in
+            print("swipe: \(recognizer.direction)")
+        })
+        .disposed(by: disposeBag)
+        
+        rightGesture.rx.event.bind(onNext: { recognizer in
+            print("swipe: \(recognizer.direction)")
+        })
+        .disposed(by: disposeBag)
     }
     
     private func layout() {
