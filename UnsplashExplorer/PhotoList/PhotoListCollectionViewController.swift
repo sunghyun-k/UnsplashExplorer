@@ -63,6 +63,7 @@ final class PhotoListCollectionViewController: UIViewController {
     var cellPadding: CGFloat = 5
     var numberOfColumns = 2
     
+    // MARK: Prepare
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -219,6 +220,7 @@ final class PhotoListCollectionViewController: UIViewController {
         }
     }
     
+    // MARK: Methods
     private func finishSearchBar() {
         self.searchBar.endEditing(true)
         self.autocompletesTableView.isHidden = true

@@ -25,7 +25,7 @@ class PhotoListViewModel {
     
     let photoDetailInfo = BehaviorSubject<PhotoDetailInfo?>(value: nil)
     
-    // MARK: Properies
+    // MARK: Properties
     private var totalPages = 0
     private var isFetching = false
     

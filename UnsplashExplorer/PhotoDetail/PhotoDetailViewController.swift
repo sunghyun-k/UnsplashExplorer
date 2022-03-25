@@ -247,6 +247,8 @@ class PhotoDetailViewController: UIViewController {
         allViews.forEach { $0.isHidden = false }
     }
     
+    // MARK: Methods
+    
     private func resetViews() {
         photoImageView.image = nil
         photoImageView.backgroundColor = .lightGray
