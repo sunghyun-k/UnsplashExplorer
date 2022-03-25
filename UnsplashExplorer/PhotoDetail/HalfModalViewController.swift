@@ -44,7 +44,7 @@ class HalfModalViewController: UIViewController {
         return collectionView
     }()
     
-    private var contentBackgroundView: UIView = {
+    private var modalView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemBackground
         view.layer.cornerRadius = 16
@@ -60,12 +60,14 @@ class HalfModalViewController: UIViewController {
     }()
     
     // MARK: Configuration
-    let defaultHeight: CGFloat = 300
+    private let defaultHeight: CGFloat = 300
+    private let dismissThreshold: CGFloat = 200
     
-    private var currentContentHeight: CGFloat = 300
+    private var currentModalHeight: CGFloat = 300
     
     // MARK: Properties
-    private var heightConstraint: Constraint!
+    /// 높이를 제스쳐에 따라 업데이트하기 위한 프로퍼티
+    private var heightConstraint: Constraint?
     
     // MARK: Prepare
     init(photoDetail: PhotoDetailInfo) {
@@ -127,58 +129,60 @@ class HalfModalViewController: UIViewController {
     }
     
     private func layout() {
-        [dimmedView, contentBackgroundView].forEach {
+        [dimmedView, modalView].forEach {
             view.addSubview($0)
         }
         
         dimmedView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        contentBackgroundView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+        modalView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
         }
         // 높이를 나중에 제스쳐에 따라 업데이트 해야한다.
-        contentBackgroundView.snp.makeConstraints { make in
+        modalView.snp.makeConstraints { make in
             heightConstraint = make.height.equalTo(self.defaultHeight).constraint
         }
     }
     
     // MARK: Pan Gesture Bind
-    private var gestureFrequency: TimeInterval = 0.050
     private func bindGesture() {
         let gesture = UIPanGestureRecognizer()
         gesture.delaysTouchesBegan = false
         gesture.delaysTouchesEnded = false
-        contentBackgroundView.addGestureRecognizer(gesture)
+        modalView.addGestureRecognizer(gesture)
         gesture.rx.event
-            .throttle(.milliseconds(Int(gestureFrequency * 1000)),latest: true, scheduler: MainScheduler.instance)
-            .bind(onNext: { gesture in
-                let translation = gesture.translation(in: self.view)
+            .bind(onNext: { [weak self] gesture in
+                guard let self = self else { return }
+                let translatedPoint = gesture.translation(in: self.view)
                 
+                let newHeight = self.currentModalHeight - translatedPoint.y
+                print("newHeight: \(newHeight)")
                 switch gesture.state {
                 case .changed:
-                    break
+                    self.heightConstraint?.update(offset: newHeight)
                 case .ended:
-                    break
+                    if newHeight < self.dismissThreshold {
+                        // dismiss view로 변경하기
+                        self.setModal(height: 0)
+                    } else {
+                        self.setModal(height: self.defaultHeight)
+                    }
                 default:
                     break
                 }
-                self.animateModalHeight(translation.y)
-                print(translation.y)
             })
             .disposed(by: disposeBag)
     }
     
     
     // MARK: Animations
-    func animateModalHeight(_ height: CGFloat) {
-        
-        heightConstraint.update(offset: height)
-        
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: gestureFrequency * 2, delay: 0) {
+    private func setModal(height: CGFloat) {
+        heightConstraint?.update(offset: height)
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0) {
             self.view.layoutIfNeeded()
         }
-        currentContentHeight += height
+        currentModalHeight = height
     }
 }
 
