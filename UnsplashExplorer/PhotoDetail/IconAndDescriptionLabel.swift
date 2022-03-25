@@ -48,8 +48,7 @@ class IconAndDescriptionLabel: UIView {
         self.addSubview(stackView)
         
         iconImageView.snp.makeConstraints { make in
-            make.width.equalTo(18)
-            make.height.equalTo(iconImageView.snp.width)
+            make.width.height.equalTo(18)
         }
         
         stackView.snp.makeConstraints { make in

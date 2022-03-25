@@ -44,6 +44,8 @@ final class PhotoListCollectionViewController: UIViewController {
         return textView
     }()
     
+    private lazy var autocompletesView: AutocompletesView = AutocompletesView()
+    
     init(viewModel: PhotoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -91,8 +93,10 @@ final class PhotoListCollectionViewController: UIViewController {
         
         // autocompletes를 Subscribe한다
         viewModel.autocompletes
-            .subscribe(onNext: {
-                print($0)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] autocompletes in
+                print(autocompletes)
+                self?.autocompletesView.texts = autocompletes
             })
             .disposed(by: disposeBag)
         
@@ -154,7 +158,8 @@ final class PhotoListCollectionViewController: UIViewController {
         [
             collectionView,
             backgroundTextView,
-            searchBar
+            searchBar,
+            autocompletesView
         ].forEach {
             view.addSubview($0)
         }
@@ -166,6 +171,10 @@ final class PhotoListCollectionViewController: UIViewController {
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
+        }
+        autocompletesView.snp.makeConstraints { make in
+            make.top.equalTo(300)
+            make.width.equalToSuperview()
         }
         
         backgroundTextView.snp.makeConstraints { make in

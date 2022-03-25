@@ -50,6 +50,10 @@ class PhotoListViewModel {
     }
     
     private func autocomplete(byKeyword keyword: String) {
+        guard !keyword.isEmpty else {
+            autocompletes.accept([])
+            return
+        }
         photoSearcher.autocomplete(byKeyword: keyword)
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] autocompletes in
