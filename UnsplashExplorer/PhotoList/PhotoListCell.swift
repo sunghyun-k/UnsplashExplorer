@@ -76,17 +76,49 @@ final class PhotoListCell: UICollectionViewCell {
         userInfoStackView.alignment = .center
         userInfoStackView.spacing = 8
         
+        let gradientView = GradientView()
         [
             thumbnailImageView,
+            gradientView,
             userInfoStackView
         ].forEach { contentView.addSubview($0) }
         
         thumbnailImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
+        
+        gradientView.snp.makeConstraints { make in
+            make.bottom.width.equalToSuperview()
+            make.height.equalTo(44)
+        }
+        
         userInfoStackView.snp.makeConstraints { make in
             make.leading.bottom.equalToSuperview().inset(10)
         }
+    }
+}
+
+class GradientView: UIView {
+    
+    override public class var layerClass: Swift.AnyClass {
+        return CAGradientLayer.self
+    }
+    
+    init() {
+        super.init(frame: .zero)
+        
+        guard let layer = self.layer as? CAGradientLayer else { return }
+        layer.colors = [
+          UIColor(red: 0, green: 0, blue: 0, alpha: 0).cgColor,
+          UIColor(red: 0, green: 0, blue: 0, alpha: 0.1).cgColor,
+          UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        ]
+        layer.locations = [0, 0.45, 1]
+        layer.startPoint = CGPoint(x: 0.5, y: 0)
+        layer.endPoint = CGPoint(x: 0.5, y: 1)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
