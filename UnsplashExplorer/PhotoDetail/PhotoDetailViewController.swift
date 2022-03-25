@@ -116,7 +116,6 @@ class PhotoDetailViewController: UIViewController {
                     return
                 }
                 self.setup(photoDetail: photo)
-                self.allViews.forEach { $0.isHidden = false }
             })
             .disposed(by: disposeBag)
     }
@@ -222,6 +221,7 @@ class PhotoDetailViewController: UIViewController {
             dateLabel.text = "Published on \(date)"
         }
         gearLabel.text = photoDetail.exif.name
+        allViews.forEach { $0.isHidden = false }
     }
     
     private func resetViews() {
