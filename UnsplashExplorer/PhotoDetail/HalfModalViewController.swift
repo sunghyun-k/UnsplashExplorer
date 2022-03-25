@@ -78,12 +78,13 @@ class HalfModalViewController: UIViewController {
             DetailInfoCollectionViewCell.self,
             forCellWithReuseIdentifier: DetailInfoCollectionViewCell.reuseId
         )
+        collectionView.dataSource = self
         return collectionView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = .systemBackground
     }
 }
 

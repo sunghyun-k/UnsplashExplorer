@@ -146,6 +146,16 @@ class PhotoDetailViewController: UIViewController {
             print("swipe: \(recognizer.direction)")
         })
         .disposed(by: disposeBag)
+        
+        // infoButton Tapped
+        infoButton.rx.tap
+            .bind { [weak self] in
+                guard let self = self else { return }
+                guard let detail = try? viewModel.photoDetailInfo.value() else { return }
+                let halfModal = HalfModalViewController(photoDetail: detail)
+                self.present(halfModal, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func layout() {
@@ -205,10 +215,6 @@ class PhotoDetailViewController: UIViewController {
             make.top.bottom.equalToSuperview()
             make.width.equalToSuperview().inset(10)
             make.centerX.equalToSuperview()
-        }
-        
-        countRecordStackView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(10)
         }
         
         // 사진

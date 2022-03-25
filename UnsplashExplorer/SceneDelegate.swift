@@ -23,7 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigationController = UINavigationController(rootViewController: photoListViewController)
         
-        window?.backgroundColor = .systemBackground
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
