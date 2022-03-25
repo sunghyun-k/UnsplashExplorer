@@ -15,6 +15,8 @@ final class PhotoListCollectionViewController: UIViewController {
     var viewModel: PhotoListViewModel
     
     private let disposeBag = DisposeBag()
+    /// 추가 로드 중일 때 true
+    private var isLoadingMore = false
     
     // MARK: Views
     private lazy var collectionView: UICollectionView = {
@@ -122,15 +124,16 @@ final class PhotoListCollectionViewController: UIViewController {
         
         // 스크롤 맨 밑에 도달 시 추가로 결과를 로드한다.
         collectionView.rx.contentOffset
-            .throttle(.milliseconds(500), latest: false, scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(500), latest: true, scheduler: MainScheduler.instance)
             .bind(onNext: { [weak self] contentOffset in
-                guard let self = self else {
-                    return
-                }
-                
+                guard let self = self else { return }
+                guard !self.isLoadingMore else { return }
                 let contentHeight = self.collectionView.contentSize.height
                 if contentOffset.y > contentHeight - self.collectionView.frame.height {
-                    viewModel.loadMore()
+                    self.isLoadingMore = true
+                    viewModel.loadMore { [weak self] in
+                        self?.isLoadingMore = false
+                    }
                 }
             })
             .disposed(by: disposeBag)
@@ -143,7 +146,6 @@ final class PhotoListCollectionViewController: UIViewController {
                 viewModel.fetchPhotoDetail(id: item.id)
                 let photoDetailView = PhotoDetailViewController(viewModel: viewModel)
                 self.navigationController?.pushViewController(photoDetailView, animated: true)
-                
             })
             .disposed(by: disposeBag)
     }

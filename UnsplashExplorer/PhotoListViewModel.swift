@@ -63,23 +63,46 @@ class PhotoListViewModel {
         guard let keyword = try? searchText.value() else {
             return
         }
-        
+        self.dataSource.accept([])
+        searchPhoto(byKeyword: keyword, page: 1, perPage: self.loadPerPage)
+    }
+    
+    func loadMore(completion: (() -> Void)? = nil ) {
+        guard let keyword = try? searchText.value(),
+              totalPages > currentPage else {
+            completion?()
+            return
+        }
+        searchPhoto(
+            byKeyword: keyword,
+            page: currentPage + 1,
+            perPage: loadPerPage,
+            completion: completion
+        )
+    }
+    
+    private func searchPhoto(
+        byKeyword keyword: String,
+        page: Int,
+        perPage: Int,
+        completion: (() -> Void)? = nil
+    ) {
         photoSearcher.searchPhotos(
             byKeyword: keyword,
-            page: 1,
-            perPage: self.loadPerPage
+            page: page,
+            perPage: perPage
         )
         .observe(on: MainScheduler.instance)
         .subscribe(onNext: { [weak self] value in
             guard let self = self else { return }
             switch value {
             case .success(let result):
-                self.dataSource.accept(result.results)
+                self.dataSource.accept(self.dataSource.value + result.results)
                 self.totalPages = result.totalPages
             case .failure(let error):
-                self.dataSource.accept([])
                 self.errorMessage.onNext("오류: \(error.localizedDescription)")
             }
+            completion?()
         })
         .disposed(by: disposeBag)
     }
@@ -101,32 +124,6 @@ class PhotoListViewModel {
     
     func removeDetail() {
         photoDetailInfo.onNext(nil)
-    }
-    
-    func loadMore() {
-        guard let keyword = try? searchText.value(),
-              !isFetching,
-              totalPages > currentPage else {
-            return
-        }
-        isFetching = true
-        photoSearcher.searchPhotos(
-            byKeyword: keyword,
-            page: currentPage + 1,
-            perPage: loadPerPage
-        )
-        .observe(on: MainScheduler.instance)
-        .subscribe(onNext: { [weak self] value in
-            guard let self = self else { return }
-            switch value {
-            case .success(let result):
-                self.dataSource.accept(self.dataSource.value + result.results)
-            case .failure(let error):
-                self.errorMessage.onNext("오류: \(error.localizedDescription)")
-            }
-            self.isFetching = false
-        })
-        .disposed(by: disposeBag)
     }
     
     // MARK: - Sample
