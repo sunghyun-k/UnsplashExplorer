@@ -18,6 +18,7 @@
 		F2648D5027E81EAE0071ADCF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2648D4E27E81EAE0071ADCF /* LaunchScreen.storyboard */; };
 		F2648D5927E824050071ADCF /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = F2648D5827E824050071ADCF /* SnapKit */; };
 		F266BD6927EDC05800885F09 /* HalfModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F266BD6827EDC05800885F09 /* HalfModalViewController.swift */; };
+		F266BD6B27EDC26B00885F09 /* DetailInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F266BD6A27EDC26B00885F09 /* DetailInfoCollectionViewCell.swift */; };
 		F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6727E8F30800DCEBA3 /* Responses.swift */; };
 		F284BE6A27E8FC8700DCEBA3 /* PhotoSearcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE6927E8FC8700DCEBA3 /* PhotoSearcher.swift */; };
 		F284BE7127E905F100DCEBA3 /* PhotoSearcherError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE7027E905F100DCEBA3 /* PhotoSearcherError.swift */; };
@@ -47,6 +48,7 @@
 		F2648D4F27E81EAE0071ADCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F2648D5127E81EAE0071ADCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F266BD6827EDC05800885F09 /* HalfModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfModalViewController.swift; sourceTree = "<group>"; };
+		F266BD6A27EDC26B00885F09 /* DetailInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		F284BE6727E8F30800DCEBA3 /* Responses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Responses.swift; sourceTree = "<group>"; };
 		F284BE6927E8FC8700DCEBA3 /* PhotoSearcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSearcher.swift; sourceTree = "<group>"; };
 		F284BE7027E905F100DCEBA3 /* PhotoSearcherError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoSearcherError.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 			children = (
 				F226C51C27EC1BCC0008FFD3 /* PhotoDetailViewController.swift */,
 				F266BD6827EDC05800885F09 /* HalfModalViewController.swift */,
+				F266BD6A27EDC26B00885F09 /* DetailInfoCollectionViewCell.swift */,
 				F226C51E27EC1D840008FFD3 /* TitleInfoLabel.swift */,
 				F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */,
 			);
@@ -309,6 +312,7 @@
 				F284BE6A27E8FC8700DCEBA3 /* PhotoSearcher.swift in Sources */,
 				F297B3C127E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift in Sources */,
 				F266BD6927EDC05800885F09 /* HalfModalViewController.swift in Sources */,
+				F266BD6B27EDC26B00885F09 /* DetailInfoCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
