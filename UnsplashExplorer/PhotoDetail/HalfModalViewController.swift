@@ -62,12 +62,14 @@ class HalfModalViewController: UIViewController {
     // MARK: Configuration
     private let defaultHeight: CGFloat = 300
     private let dismissThreshold: CGFloat = 200
-    
-    private var currentModalHeight: CGFloat = 300
+    private var maxModalHeight: CGFloat {
+        UIScreen.main.bounds.height - view.safeAreaInsets.top
+    }
     
     // MARK: Properties
     /// 높이를 제스쳐에 따라 업데이트하기 위한 프로퍼티
     private var heightConstraint: Constraint?
+    private var currentModalHeight: CGFloat = 300
     
     // MARK: Prepare
     init(photoDetail: PhotoDetailInfo) {
@@ -155,18 +157,20 @@ class HalfModalViewController: UIViewController {
             .bind(onNext: { [weak self] gesture in
                 guard let self = self else { return }
                 let translatedPoint = gesture.translation(in: self.view)
-                
                 let newHeight = self.currentModalHeight - translatedPoint.y
-                print("newHeight: \(newHeight)")
+                
                 switch gesture.state {
                 case .changed:
-                    self.heightConstraint?.update(offset: newHeight)
+                    print(newHeight, self.maxModalHeight)
+                    if newHeight < self.maxModalHeight {
+                        self.heightConstraint?.update(offset: newHeight)
+                    }
                 case .ended:
                     if newHeight < self.dismissThreshold {
                         // dismiss view로 변경하기
-                        self.setModal(height: 0)
+                        self.animateModal(toHeight: 0)
                     } else {
-                        self.setModal(height: self.defaultHeight)
+                        self.animateModal(toHeight: self.defaultHeight)
                     }
                 default:
                     break
@@ -175,9 +179,8 @@ class HalfModalViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    
     // MARK: Animations
-    private func setModal(height: CGFloat) {
+    private func animateModal(toHeight height: CGFloat) {
         heightConstraint?.update(offset: height)
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0) {
             self.view.layoutIfNeeded()
