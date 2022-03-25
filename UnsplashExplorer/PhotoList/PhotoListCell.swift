@@ -17,10 +17,14 @@ final class PhotoListCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         return imageView
     }()
+    private let profileImageSize: CGFloat = 24
     private lazy var profileImageView: UIImageView = {
-        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        imageView.layer.cornerRadius = 15
+        let imageView = UIImageView()
+        imageView.layer.cornerRadius = profileImageSize / 2
         imageView.clipsToBounds = true
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(profileImageSize)
+        }
         return imageView
     }()
     private lazy var usernameLabel: UILabel = {
@@ -70,7 +74,7 @@ final class PhotoListCell: UICollectionViewCell {
         let userInfoStackView = UIStackView(arrangedSubviews: [profileImageView, usernameLabel])
         userInfoStackView.axis = .horizontal
         userInfoStackView.alignment = .center
-        userInfoStackView.spacing = 15
+        userInfoStackView.spacing = 8
         
         [
             thumbnailImageView,
@@ -82,7 +86,7 @@ final class PhotoListCell: UICollectionViewCell {
         }
 
         userInfoStackView.snp.makeConstraints { make in
-            make.leading.bottom.equalToSuperview().inset(20)
+            make.leading.bottom.equalToSuperview().inset(10)
         }
     }
 }
