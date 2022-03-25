@@ -105,9 +105,10 @@ class PhotoDetailViewController: UIViewController {
         bind(viewModel: viewModel)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         resetViews()
+        viewModel.photoDetailInfo.onNext(nil)
     }
     
     private func bind(viewModel: PhotoListViewModel) {
