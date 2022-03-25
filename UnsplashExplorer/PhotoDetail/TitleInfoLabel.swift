@@ -47,8 +47,6 @@ class TitleInfoLabel: UIView {
         stackView.spacing = 3
         self.addSubview(stackView)
         
-        infoLabel.sizeToFit()
-        
         stackView.snp.makeConstraints { make in
             make.height.equalToSuperview()
         }

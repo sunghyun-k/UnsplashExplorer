@@ -52,7 +52,11 @@ class IconAndDescriptionLabel: UIView {
         }
         
         stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        self.snp.makeConstraints { make in
+            make.height.equalTo(20)
         }
     }
 

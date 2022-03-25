@@ -10,6 +10,7 @@ import SnapKit
 import Kingfisher
 
 final class PhotoListCell: UICollectionViewCell {
+    static let reuseId = "PhotoListCell"
     private lazy var thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill

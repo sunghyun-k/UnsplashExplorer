@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-private let reuseIdentifier = "PhotoListCell"
+private let autocompleteReuseId = "AutocompleteTableViewCell"
 
 final class PhotoListCollectionViewController: UIViewController {
     var viewModel: PhotoListViewModel
@@ -26,7 +26,7 @@ final class PhotoListCollectionViewController: UIViewController {
         layout.numberOfColumns = self.numberOfColumns
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: PhotoListCell.reuseId)
         return collectionView
     }()
     
@@ -44,7 +44,11 @@ final class PhotoListCollectionViewController: UIViewController {
         return textView
     }()
     
-    private lazy var autocompletesView: AutocompletesView = AutocompletesView()
+    private lazy var autocompletesTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: autocompleteReuseId)
+        return tableView
+    }()
     
     init(viewModel: PhotoListViewModel) {
         self.viewModel = viewModel
@@ -69,12 +73,10 @@ final class PhotoListCollectionViewController: UIViewController {
     private func bind(viewModel: PhotoListViewModel) {
         // collectionView 데이터 소스
         viewModel.dataSource
-            .bind(
-                to: collectionView.rx.items(
-                    cellIdentifier: reuseIdentifier,
-                    cellType: PhotoListCell.self
-                )
-            ) { index, photoInfo, cell in
+            .bind(to: collectionView.rx.items(
+                cellIdentifier: PhotoListCell.reuseId,
+                cellType: PhotoListCell.self
+            )) { index, photoInfo, cell in
                 cell.setup(
                     backgroundColor: photoInfo.color.cgColor,
                     username: photoInfo.user.name,
@@ -93,11 +95,18 @@ final class PhotoListCollectionViewController: UIViewController {
         
         // autocompletes를 Subscribe한다
         viewModel.autocompletes
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] autocompletes in
-                print(autocompletes)
-                self?.autocompletesView.texts = autocompletes
-            })
+            .bind(to: autocompletesTableView.rx.items(
+                cellIdentifier: autocompleteReuseId,
+                cellType: UITableViewCell.self
+            )) { index, autocomplete, cell in
+                var content = cell.defaultContentConfiguration()
+                content.image = UIImage(systemName: "magnifyingglass")
+                content.text = autocomplete
+                content.textProperties.color = .darkGray
+                content.imageProperties.maximumSize.width = 18
+                content.imageToTextPadding = 10
+                cell.contentConfiguration = content
+            }
             .disposed(by: disposeBag)
         
         // search 버튼이 눌렸을 때 검색을 수행
@@ -159,7 +168,7 @@ final class PhotoListCollectionViewController: UIViewController {
             collectionView,
             backgroundTextView,
             searchBar,
-            autocompletesView
+            autocompletesTableView
         ].forEach {
             view.addSubview($0)
         }
@@ -172,8 +181,9 @@ final class PhotoListCollectionViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
         }
-        autocompletesView.snp.makeConstraints { make in
+        autocompletesTableView.snp.makeConstraints { make in
             make.top.equalTo(300)
+            make.bottom.equalTo(600)
             make.width.equalToSuperview()
         }
         
