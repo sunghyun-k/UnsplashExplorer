@@ -42,6 +42,9 @@ class HalfModalViewController: UIViewController {
         )
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
+        collectionView.snp.makeConstraints { make in
+            make.height.equalTo(600)
+        }
         return collectionView
     }()
     
@@ -60,8 +63,15 @@ class HalfModalViewController: UIViewController {
         return view
     }()
     
+    private var closeButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Close", for: .normal)
+        button.setTitleColor(UIColor.label, for: .normal)
+        return button
+    }()
+    
     // MARK: Configuration
-    private let defaultHeight: CGFloat = 300
+    private let defaultHeight: CGFloat = 400
     private let dismissThreshold: CGFloat = 200
     private var maxModalHeight: CGFloat {
         UIScreen.main.bounds.height - view.safeAreaInsets.top
@@ -70,7 +80,7 @@ class HalfModalViewController: UIViewController {
     // MARK: Properties
     /// 높이를 제스쳐에 따라 업데이트하기 위한 프로퍼티
     private var heightConstraint: Constraint?
-    private var currentModalHeight: CGFloat = 300
+    private lazy var currentModalHeight: CGFloat = defaultHeight
     
     // MARK: Prepare
     init(photoDetail: PhotoDetailInfo) {
@@ -147,11 +157,17 @@ class HalfModalViewController: UIViewController {
             heightConstraint = make.height.equalTo(0).constraint
         }
         
-        modalView.addSubview(collectionView)
+        let stackView = UIStackView(arrangedSubviews: [closeButton, collectionView])
+        stackView.axis = .vertical
+        stackView.alignment = .leading
         collectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        modalView.addSubview(stackView)
+        stackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(10)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.height.equalTo(600)
         }
     }
     
@@ -194,12 +210,19 @@ class HalfModalViewController: UIViewController {
                 self?.animateDismiss()
             })
             .disposed(by: disposeBag)
+        
+        // Close Button
+        closeButton.rx.tap
+            .bind(onNext: { [weak self] _ in
+                self?.animateDismiss()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: Animations
     private func animateModal(toHeight height: CGFloat) {
         heightConstraint?.update(offset: height)
-        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0) {
+        UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0, options: .allowUserInteraction) {
             self.view.layoutIfNeeded()
         }
         currentModalHeight = height
