@@ -110,7 +110,7 @@ final class PhotoListCollectionViewController: UIViewController {
                 cellType: UITableViewCell.self
             )) { index, autocomplete, cell in
                 var content = cell.defaultContentConfiguration()
-                content.image = UIImage(systemName: "magnifyingglass")
+                content.image = UIImage(systemName: "magnifyingglass")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
                 content.text = autocomplete
                 content.textProperties.color = .darkGray
                 content.imageProperties.maximumSize.width = 18
@@ -130,12 +130,13 @@ final class PhotoListCollectionViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        // searchBar가 first responder가 되면 실행
+        // searchBar 작동 시작시 자동완성 보이기
         searchBar.rx.textDidBeginEditing
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.autocompletesTableView.isHidden = false
             })
+            .disposed(by: disposeBag)
         
         // search 버튼이 눌렸을 때 검색을 수행
         searchBar.rx.searchButtonClicked
