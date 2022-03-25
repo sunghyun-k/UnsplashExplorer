@@ -213,7 +213,7 @@ class PhotoDetailViewController: UIViewController {
         
         stackView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
-            make.width.equalToSuperview().inset(10)
+            make.width.equalToSuperview().inset(20)
             make.centerX.equalToSuperview()
         }
         

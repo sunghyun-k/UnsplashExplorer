@@ -13,12 +13,12 @@ class DetailInfoCollectionViewCell: UICollectionViewCell {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 10)
+        label.font = .systemFont(ofSize: 12)
         return label
     }()
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 12)
+        label.font = .systemFont(ofSize: 14)
         return label
     }()
     
@@ -38,10 +38,12 @@ class DetailInfoCollectionViewCell: UICollectionViewCell {
     
     private func layout() {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, descriptionLabel])
-        stackView.spacing = 4
         stackView.alignment = .leading
+        stackView.axis = .vertical
         
         contentView.addSubview(stackView)
-        
+        stackView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 }
