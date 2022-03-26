@@ -138,7 +138,7 @@ class HalfModalViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        animatePresent()
+        presentWithAnimation()
     }
     
     private func layout() {
@@ -187,13 +187,12 @@ class HalfModalViewController: UIViewController {
                 
                 switch gesture.state {
                 case .changed:
-                    print(newHeight, self.maxModalHeight)
                     if newHeight < self.maxModalHeight {
                         self.heightConstraint?.update(offset: newHeight)
                     }
                 case .ended:
                     if newHeight < self.dismissThreshold {
-                        self.animateDismiss()
+                        self.dismissWithAnimation()
                     } else {
                         self.animateModal(toHeight: self.defaultHeight)
                     }
@@ -208,14 +207,14 @@ class HalfModalViewController: UIViewController {
         dimmedView.addGestureRecognizer(tapGesture)
         tapGesture.rx.event
             .bind(onNext: { [weak self] _ in
-                self?.animateDismiss()
+                self?.dismissWithAnimation()
             })
             .disposed(by: disposeBag)
         
         // Close Button
         closeButton.rx.tap
             .bind(onNext: { [weak self] _ in
-                self?.animateDismiss()
+                self?.dismissWithAnimation()
             })
             .disposed(by: disposeBag)
     }
@@ -230,7 +229,7 @@ class HalfModalViewController: UIViewController {
     }
     
     // MARK: Present, Dismiss
-    private func animatePresent() {
+    private func presentWithAnimation() {
         dimmedView.alpha = 0
         heightConstraint?.update(offset: defaultHeight)
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0) {
@@ -239,7 +238,7 @@ class HalfModalViewController: UIViewController {
         }
     }
     
-    private func animateDismiss() {
+    private func dismissWithAnimation() {
         heightConstraint?.update(offset: 0)
         UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: 0) {
             self.view.layoutIfNeeded()
