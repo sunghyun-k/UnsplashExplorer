@@ -150,7 +150,8 @@ class HalfModalViewController: UIViewController {
             make.edges.equalToSuperview()
         }
         modalView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().offset(16)
         }
         // 높이를 나중에 제스쳐에 따라 업데이트 해야한다.
         modalView.snp.makeConstraints { make in
