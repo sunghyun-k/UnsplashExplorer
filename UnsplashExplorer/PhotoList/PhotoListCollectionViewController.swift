@@ -170,8 +170,8 @@ final class PhotoListCollectionViewController: UIViewController {
                 let contentHeight = self.collectionView.contentSize.height
                 if contentOffset.y > contentHeight - self.collectionView.frame.height {
                     self.isLoadingMore = true
-                    viewModel.loadMore { [weak self] in
-                        self?.isLoadingMore = false
+                    viewModel.loadMore { 
+                        self.isLoadingMore = false
                     }
                 }
             })

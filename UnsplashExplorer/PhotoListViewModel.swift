@@ -27,7 +27,6 @@ class PhotoListViewModel {
     
     // MARK: Properties
     private var totalPages = 0
-    private var isFetching = false
     
     private let photoSearcher: PhotoSearchable
     private let disposeBag = DisposeBag()
