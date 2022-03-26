@@ -19,11 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let photoSearcher = PhotoSearcher()
         let viewModel = PhotoListViewModel(photoSearcher: photoSearcher)
-        let photoListViewController = PhotoListCollectionViewController(viewModel: viewModel)
+        let tabBarController = TabBarController(viewModel: viewModel)
         
-        let navigationController = UINavigationController(rootViewController: photoListViewController)
-        
-        window?.rootViewController = navigationController
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
     }
 

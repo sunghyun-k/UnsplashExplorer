@@ -50,6 +50,11 @@ final class PhotoListCollectionViewController: UIViewController {
         return tableView
     }()
     
+    // MARK: Configuration
+    var cellPadding: CGFloat = 5
+    var numberOfColumns = 2
+    
+    // MARK: Prepare
     init(viewModel: PhotoListViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -59,11 +64,6 @@ final class PhotoListCollectionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configuration
-    var cellPadding: CGFloat = 5
-    var numberOfColumns = 2
-    
-    // MARK: Prepare
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -170,7 +170,7 @@ final class PhotoListCollectionViewController: UIViewController {
                 let contentHeight = self.collectionView.contentSize.height
                 if contentOffset.y > contentHeight - self.collectionView.frame.height {
                     self.isLoadingMore = true
-                    viewModel.loadMore { 
+                    viewModel.loadMore {
                         self.isLoadingMore = false
                     }
                 }
@@ -184,6 +184,7 @@ final class PhotoListCollectionViewController: UIViewController {
                 let item = viewModel.dataSource.value[indexPath.item]
                 viewModel.fetchPhotoDetail(id: item.id)
                 let photoDetailView = PhotoDetailViewController(viewModel: viewModel)
+                photoDetailView.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(photoDetailView, animated: true)
             })
             .disposed(by: disposeBag)
