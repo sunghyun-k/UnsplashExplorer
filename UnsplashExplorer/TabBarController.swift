@@ -27,11 +27,15 @@ class TabBarController: UITabBarController {
     
     private func setupTabBar() {
         
-        let editorialViewController = UINavigationController(rootViewController: UIViewController())
+        let editorialViewController = UINavigationController(
+            rootViewController: EditorialViewController(viewModel: viewModel)
+        )
         editorialViewController.tabBarItem.image = UIImage(systemName: "photo.fill")
         editorialViewController.tabBarItem.title = "Editorial"
         
-        let searchViewController = UINavigationController(rootViewController: PhotoListCollectionViewController(viewModel: self.viewModel))
+        let searchViewController = UINavigationController(
+            rootViewController: PhotoListCollectionViewController(viewModel: self.viewModel)
+        )
         searchViewController.tabBarItem.image = UIImage(systemName: "magnifyingglass")
         searchViewController.tabBarItem.title = "Search"
         

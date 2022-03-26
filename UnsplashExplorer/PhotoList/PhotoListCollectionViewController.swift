@@ -14,6 +14,11 @@ private let autocompleteReuseId = "AutocompleteTableViewCell"
 final class PhotoListCollectionViewController: UIViewController {
     var viewModel: PhotoListViewModel
     
+    // MARK: Configuration
+    var cellPadding: CGFloat = 5
+    var numberOfColumns = 2
+    
+    // MARK: Properties
     private let disposeBag = DisposeBag()
     /// 추가 로드 중일 때 true
     private var isLoadingMore = false
@@ -49,10 +54,6 @@ final class PhotoListCollectionViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: autocompleteReuseId)
         return tableView
     }()
-    
-    // MARK: Configuration
-    var cellPadding: CGFloat = 5
-    var numberOfColumns = 2
     
     // MARK: Prepare
     init(viewModel: PhotoListViewModel) {

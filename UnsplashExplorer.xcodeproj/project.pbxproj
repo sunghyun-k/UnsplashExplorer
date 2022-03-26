@@ -13,6 +13,7 @@
 		F226C52127EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */; };
 		F226C54327EC5CE40008FFD3 /* PhotoDetailResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C54227EC5CE40008FFD3 /* PhotoDetailResponses.swift */; };
 		F244967227EECFBC0022AAA8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244967127EECFBC0022AAA8 /* TabBarController.swift */; };
+		F244967427EED2BD0022AAA8 /* EditorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244967327EED2BD0022AAA8 /* EditorialViewController.swift */; };
 		F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4327E81EAE0071ADCF /* AppDelegate.swift */; };
 		F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */; };
 		F2648D4D27E81EAE0071ADCF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F2648D4C27E81EAE0071ADCF /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 		F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconAndDescriptionLabel.swift; sourceTree = "<group>"; };
 		F226C54227EC5CE40008FFD3 /* PhotoDetailResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailResponses.swift; sourceTree = "<group>"; };
 		F244967127EECFBC0022AAA8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		F244967327EED2BD0022AAA8 /* EditorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialViewController.swift; sourceTree = "<group>"; };
 		F2648D4027E81EAE0071ADCF /* UnsplashExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2648D4327E81EAE0071ADCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				F2BA59BB27EC80D90071B62F /* Utilities */,
 				F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */,
 				F244967127EECFBC0022AAA8 /* TabBarController.swift */,
+				F244967327EED2BD0022AAA8 /* EditorialViewController.swift */,
 				F297B3BB27E98D8F007F8769 /* PhotoList */,
 				F2BA59BC27EC81350071B62F /* PhotoDetail */,
 				F284BE6F27E9059800DCEBA3 /* UnsplashAPI */,
@@ -306,6 +309,7 @@
 				F284BE7527E909B300DCEBA3 /* Parsing.swift in Sources */,
 				F297B3C327EA0A0B007F8769 /* PhotoListViewModel.swift in Sources */,
 				F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */,
+				F244967427EED2BD0022AAA8 /* EditorialViewController.swift in Sources */,
 				F244967227EECFBC0022AAA8 /* TabBarController.swift in Sources */,
 				F226C54327EC5CE40008FFD3 /* PhotoDetailResponses.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,

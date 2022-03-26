@@ -19,6 +19,8 @@ protocol PhotoSearchable {
     func photoDetail(id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>>
     
     func autocomplete(byKeyword keyword: String) -> Observable<[String]>
+    
+    func getEditorials() -> Observable<Result<[PhotoInfo], PhotoSearcherError>>
 }
 
 class PhotoSearcher {
@@ -104,6 +106,28 @@ extension PhotoSearcher: PhotoSearchable {
                     return .just(.failure(.network(description: error.localizedDescription)))
             }
     }
+    
+    func getEditorials() -> Observable<Result<[PhotoInfo], PhotoSearcherError>> {
+        guard let url = makeGetPhotosComponents().url else {
+            return .just(.failure(.network(description: "URL 생성 오류")))
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        return session.rx.data(request: request)
+            .map { data in
+                do {
+                    let photos = try JSONDecoder().decode([PhotoInfo].self, from: data)
+                    return .success(photos)
+                } catch let error {
+                    print(error)
+                    return .failure(.parsing(description: error.localizedDescription))
+                }
+            }
+            .catch { error in
+                    return .just(.failure(.network(description: error.localizedDescription)))
+            }
+    }
 }
 
 private extension PhotoSearcher {
@@ -151,6 +175,15 @@ private extension PhotoSearcher {
         components.scheme = UnsplashAPI.scheme
         components.host = UnsplashAPI.host
         components.path = "/nautocomplete/\(keyword)"
+        return components
+    }
+    
+    func makeGetPhotosComponents() -> URLComponents {
+        var components = URLComponents()
+        components.scheme = UnsplashAPI.scheme
+        components.host = UnsplashAPI.apiHost
+        components.path = "/photos"
+        components.queryItems = [URLQueryItem(name: "client_id", value: UnsplashAPI.accessKey)]
         return components
     }
 }

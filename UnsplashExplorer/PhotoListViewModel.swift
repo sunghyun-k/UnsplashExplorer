@@ -23,6 +23,8 @@ class PhotoListViewModel {
     let dataSource = BehaviorRelay<[PhotoInfo]>(value: [])
     let errorMessage = BehaviorSubject<String>(value: "")
     
+    let editorialPhotos = BehaviorRelay<[PhotoInfo]>(value: [])
+    
     let photoDetailInfo = BehaviorSubject<PhotoDetailInfo?>(value: nil)
     
     // MARK: Properties
@@ -82,6 +84,22 @@ class PhotoListViewModel {
             perPage: loadPerPage,
             completion: completion
         )
+    }
+    
+    func getEditorials(completion: (() -> Void)? = nil ) {
+        photoSearcher.getEditorials()
+            .subscribe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] value in
+                guard let self = self else { return }
+                switch value {
+                case .success(let result):
+                    self.editorialPhotos.accept(result)
+                case .failure(let error):
+                    self.errorMessage.onNext("오류: \(error.localizedDescription)")
+                }
+                completion?()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func searchPhoto(
