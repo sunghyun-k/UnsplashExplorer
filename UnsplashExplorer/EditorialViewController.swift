@@ -63,7 +63,7 @@ final class EditorialViewController: UIViewController {
             navigationBarView.addSubview($0)
         }
         logoImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()//.inset(20)
+            make.leading.equalToSuperview().inset(10)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(20)
         }
@@ -74,7 +74,7 @@ final class EditorialViewController: UIViewController {
         navigationItem.titleView = navigationBarView
         navigationBarView.snp.makeConstraints { make in
             make.width.equalTo(UIScreen.main.bounds.width)
-            make.centerX.equalToSuperview()
+            make.centerX.centerY.equalToSuperview()
         }
     }
     
