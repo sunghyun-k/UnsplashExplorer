@@ -28,7 +28,6 @@
 		F297B3B827E98246007F8769 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F297B3B727E98246007F8769 /* Kingfisher */; };
 		F297B3BA27E98D88007F8769 /* PhotoListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3B927E98D88007F8769 /* PhotoListCollectionViewController.swift */; };
 		F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3BC27E9931E007F8769 /* String+CGColor.swift */; };
-		F297B3BF27E99AD3007F8769 /* sample.json in Resources */ = {isa = PBXBuildFile; fileRef = F297B3BE27E99AD3007F8769 /* sample.json */; };
 		F297B3C127E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */; };
 		F297B3C327EA0A0B007F8769 /* PhotoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -57,7 +56,6 @@
 		F297B3B427E97A64007F8769 /* PhotoListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCell.swift; sourceTree = "<group>"; };
 		F297B3B927E98D88007F8769 /* PhotoListCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCollectionViewController.swift; sourceTree = "<group>"; };
 		F297B3BC27E9931E007F8769 /* String+CGColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CGColor.swift"; sourceTree = "<group>"; };
-		F297B3BE27E99AD3007F8769 /* sample.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sample.json; sourceTree = "<group>"; };
 		F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCollectionViewLayout.swift; sourceTree = "<group>"; };
 		F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -93,6 +91,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F244967027EEAF0E0022AAA8 /* HalfModalView */ = {
+			isa = PBXGroup;
+			children = (
+				F266BD6827EDC05800885F09 /* HalfModalViewController.swift */,
+				F266BD6A27EDC26B00885F09 /* DetailInfoCollectionViewCell.swift */,
+			);
+			path = HalfModalView;
+			sourceTree = "<group>";
+		};
 		F2648D3727E81EAE0071ADCF = {
 			isa = PBXGroup;
 			children = (
@@ -118,8 +125,8 @@
 				F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */,
 				F2BA59BB27EC80D90071B62F /* Utilities */,
 				F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */,
-				F2BA59BC27EC81350071B62F /* PhotoDetail */,
 				F297B3BB27E98D8F007F8769 /* PhotoList */,
+				F2BA59BC27EC81350071B62F /* PhotoDetail */,
 				F284BE6F27E9059800DCEBA3 /* UnsplashAPI */,
 				F2648D4C27E81EAE0071ADCF /* Assets.xcassets */,
 				F2648D4E27E81EAE0071ADCF /* LaunchScreen.storyboard */,
@@ -136,7 +143,6 @@
 				F284BE6727E8F30800DCEBA3 /* Responses.swift */,
 				F226C54227EC5CE40008FFD3 /* PhotoDetailResponses.swift */,
 				F284BE7227E908BF00DCEBA3 /* keys.json */,
-				F297B3BE27E99AD3007F8769 /* sample.json */,
 			);
 			path = UnsplashAPI;
 			sourceTree = "<group>";
@@ -164,10 +170,9 @@
 			isa = PBXGroup;
 			children = (
 				F226C51C27EC1BCC0008FFD3 /* PhotoDetailViewController.swift */,
-				F266BD6827EDC05800885F09 /* HalfModalViewController.swift */,
-				F266BD6A27EDC26B00885F09 /* DetailInfoCollectionViewCell.swift */,
 				F226C51E27EC1D840008FFD3 /* TitleInfoLabel.swift */,
 				F226C52027EC3A9E0008FFD3 /* IconAndDescriptionLabel.swift */,
+				F244967027EEAF0E0022AAA8 /* HalfModalView */,
 			);
 			path = PhotoDetail;
 			sourceTree = "<group>";
@@ -241,7 +246,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F284BE7327E908BF00DCEBA3 /* keys.json in Resources */,
-				F297B3BF27E99AD3007F8769 /* sample.json in Resources */,
 				F2648D5027E81EAE0071ADCF /* LaunchScreen.storyboard in Resources */,
 				F2648D4D27E81EAE0071ADCF /* Assets.xcassets in Resources */,
 			);

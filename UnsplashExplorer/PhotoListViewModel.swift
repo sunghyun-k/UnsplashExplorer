@@ -129,14 +129,4 @@ class PhotoListViewModel {
     func removeDetail() {
         photoDetailInfo.onNext(nil)
     }
-    
-    // MARK: - Sample
-    func loadSample() {
-        dataSource.accept(sample())
-    }
-    
-    private func sample() -> [PhotoInfo] {
-        let sample: SearchPhotosResponse = UnsplashExplorer.load("sample.json")
-        return sample.results
-    }
 }
