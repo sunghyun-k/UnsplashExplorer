@@ -19,9 +19,6 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
     var cellPadding: CGFloat = 10
     
     private var cache = [UICollectionViewLayoutAttributes]()
-    var numberOfRenderedCells: Int {
-        cache.count
-    }
     
     private var contentHeight: CGFloat = 0
     
@@ -87,14 +84,9 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        var visibleLayoutAttributes: [UICollectionViewLayoutAttributes] = []
-
-        cache.forEach { attributes in
-            if attributes.frame.intersects(rect) {
-                visibleLayoutAttributes.append(attributes)
-            }
+        cache.filter { attributes in
+            attributes.frame.intersects(rect)
         }
-        return visibleLayoutAttributes
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
