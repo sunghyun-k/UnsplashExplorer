@@ -1,5 +1,7 @@
 # Unsplash Demo App (개인 프로젝트)
 
+직접 빌드하여 실행하려면 API Key를 Unsplash에서 발급받아 사용해야 함. 
+
 ![screenshots](Screenshots/screenshots.png)
 
 ## 사용된 기술
