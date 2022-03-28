@@ -245,13 +245,18 @@ final class PhotoListCollectionViewController: UIViewController {
 // MARK: - PhotoListLayoutDelegate
 
 extension PhotoListCollectionViewController: PhotoListLayoutDelegate {
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        heightForCellAtIndexPath indexPath: IndexPath
+    ) -> CGFloat {
         let dataSource = self.viewModel.dataSource.value
         guard dataSource.count > indexPath.item else { return 0 }
         let photoInfo = dataSource[indexPath.item]
         
         let inset = collectionView.contentInset
-        let columnWidth = (collectionView.bounds.width - inset.right - inset.bottom - (self.cellPadding * CGFloat(self.numberOfColumns) * 2)) / CGFloat(self.numberOfColumns)
+        let contentWidth = collectionView.bounds.width - inset.right - inset.left
+        let totalPadding = self.cellPadding * CGFloat(self.numberOfColumns) * 2
+        let columnWidth = (contentWidth - totalPadding) / CGFloat(self.numberOfColumns)
         let aspectRatio = CGFloat(photoInfo.height) / CGFloat(photoInfo.width)
         return columnWidth * aspectRatio
     }

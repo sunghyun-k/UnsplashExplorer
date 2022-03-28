@@ -8,7 +8,10 @@
 import UIKit
 
 protocol PhotoListLayoutDelegate: AnyObject {
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat
+    func collectionView(
+        _ collectionView: UICollectionView,
+        heightForCellAtIndexPath indexPath: IndexPath
+    ) -> CGFloat
 }
 
 final class PhotoListCollectionViewLayout: UICollectionViewLayout {
@@ -30,8 +33,18 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
         return collectionView.bounds.width - (insets.left + insets.right)
     }
     
+    private var columnWidth: CGFloat {
+        contentWidth / CGFloat(numberOfColumns)
+    }
+    
     /// column의 가장 아래 좌표를 저장한다. 이 값이 가장 작은 곳에 새로운 cell을 추가한다.
     private lazy var yOffset = [CGFloat](repeating: 0, count: numberOfColumns)
+    
+    private lazy var xOffset: [CGFloat] = {
+        return (0..<numberOfColumns).map { column in
+            CGFloat(column) * columnWidth
+        }
+    }()
     
     override var collectionViewContentSize: CGSize {
         CGSize(width: contentWidth, height: contentHeight)
@@ -46,22 +59,16 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
             return
         }
         
-        let columnWidth = contentWidth / CGFloat(numberOfColumns)
-        
-        let xOffset = (0..<numberOfColumns).map { column in
-            CGFloat(column) * columnWidth
-        }
-        
         for item in cache.count..<collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
             
             let imageHeight = delegate?.collectionView(
                 collectionView,
-                heightForPhotoAtIndexPath: indexPath
+                heightForCellAtIndexPath: indexPath
             ) ?? 200
             let height = cellPadding * 2 + imageHeight
             
-            /// yOffset 최솟값 구하기
+            // yOffset 최솟값 구하기
             let column = yOffset.enumerated().min {
                 $0.element < $1.element
             }?.offset ?? 0
@@ -83,13 +90,15 @@ final class PhotoListCollectionViewLayout: UICollectionViewLayout {
         }
     }
     
-    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+    override func layoutAttributesForElements(in rect: CGRect)
+    -> [UICollectionViewLayoutAttributes]? {
         cache.filter { attributes in
             attributes.frame.intersects(rect)
         }
     }
     
-    override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
+    override func layoutAttributesForItem(at indexPath: IndexPath)
+    -> UICollectionViewLayoutAttributes? {
         guard !cache.isEmpty else { return nil }
         return cache[indexPath.item]
     }

@@ -122,7 +122,7 @@ final class EditorialViewController: UIViewController {
 }
 
 extension EditorialViewController: PhotoListLayoutDelegate {
-    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView, heightForCellAtIndexPath indexPath: IndexPath) -> CGFloat {
         let editorialPhotos = self.viewModel.editorialPhotos.value
         guard editorialPhotos.count > indexPath.item else { return 0 }
         let photoInfo = editorialPhotos[indexPath.item]
