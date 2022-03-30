@@ -20,12 +20,12 @@ class PhotoListViewModel {
     let searchText = BehaviorSubject<String>(value: "")
     let autocompletes = BehaviorRelay<[String]>(value: [])
     
-    let dataSource = BehaviorRelay<[PhotoInfo]>(value: [])
+    let dataSource = BehaviorRelay<[Photo]>(value: [])
     let errorMessage = BehaviorSubject<String>(value: "")
     
-    let editorialPhotos = BehaviorRelay<[PhotoInfo]>(value: [])
+    let editorialPhotos = BehaviorRelay<[Photo]>(value: [])
     
-    let photoDetailInfo = BehaviorSubject<PhotoDetailInfo?>(value: nil)
+    let photoDetails = BehaviorSubject<PhotoDetails?>(value: nil)
     
     // MARK: Properties
     private var totalPages = 0
@@ -129,13 +129,13 @@ class PhotoListViewModel {
     }
     
     func fetchPhotoDetail(id: String) {
-        photoSearcher.photoDetailInfo(byId: id)
+        photoSearcher.photoDetails(byId: id)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
                 switch value {
-                case .success(let photoDetailInfo):
-                    self.photoDetailInfo.onNext(photoDetailInfo)
+                case .success(let photoDetails):
+                    self.photoDetails.onNext(photoDetails)
                 case .failure(let error):
                     self.errorMessage.onNext("오류: \(error.localizedDescription)")
                 }
@@ -144,6 +144,6 @@ class PhotoListViewModel {
     }
     
     func removeDetail() {
-        photoDetailInfo.onNext(nil)
+        photoDetails.onNext(nil)
     }
 }

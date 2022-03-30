@@ -25,7 +25,7 @@ final class EditorialViewController: UIViewController {
         layout.numberOfColumns = self.numberOfColumns
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: PhotoListCell.reuseId)
+        collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: PhotoListCollectionViewCell.reuseId)
         return collectionView
     }()
     
@@ -94,14 +94,14 @@ final class EditorialViewController: UIViewController {
     private func bind(viewModel: PhotoListViewModel) {
         viewModel.editorialPhotos
             .bind(to: collectionView.rx.items(
-                cellIdentifier: PhotoListCell.reuseId,
-                cellType: PhotoListCell.self
-            )) { index, photoInfo, cell in
+                cellIdentifier: PhotoListCollectionViewCell.reuseId,
+                cellType: PhotoListCollectionViewCell.self
+            )) { index, photo, cell in
                 cell.setup(
-                    backgroundColor: photoInfo.color.cgColor,
-                    username: photoInfo.user.name,
-                    thumbnailImageURL: URL(string: photoInfo.imageURLs.regular),
-                    profileImageURL: URL(string: photoInfo.user.profileImageURLs.small)
+                    backgroundColor: photo.color.cgColor,
+                    username: photo.user.name,
+                    thumbnailImageURL: URL(string: photo.imageURLs.regular),
+                    profileImageURL: URL(string: photo.user.profileImageURLs.small)
                 )
             }
             .disposed(by: disposeBag)
@@ -112,7 +112,7 @@ final class EditorialViewController: UIViewController {
                 guard let self = self else { return }
                 let item = viewModel.editorialPhotos.value[indexPath.item]
                 viewModel.fetchPhotoDetail(id: item.id)
-                let photoDetailView = PhotoDetailViewController(viewModel: viewModel)
+                let photoDetailView = PhotoDetailsViewController(viewModel: viewModel)
                 photoDetailView.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(photoDetailView, animated: true)
             })
@@ -125,11 +125,11 @@ extension EditorialViewController: PhotoListLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForCellAtIndexPath indexPath: IndexPath) -> CGFloat {
         let editorialPhotos = self.viewModel.editorialPhotos.value
         guard editorialPhotos.count > indexPath.item else { return 0 }
-        let photoInfo = editorialPhotos[indexPath.item]
+        let photo = editorialPhotos[indexPath.item]
         
         let inset = collectionView.contentInset
         let columnWidth = (collectionView.bounds.width - inset.right - inset.bottom - (self.cellPadding * CGFloat(self.numberOfColumns) * 2)) / CGFloat(self.numberOfColumns)
-        let aspectRatio = CGFloat(photoInfo.height) / CGFloat(photoInfo.width)
+        let aspectRatio = CGFloat(photo.height) / CGFloat(photo.width)
         return columnWidth * aspectRatio
     }
 }

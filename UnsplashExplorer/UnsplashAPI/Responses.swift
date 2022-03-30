@@ -11,7 +11,7 @@ import Foundation
 struct SearchPhotosResponse: Decodable {
     let total: Int
     let totalPages: Int
-    let results: [PhotoInfo]
+    let results: [Photo]
     
     enum CodingKeys: String, CodingKey {
         case total
@@ -20,15 +20,15 @@ struct SearchPhotosResponse: Decodable {
     }
 }
 
-// MARK: - PhotoInfo
-struct PhotoInfo: Decodable {
+// MARK: - Photo
+struct Photo: Decodable {
     let id: String
     let createdAt: String
     let width, height: Int
     let color: String
     let likes: Int
     let description: String?
-    let user: UserInfo
+    let user: User
     let imageURLs: PhotoImageURLs
     let links: PhotoLinks
     
@@ -67,7 +67,7 @@ struct PhotoImageURLs: Decodable {
 }
 
 // MARK: - User
-struct UserInfo: Decodable {
+struct User: Decodable {
     let id: String
     let username: String
     let name: String

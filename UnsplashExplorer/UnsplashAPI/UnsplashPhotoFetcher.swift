@@ -16,11 +16,13 @@ protocol PhotoFetchable {
         perPage: Int
     ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>>
     
-    func photoDetailInfo(byId: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>>
+    func photoDetails(byId: String) -> Observable<Result<PhotoDetails, PhotoSearcherError>>
     
     func autocompleteResults(forQuery keyword: String) -> Observable<[String]>
     
-    func editorials() -> Observable<Result<[PhotoInfo], PhotoSearcherError>>
+    func editorials() -> Observable<Result<[Photo], PhotoSearcherError>>
+    
+//    func userDetailInfo(byUsername username: String) -> Observable
 }
 
 class UnsplashPhotoFetcher {
@@ -85,8 +87,8 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
             }
     }
     
-    func photoDetailInfo(byId id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>> {
-        guard let url = makePhotoDetailInfoComponents(byId: id).url else {
+    func photoDetails(byId id: String) -> Observable<Result<PhotoDetails, PhotoSearcherError>> {
+        guard let url = makePhotoDetailsComponents(byId: id).url else {
             return .just(.failure(.network(description: "URL 생성 오류")))
         }
         var request = URLRequest(url: url)
@@ -95,7 +97,7 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
         return session.rx.data(request: request)
             .map { data in
                 do {
-                    let photoDetail = try JSONDecoder().decode(PhotoDetailInfo.self, from: data)
+                    let photoDetail = try JSONDecoder().decode(PhotoDetails.self, from: data)
                     return .success(photoDetail)
                 } catch let error {
                     return .failure(.parsing(description: error.localizedDescription))
@@ -106,7 +108,7 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
             }
     }
     
-    func editorials() -> Observable<Result<[PhotoInfo], PhotoSearcherError>> {
+    func editorials() -> Observable<Result<[Photo], PhotoSearcherError>> {
         guard let url = makeEditorialsComponents().url else {
             return .just(.failure(.network(description: "URL 생성 오류")))
         }
@@ -116,7 +118,7 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
         return session.rx.data(request: request)
             .map { data in
                 do {
-                    let photos = try JSONDecoder().decode([PhotoInfo].self, from: data)
+                    let photos = try JSONDecoder().decode([Photo].self, from: data)
                     return .success(photos)
                 } catch let error {
                     print(error)
@@ -160,7 +162,7 @@ private extension UnsplashPhotoFetcher {
         return components
     }
     
-    func makePhotoDetailInfoComponents(byId id: String) -> URLComponents {
+    func makePhotoDetailsComponents(byId id: String) -> URLComponents {
         var components = URLComponents()
         components.scheme = UnsplashAPI.scheme
         components.host = UnsplashAPI.apiHost

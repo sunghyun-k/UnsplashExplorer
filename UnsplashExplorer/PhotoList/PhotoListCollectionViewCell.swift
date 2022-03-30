@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class PhotoListCell: UICollectionViewCell {
-    static let reuseId = "PhotoListCell"
+final class PhotoListCollectionViewCell: UICollectionViewCell {
+    static let reuseId = "PhotoListCollectionViewCell"
     private lazy var thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -71,16 +71,16 @@ final class PhotoListCell: UICollectionViewCell {
     private func layout() {
         thumbnailImageView.clipsToBounds = true
         
-        let userInfoStackView = UIStackView(arrangedSubviews: [profileImageView, usernameLabel])
-        userInfoStackView.axis = .horizontal
-        userInfoStackView.alignment = .center
-        userInfoStackView.spacing = 8
+        let userStackView = UIStackView(arrangedSubviews: [profileImageView, usernameLabel])
+        userStackView.axis = .horizontal
+        userStackView.alignment = .center
+        userStackView.spacing = 8
         
         let gradientView = GradientView()
         [
             thumbnailImageView,
             gradientView,
-            userInfoStackView
+            userStackView
         ].forEach { contentView.addSubview($0) }
         
         thumbnailImageView.snp.makeConstraints { make in
@@ -92,7 +92,7 @@ final class PhotoListCell: UICollectionViewCell {
             make.height.equalTo(44)
         }
         
-        userInfoStackView.snp.makeConstraints { make in
+        userStackView.snp.makeConstraints { make in
             make.leading.bottom.equalToSuperview().inset(10)
         }
     }

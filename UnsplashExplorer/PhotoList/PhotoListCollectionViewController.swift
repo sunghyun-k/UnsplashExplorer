@@ -31,7 +31,7 @@ final class PhotoListCollectionViewController: UIViewController {
         layout.numberOfColumns = self.numberOfColumns
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: PhotoListCell.reuseId)
+        collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: PhotoListCollectionViewCell.reuseId)
         return collectionView
     }()
     
@@ -86,14 +86,14 @@ final class PhotoListCollectionViewController: UIViewController {
         // collectionView 데이터 소스
         viewModel.dataSource
             .bind(to: collectionView.rx.items(
-                cellIdentifier: PhotoListCell.reuseId,
-                cellType: PhotoListCell.self
-            )) { index, photoInfo, cell in
+                cellIdentifier: PhotoListCollectionViewCell.reuseId,
+                cellType: PhotoListCollectionViewCell.self
+            )) { index, photo, cell in
                 cell.setup(
-                    backgroundColor: photoInfo.color.cgColor,
-                    username: photoInfo.user.name,
-                    thumbnailImageURL: URL(string: photoInfo.imageURLs.small),
-                    profileImageURL: URL(string: photoInfo.user.profileImageURLs.small)
+                    backgroundColor: photo.color.cgColor,
+                    username: photo.user.name,
+                    thumbnailImageURL: URL(string: photo.imageURLs.small),
+                    profileImageURL: URL(string: photo.user.profileImageURLs.small)
                 )
             }
             .disposed(by: disposeBag)
@@ -184,7 +184,7 @@ final class PhotoListCollectionViewController: UIViewController {
                 guard let self = self else { return }
                 let item = viewModel.dataSource.value[indexPath.item]
                 viewModel.fetchPhotoDetail(id: item.id)
-                let photoDetailView = PhotoDetailViewController(viewModel: viewModel)
+                let photoDetailView = PhotoDetailsViewController(viewModel: viewModel)
                 photoDetailView.hidesBottomBarWhenPushed = true
                 self.navigationController?.pushViewController(photoDetailView, animated: true)
             })
@@ -249,15 +249,15 @@ extension PhotoListCollectionViewController: PhotoListLayoutDelegate {
         _ collectionView: UICollectionView,
         heightForCellAtIndexPath indexPath: IndexPath
     ) -> CGFloat {
-        let dataSource = self.viewModel.dataSource.value
-        guard dataSource.count > indexPath.item else { return 0 }
-        let photoInfo = dataSource[indexPath.item]
+        let photos = self.viewModel.dataSource.value
+        guard photos.count > indexPath.item else { return 0 }
+        let photo = photos[indexPath.item]
         
         let inset = collectionView.contentInset
         let contentWidth = collectionView.bounds.width - inset.right - inset.left
         let totalPadding = self.cellPadding * CGFloat(self.numberOfColumns) * 2
         let columnWidth = (contentWidth - totalPadding) / CGFloat(self.numberOfColumns)
-        let aspectRatio = CGFloat(photoInfo.height) / CGFloat(photoInfo.width)
+        let aspectRatio = CGFloat(photo.height) / CGFloat(photo.width)
         return columnWidth * aspectRatio
     }
 }

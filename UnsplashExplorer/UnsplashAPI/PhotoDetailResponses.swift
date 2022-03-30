@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct PhotoDetailInfo: Decodable {
+struct PhotoDetails: Decodable {
     let id: String
     let createdAt: String
     let width, height: Int
     let color: String
     let likes: Int
     let description: String?
-    let user: UserInfo
+    let user: User
     let exif: Exif
     let location: Location
     let imageURLs: PhotoImageURLs

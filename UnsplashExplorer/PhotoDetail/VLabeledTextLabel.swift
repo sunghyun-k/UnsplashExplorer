@@ -1,5 +1,5 @@
 //
-//  TitleInfoLabel.swift
+//  VLabeledTextLabel.swift
 //  UnsplashExplorer
 //
 //  Created by Sunghyun Kim on 2022/03/24.
@@ -8,14 +8,14 @@
 import UIKit
 import SnapKit
 
-class TitleInfoLabel: UIView {
-    private lazy var titleLabel: UILabel = {
+class VLabeledTextLabel: UIView {
+    private lazy var labelTextLabel: UILabel = {
         let label = UILabel()
         label.textColor = .darkGray
         label.font = .systemFont(ofSize: 15)
         return label
     }()
-    private lazy var infoLabel: UILabel = {
+    private lazy var valueLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .semibold)
         label.numberOfLines = 1
@@ -28,21 +28,16 @@ class TitleInfoLabel: UIView {
     }
     
     var title: String? {
-        get { titleLabel.text }
-        set { titleLabel.text = newValue }
+        get { labelTextLabel.text }
+        set { labelTextLabel.text = newValue }
     }
     var text: String? {
-        get { infoLabel.text }
-        set { infoLabel.text = newValue }
-    }
-    
-    func setup(title: String, info: String) {
-        titleLabel.text = title
-        infoLabel.text = info
+        get { valueLabel.text }
+        set { valueLabel.text = newValue }
     }
     
     private func layout() {
-        let stackView = UIStackView(arrangedSubviews: [titleLabel, infoLabel])
+        let stackView = UIStackView(arrangedSubviews: [labelTextLabel, valueLabel])
         stackView.axis = .vertical
         stackView.spacing = 3
         self.addSubview(stackView)
@@ -52,7 +47,7 @@ class TitleInfoLabel: UIView {
         }
         
         self.snp.makeConstraints { make in
-            make.width.equalTo(infoLabel.snp.width)
+            make.width.equalTo(valueLabel.snp.width)
         }
     }
 }

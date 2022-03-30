@@ -37,8 +37,8 @@ class HalfModalViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout(section: section)
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(
-            DetailInfoCollectionViewCell.self,
-            forCellWithReuseIdentifier: DetailInfoCollectionViewCell.reuseId
+            ExifCollectionViewCell.self,
+            forCellWithReuseIdentifier: ExifCollectionViewCell.reuseId
         )
         collectionView.dataSource = self
         collectionView.isScrollEnabled = false
@@ -83,7 +83,7 @@ class HalfModalViewController: UIViewController {
     private lazy var currentModalHeight: CGFloat = defaultHeight
     
     // MARK: Prepare
-    init(photoDetail: PhotoDetailInfo) {
+    init(photoDetail: PhotoDetails) {
         let iso: String?
         if photoDetail.exif.iso != nil {
             iso = "\(photoDetail.exif.iso!)"
@@ -254,7 +254,7 @@ extension HalfModalViewController: UICollectionViewDataSource {
         dataSource.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailInfoCollectionViewCell.reuseId, for: indexPath) as! DetailInfoCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ExifCollectionViewCell.reuseId, for: indexPath) as! ExifCollectionViewCell
         let item = dataSource[indexPath.item]
         cell.title = item.title
         cell.text = item.description ?? "-"

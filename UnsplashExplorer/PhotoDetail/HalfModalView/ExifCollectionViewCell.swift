@@ -8,8 +8,8 @@
 import UIKit
 import SnapKit
 
-class DetailInfoCollectionViewCell: UICollectionViewCell {
-    static let reuseId = "DetailInfoCollectionViewCell"
+class ExifCollectionViewCell: UICollectionViewCell {
+    static let reuseId = "ExifCollectionViewCell"
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()

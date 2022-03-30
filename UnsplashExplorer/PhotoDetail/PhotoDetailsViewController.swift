@@ -11,7 +11,7 @@ import RxCocoa
 import RxSwift
 import Kingfisher
 
-class PhotoDetailViewController: UIViewController {
+class PhotoDetailsViewController: UIViewController {
     var viewModel: PhotoListViewModel
     
     private let disposeBag = DisposeBag()
@@ -55,29 +55,29 @@ class PhotoDetailViewController: UIViewController {
         return label
     }()
     
-    private lazy var viewsLabel: TitleInfoLabel = {
-        let label = TitleInfoLabel()
+    private lazy var viewsLabel: VLabeledTextLabel = {
+        let label = VLabeledTextLabel()
         label.title = "Views"
         return label
     }()
-    private lazy var downloadsLabel: TitleInfoLabel = {
-        let label = TitleInfoLabel()
+    private lazy var downloadsLabel: VLabeledTextLabel = {
+        let label = VLabeledTextLabel()
         label.title = "Downloads"
         return label
     }()
     
-    private lazy var dateLabel: IconAndDescriptionLabel = {
-        let label = IconAndDescriptionLabel()
+    private lazy var dateLabel: LeftIconLabel = {
+        let label = LeftIconLabel()
         label.icon = UIImage(systemName: "calendar")!
         return label
     }()
-    private lazy var gearLabel: IconAndDescriptionLabel = {
-        let label = IconAndDescriptionLabel()
+    private lazy var gearLabel: LeftIconLabel = {
+        let label = LeftIconLabel()
         label.icon = UIImage(systemName: "camera")!
         return label
     }()
-    private lazy var lisenceLabel: IconAndDescriptionLabel = {
-        let label = IconAndDescriptionLabel()
+    private lazy var lisenceLabel: LeftIconLabel = {
+        let label = LeftIconLabel()
         label.setup(icon: UIImage(systemName: "checkmark.shield")!, description: "Free to use under the Unsplash License")
         return label
     }()
@@ -108,12 +108,12 @@ class PhotoDetailViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         resetViews()
-        viewModel.photoDetailInfo.onNext(nil)
+        viewModel.photoDetails.onNext(nil)
     }
     
     private func bind(viewModel: PhotoListViewModel) {
         // photoDetail이 fetch되면 뷰에 표시한다
-        viewModel.photoDetailInfo
+        viewModel.photoDetails
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] photo in
                 guard let self = self else {
@@ -152,7 +152,7 @@ class PhotoDetailViewController: UIViewController {
         infoButton.rx.tap
             .bind { [weak self] in
                 guard let self = self else { return }
-                guard let detail = try? viewModel.photoDetailInfo.value() else { return }
+                guard let detail = try? viewModel.photoDetails.value() else { return }
                 let halfModal = HalfModalViewController(photoDetail: detail)
                 halfModal.modalPresentationStyle = .overCurrentContext
                 self.present(halfModal, animated: false)
@@ -226,7 +226,7 @@ class PhotoDetailViewController: UIViewController {
         }
     }
     
-    private func setup(photoDetail: PhotoDetailInfo) {
+    private func setup(photoDetail: PhotoDetails) {
         if let backgroundColor = photoDetail.color.cgColor {
             photoImageView.backgroundColor = UIColor(cgColor: backgroundColor)
         }
