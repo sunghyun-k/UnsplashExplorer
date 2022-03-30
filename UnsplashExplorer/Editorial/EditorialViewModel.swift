@@ -10,9 +10,9 @@ import RxSwift
 import RxCocoa
 
 class EditorialViewModel {
-    private let photoFetcher: PhotoFetchable
-    init(photoSearcher: PhotoFetchable) {
-        self.photoFetcher = photoSearcher
+    private let fetcher: PhotoFetchable
+    init(fetcher: PhotoFetchable) {
+        self.fetcher = fetcher
         refresh()
     }
     
@@ -28,18 +28,21 @@ class EditorialViewModel {
     
     // MARK: Publishing
     let photos = BehaviorRelay<[Photo]>(value: [])
-    let events = PublishSubject<Event>()
+    let events = PublishSubject<NavigationEvent>()
     
     func refresh() {
-        photoFetcher.editorial(page: 1, perPage: loadPerPage)
-            .subscribe(onNext: { [weak self] value in
+        guard !isFetching else { return }
+        isFetching = true
+        fetcher.editorial(page: 1, perPage: loadPerPage)
+            .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
-                switch value {
+                switch result {
                 case .success(let photos):
                     self.photos.accept(photos)
                 case .failure(let error):
                     print("Error: \(error)")
                 }
+                self.isFetching = false
             })
             .disposed(by: disposeBag)
     }
@@ -47,7 +50,7 @@ class EditorialViewModel {
     func loadMore() {
         guard currentPage < 9999, !isFetching else { return }
         isFetching = true
-        photoFetcher.editorial(page: currentPage + 1, perPage: loadPerPage)
+        fetcher.editorial(page: currentPage + 1, perPage: loadPerPage)
             .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -63,14 +66,12 @@ class EditorialViewModel {
     
     func selectPhoto(at index: Int) {
         let photo = photos.value[index]
-        let viewModel = PhotoDetailsViewModel(photo: photo, photoSearcher: self.photoFetcher)
-        events.onNext(Event.presentPhoto(viewModel))
+        let viewModel = PhotoDetailsViewModel(photo: photo, photoSearcher: self.fetcher)
+        events.onNext(NavigationEvent.presentPhoto(viewModel))
     }
 }
 
-extension EditorialViewModel {
-    enum Event {
-        case presentUser(User)//(UserDetailsViewModel)
-        case presentPhoto(PhotoDetailsViewModel)
-    }
+enum NavigationEvent {
+    case presentUser(User)//(UserDetailsViewModel)
+    case presentPhoto(PhotoDetailsViewModel)
 }

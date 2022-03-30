@@ -11,12 +11,12 @@ import Foundation
 struct SearchPhotosResult: Decodable {
     let total: Int
     let totalPages: Int
-    let results: [Photo]
+    let photos: [Photo]
     
     enum CodingKeys: String, CodingKey {
         case total
         case totalPages = "total_pages"
-        case results
+        case photos = "results"
     }
 }
 
