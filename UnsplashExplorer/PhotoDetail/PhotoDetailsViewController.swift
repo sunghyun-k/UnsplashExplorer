@@ -12,7 +12,7 @@ import RxSwift
 import Kingfisher
 
 class PhotoDetailsViewController: UIViewController {
-    var viewModel: PhotoListViewModel
+    var viewModel: PhotoDetailsViewModel
     
     private let disposeBag = DisposeBag()
     
@@ -87,7 +87,7 @@ class PhotoDetailsViewController: UIViewController {
         return button
     }()
     
-    init(viewModel: PhotoListViewModel) {
+    init(viewModel: PhotoDetailsViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -105,15 +105,15 @@ class PhotoDetailsViewController: UIViewController {
         bind(viewModel: viewModel)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        resetViews()
-        viewModel.photoDetails.onNext(nil)
-    }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+//        resetViews()
+//        viewModel.photoDetails.onNext(nil)
+//    }
     
-    private func bind(viewModel: PhotoListViewModel) {
+    private func bind(viewModel: PhotoDetailsViewModel) {
         // photoDetail이 fetch되면 뷰에 표시한다
-        viewModel.photoDetails
+        viewModel.photo
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] photo in
                 guard let self = self else {
@@ -127,32 +127,11 @@ class PhotoDetailsViewController: UIViewController {
             })
             .disposed(by: disposeBag)
         
-        // TODO: 제스쳐 동작 설정
-        let leftGesture = UISwipeGestureRecognizer()
-        leftGesture.direction = .left
-        
-        let rightGesture = UISwipeGestureRecognizer()
-        rightGesture.direction = .right
-        
-        [leftGesture, rightGesture].forEach {
-            view.addGestureRecognizer($0)
-        }
-        
-        leftGesture.rx.event.bind(onNext: { recognizer in
-            print("swipe: \(recognizer.direction)")
-        })
-        .disposed(by: disposeBag)
-        
-        rightGesture.rx.event.bind(onNext: { recognizer in
-            print("swipe: \(recognizer.direction)")
-        })
-        .disposed(by: disposeBag)
-        
         // infoButton Tapped
         infoButton.rx.tap
             .bind { [weak self] in
                 guard let self = self else { return }
-                guard let detail = try? viewModel.photoDetails.value() else { return }
+                guard let detail = viewModel.photo.value else { return }
                 let halfModal = HalfModalViewController(photoDetail: detail)
                 halfModal.modalPresentationStyle = .overCurrentContext
                 self.present(halfModal, animated: false)

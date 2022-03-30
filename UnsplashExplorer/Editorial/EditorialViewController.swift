@@ -11,7 +11,7 @@ import RxCocoa
 import SnapKit
 
 final class EditorialViewController: UIViewController {
-    var viewModel: PhotoListViewModel
+    var viewModel: EditorialViewModel
     
     var cellPadding: CGFloat = 0
     var numberOfColumns = 1
@@ -29,7 +29,7 @@ final class EditorialViewController: UIViewController {
         return collectionView
     }()
     
-    init(viewModel: PhotoListViewModel) {
+    init(viewModel: EditorialViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -46,7 +46,6 @@ final class EditorialViewController: UIViewController {
         setupNavigationBarView()
         layout()
         bind(viewModel: viewModel)
-        viewModel.getEditorials()
     }
     
     private func setupNavigationBarView() {
@@ -91,8 +90,8 @@ final class EditorialViewController: UIViewController {
         collectionView.contentInset = view.safeAreaInsets
     }
     
-    private func bind(viewModel: PhotoListViewModel) {
-        viewModel.editorialPhotos
+    private func bind(viewModel: EditorialViewModel) {
+        viewModel.photos
             .bind(to: collectionView.rx.items(
                 cellIdentifier: PhotoListCollectionViewCell.reuseId,
                 cellType: PhotoListCollectionViewCell.self
@@ -106,15 +105,21 @@ final class EditorialViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        // 이미지 셀 선택 동작 바인딩
+        // 이미지 셀 선택 View Model에 전달
         collectionView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                guard let self = self else { return }
-                let item = viewModel.editorialPhotos.value[indexPath.item]
-                viewModel.fetchPhotoDetail(id: item.id)
-                let photoDetailView = PhotoDetailsViewController(viewModel: viewModel)
-                photoDetailView.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(photoDetailView, animated: true)
+            .subscribe(onNext: { indexPath in
+                viewModel.selectPhoto(at: indexPath.item)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.events
+            .subscribe(onNext:{ event in
+                switch event {
+                case .presentPhoto(let viewModel):
+                    let photoDetailsViewController = PhotoDetailsViewController(viewModel: viewModel)
+                    self.navigationController?.pushViewController(photoDetailsViewController, animated: true)
+                default: break
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -123,9 +128,9 @@ final class EditorialViewController: UIViewController {
 
 extension EditorialViewController: PhotoListLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForCellAtIndexPath indexPath: IndexPath) -> CGFloat {
-        let editorialPhotos = self.viewModel.editorialPhotos.value
-        guard editorialPhotos.count > indexPath.item else { return 0 }
-        let photo = editorialPhotos[indexPath.item]
+        let photos = self.viewModel.photos.value
+        guard photos.count > indexPath.item else { return 0 }
+        let photo = photos[indexPath.item]
         
         let inset = collectionView.contentInset
         let columnWidth = (collectionView.bounds.width - inset.right - inset.bottom - (self.cellPadding * CGFloat(self.numberOfColumns) * 2)) / CGFloat(self.numberOfColumns)

@@ -86,22 +86,6 @@ class PhotoListViewModel {
         )
     }
     
-    func getEditorials(completion: (() -> Void)? = nil ) {
-        photoFetcher.editorial()
-            .subscribe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] value in
-                guard let self = self else { return }
-                switch value {
-                case .success(let result):
-                    self.editorialPhotos.accept(result)
-                case .failure(let error):
-                    self.errorMessage.onNext("오류: \(error.localizedDescription)")
-                }
-                completion?()
-            })
-            .disposed(by: disposeBag)
-    }
-    
     private func searchPhoto(
         byKeyword keyword: String,
         page: Int,
