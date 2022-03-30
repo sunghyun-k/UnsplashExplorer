@@ -1,5 +1,5 @@
 //
-//  PhotoSearcher.swift
+//  UnsplashPhotoFetcher.swift
 //  UnsplashExplorer
 //
 //  Created by Sunghyun Kim on 2022/03/22.
@@ -9,12 +9,24 @@
 import RxSwift
 import RxCocoa
 
+private enum HTTPMethod: String {
+    case get = "GET"
+    case head = "HEAD"
+    case post = "POST"
+    case put = "PUT"
+    case delete = "DELETE"
+    case connect = "CONNECT"
+    case options = "OPTIONS"
+    case trace = "TRACE"
+    case patch = "PATCH"
+}
+
 protocol PhotoFetchable {
     func searchPhotos(
         byQuery keyword: String,
         page: Int,
         perPage: Int
-    ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>>
+    ) -> Observable<Result<SearchPhotosResult, PhotoSearcherError>>
     
     func photoDetails(byId: String) -> Observable<Result<PhotoDetails, PhotoSearcherError>>
     
@@ -22,7 +34,7 @@ protocol PhotoFetchable {
     
     func editorials() -> Observable<Result<[Photo], PhotoSearcherError>>
     
-//    func userDetailInfo(byUsername username: String) -> Observable
+    func userDetails(byUsername username: String) -> Observable<Result<UserDetails, PhotoSearcherError>>
 }
 
 class UnsplashPhotoFetcher {
@@ -34,12 +46,29 @@ class UnsplashPhotoFetcher {
 }
 
 extension UnsplashPhotoFetcher: PhotoFetchable {
+    func userDetails(byUsername username: String) -> Observable<Result<UserDetails, PhotoSearcherError>> {
+        guard let url = makeUserDetailsComponents(byUsername: username).url else {
+            return .just(.failure(.network(description: "URL 생성 오류")))
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.get.rawValue
+        return session.rx.data(request: request)
+            .map { data in
+                do {
+                    let user = try JSONDecoder().decode(UserDetails.self, from: data)
+                    return .success(user)
+                } catch {
+                    return .failure(.parsing(description: error.localizedDescription))
+                }
+            }
+    }
+    
     func autocompleteResults(forQuery query: String) -> Observable<[String]> {
         guard let url = makeAutocompleteResultsComponents(forQuery: query).url else {
             return .just([])
         }
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethod.get.rawValue
         return session.rx.data(request: request)
             .map { data -> AutocompleteResult? in
                 do {
@@ -58,7 +87,7 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
         byQuery query: String,
         page: Int,
         perPage: Int
-    ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>> {
+    ) -> Observable<Result<SearchPhotosResult, PhotoSearcherError>> {
         guard !query.isEmpty else {
             return .just(.failure(.query(description: "쿼리 내용 없음")))
         }
@@ -71,12 +100,12 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
         }
         
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethod.get.rawValue
         
         return session.rx.data(request: request)
             .map { data in
                 do {
-                    let photoData = try JSONDecoder().decode(SearchPhotosResponse.self, from: data)
+                    let photoData = try JSONDecoder().decode(SearchPhotosResult.self, from: data)
                     return .success(photoData)
                 } catch let error {
                     return .failure(.parsing(description: error.localizedDescription))
@@ -92,7 +121,7 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
             return .just(.failure(.network(description: "URL 생성 오류")))
         }
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethod.get.rawValue
         
         return session.rx.data(request: request)
             .map { data in
@@ -113,7 +142,7 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
             return .just(.failure(.network(description: "URL 생성 오류")))
         }
         var request = URLRequest(url: url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethod.get.rawValue
         
         return session.rx.data(request: request)
             .map { data in
@@ -184,6 +213,15 @@ private extension UnsplashPhotoFetcher {
         components.scheme = UnsplashAPI.scheme
         components.host = UnsplashAPI.apiHost
         components.path = "/photos"
+        components.queryItems = [URLQueryItem(name: "client_id", value: UnsplashAPI.accessKey)]
+        return components
+    }
+    
+    func makeUserDetailsComponents(byUsername username: String) -> URLComponents {
+        var components = URLComponents()
+        components.scheme = UnsplashAPI.scheme
+        components.host = UnsplashAPI.apiHost
+        components.path = "/users/\(username)"
         components.queryItems = [URLQueryItem(name: "client_id", value: UnsplashAPI.accessKey)]
         return components
     }

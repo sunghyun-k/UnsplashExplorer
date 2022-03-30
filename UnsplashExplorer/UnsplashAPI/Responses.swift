@@ -7,8 +7,8 @@
 
 import Foundation
 
-// MARK: - SearchPhotosResponse
-struct SearchPhotosResponse: Decodable {
+// MARK: - SearchPhotosResult
+struct SearchPhotosResult: Decodable {
     let total: Int
     let totalPages: Int
     let results: [Photo]
@@ -73,6 +73,7 @@ struct User: Decodable {
     let name: String
     let firstName: String
     let lastName: String?
+    let totalLikes, totalPhotos, totalCollections: Int
     let profileImageURLs: ProfileImageURLs
     let links: UserLinks
     
@@ -82,7 +83,10 @@ struct User: Decodable {
         case name
         case firstName = "first_name"
         case lastName = "last_name"
-        case links = "links"
+        case totalLikes = "total_likes"
+        case totalPhotos = "total_photos"
+        case totalCollections = "total_collections"
+        case links
         case profileImageURLs = "profile_image"
     }
 }

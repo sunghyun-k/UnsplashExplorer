@@ -8,10 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		BA40E7C9B3EEC6CA2EC30CD5 /* Pods_UnsplashExplorer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D144A1E8A79BC58E3C92D73D /* Pods_UnsplashExplorer.framework */; };
+		F2096C5727F3F30F00E9ED55 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2096C5627F3F30F00E9ED55 /* UserDetails.swift */; };
 		F226C51D27EC1BCC0008FFD3 /* PhotoDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C51C27EC1BCC0008FFD3 /* PhotoDetailsViewController.swift */; };
 		F226C51F27EC1D840008FFD3 /* VLabeledTextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C51E27EC1D840008FFD3 /* VLabeledTextLabel.swift */; };
 		F226C52127EC3A9E0008FFD3 /* LeftIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C52027EC3A9E0008FFD3 /* LeftIconLabel.swift */; };
-		F226C54327EC5CE40008FFD3 /* PhotoDetailResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C54227EC5CE40008FFD3 /* PhotoDetailResponses.swift */; };
+		F226C54327EC5CE40008FFD3 /* PhotoDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C54227EC5CE40008FFD3 /* PhotoDetails.swift */; };
 		F244967227EECFBC0022AAA8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244967127EECFBC0022AAA8 /* TabBarController.swift */; };
 		F244967427EED2BD0022AAA8 /* EditorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244967327EED2BD0022AAA8 /* EditorialViewController.swift */; };
 		F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4327E81EAE0071ADCF /* AppDelegate.swift */; };
@@ -38,10 +39,11 @@
 		28A6A3BF7F4544FF717CCCBD /* Pods-UnsplashExplorer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsplashExplorer.release.xcconfig"; path = "Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer.release.xcconfig"; sourceTree = "<group>"; };
 		8A2A0CFFEFF8485EA7292332 /* Pods-UnsplashExplorer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UnsplashExplorer.debug.xcconfig"; path = "Target Support Files/Pods-UnsplashExplorer/Pods-UnsplashExplorer.debug.xcconfig"; sourceTree = "<group>"; };
 		D144A1E8A79BC58E3C92D73D /* Pods_UnsplashExplorer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_UnsplashExplorer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2096C5627F3F30F00E9ED55 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 		F226C51C27EC1BCC0008FFD3 /* PhotoDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewController.swift; sourceTree = "<group>"; };
 		F226C51E27EC1D840008FFD3 /* VLabeledTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VLabeledTextLabel.swift; sourceTree = "<group>"; };
 		F226C52027EC3A9E0008FFD3 /* LeftIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftIconLabel.swift; sourceTree = "<group>"; };
-		F226C54227EC5CE40008FFD3 /* PhotoDetailResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailResponses.swift; sourceTree = "<group>"; };
+		F226C54227EC5CE40008FFD3 /* PhotoDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetails.swift; sourceTree = "<group>"; };
 		F244967127EECFBC0022AAA8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		F244967327EED2BD0022AAA8 /* EditorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialViewController.swift; sourceTree = "<group>"; };
 		F2648D4027E81EAE0071ADCF /* UnsplashExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -147,7 +149,8 @@
 				F284BE6927E8FC8700DCEBA3 /* UnsplashPhotoFetcher.swift */,
 				F284BE7027E905F100DCEBA3 /* PhotoSearcherError.swift */,
 				F284BE6727E8F30800DCEBA3 /* Responses.swift */,
-				F226C54227EC5CE40008FFD3 /* PhotoDetailResponses.swift */,
+				F2096C5627F3F30F00E9ED55 /* UserDetails.swift */,
+				F226C54227EC5CE40008FFD3 /* PhotoDetails.swift */,
 				F284BE7227E908BF00DCEBA3 /* keys.json */,
 			);
 			path = UnsplashAPI;
@@ -311,10 +314,11 @@
 				F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */,
 				F244967427EED2BD0022AAA8 /* EditorialViewController.swift in Sources */,
 				F244967227EECFBC0022AAA8 /* TabBarController.swift in Sources */,
-				F226C54327EC5CE40008FFD3 /* PhotoDetailResponses.swift in Sources */,
+				F226C54327EC5CE40008FFD3 /* PhotoDetails.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,
 				F226C51D27EC1BCC0008FFD3 /* PhotoDetailsViewController.swift in Sources */,
 				F297B3B527E97A64007F8769 /* PhotoListCollectionViewCell.swift in Sources */,
+				F2096C5727F3F30F00E9ED55 /* UserDetails.swift in Sources */,
 				F226C51F27EC1D840008FFD3 /* VLabeledTextLabel.swift in Sources */,
 				F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */,
 				F284BE7127E905F100DCEBA3 /* PhotoSearcherError.swift in Sources */,

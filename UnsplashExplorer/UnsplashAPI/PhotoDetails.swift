@@ -1,5 +1,5 @@
 //
-//  PhotoDetailResponses.swift
+//  PhotoDetails.swift
 //  UnsplashExplorer
 //
 //  Created by Sunghyun Kim on 2022/03/24.
