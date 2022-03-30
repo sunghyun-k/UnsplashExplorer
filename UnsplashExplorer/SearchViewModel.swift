@@ -9,36 +9,12 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-class AutocompleteViewModel {
-    private let fetcher: AutocompleteFetchable
-    init(fetcher: AutocompleteFetchable) {
-        self.fetcher = fetcher
-        searchText
-            .skip(1)
-            .throttle(.milliseconds(500), latest: true, scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] query in
-                guard let self = self else { return }
-                fetcher.autocompleteResults(forQuery: query)
-                    .bind(to: self.autocompletes)
-                    .disposed(by: self.disposeBag)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    // MARK: Publishing
-    let searchText = BehaviorRelay<String>(value: "")
-    let autocompletes = BehaviorRelay<[String]>(value: [])
-    
-    private let disposeBag = DisposeBag()
-}
-
 class SearchViewModel {
     private let photoFetcher: PhotoFetchable
-    let autocompleteViewModel: AutocompleteViewModel
-    init(photoFetcher: PhotoFetchable, autocompleteViewModel: AutocompleteViewModel) {
+    init(photoFetcher: PhotoFetchable) {
         self.photoFetcher = photoFetcher
-        self.autocompleteViewModel = autocompleteViewModel
     }
+    
     private let disposeBag = DisposeBag()
     
     private var totalPages = 0
@@ -47,6 +23,8 @@ class SearchViewModel {
         photos.value.count / loadPerPage + (photos.value.count % loadPerPage > 0 ? 1 : 0)
     }
     
+    private var query = ""
+    
     // MARK: Configuration
     var loadPerPage = 20
     
@@ -54,9 +32,11 @@ class SearchViewModel {
     let photos = BehaviorRelay<[Photo]>(value: [])
     let events = PublishSubject<NavigationEvent>()
     
-    func searchPhotos() {
+    func searchPhotos(byQuery query: String) {
+        guard !query.isEmpty else { return }
         isFetching = true
-        photoFetcher.searchPhotos(byQuery: autocompleteViewModel.searchText.value, page: 1, perPage: loadPerPage)
+        self.query = query
+        photoFetcher.searchPhotos(byQuery: query, page: 1, perPage: loadPerPage)
             .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
                 switch result {
@@ -73,7 +53,7 @@ class SearchViewModel {
     
     func loadMore() {
         guard currentPage < totalPages, !isFetching else { return }
-        photoFetcher.searchPhotos(byQuery: autocompleteViewModel.searchText.value, page: currentPage + 1, perPage: loadPerPage)
+        photoFetcher.searchPhotos(byQuery: self.query, page: currentPage + 1, perPage: loadPerPage)
             .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
                 switch result {

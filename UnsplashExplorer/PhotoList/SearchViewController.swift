@@ -1,5 +1,5 @@
 //
-//  PhotoListCollectionViewController.swift
+//  SearchViewController.swift
 //  UnsplashExplorer
 //
 //  Created by Sunghyun Kim on 2022/03/22.
@@ -11,8 +11,9 @@ import RxCocoa
 
 private let autocompleteReuseId = "AutocompleteTableViewCell"
 
-final class PhotoListViewController: UIViewController {
-    var viewModel: PhotoListViewModel
+final class SearchViewController: UIViewController {
+    private var searchViewModel: SearchViewModel
+    private var autocompleteViewModel: AutocompleteViewModel
     
     // MARK: Configuration
     var cellPadding: CGFloat = 5
@@ -20,8 +21,6 @@ final class PhotoListViewController: UIViewController {
     
     // MARK: Properties
     private let disposeBag = DisposeBag()
-    /// 추가 로드 중일 때 true
-    private var isLoadingMore = false
     
     // MARK: Views
     private lazy var collectionView: UICollectionView = {
@@ -56,8 +55,12 @@ final class PhotoListViewController: UIViewController {
     }()
     
     // MARK: Prepare
-    init(viewModel: PhotoListViewModel) {
-        self.viewModel = viewModel
+    init(
+        searchViewModel: SearchViewModel,
+        autocompleteViewModel: AutocompleteViewModel
+    ) {
+        self.searchViewModel = searchViewModel
+        self.autocompleteViewModel = autocompleteViewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -69,7 +72,7 @@ final class PhotoListViewController: UIViewController {
         super.viewDidLoad()
         
         layout()
-        bind(viewModel: viewModel)
+        bind(searchModel: searchViewModel, autocompleteModel: autocompleteViewModel)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,9 +85,9 @@ final class PhotoListViewController: UIViewController {
         )
     }
     
-    private func bind(viewModel: PhotoListViewModel) {
+    private func bind(searchModel: SearchViewModel, autocompleteModel: AutocompleteViewModel) {
         // collectionView 데이터 소스
-        viewModel.dataSource
+        searchModel.photos
             .bind(to: collectionView.rx.items(
                 cellIdentifier: PhotoListCollectionViewCell.reuseId,
                 cellType: PhotoListCollectionViewCell.self
@@ -101,12 +104,12 @@ final class PhotoListViewController: UIViewController {
         // searchBar 텍스트를 viewModel에 전달한다.
         searchBar.rx.text
             .subscribe(onNext: { text in
-                viewModel.searchText.onNext(text ?? "")
+                autocompleteModel.searchText.accept(text ?? "")
             })
             .disposed(by: disposeBag)
         
-        // autocompletes를 Subscribe한다
-        viewModel.autocompletes
+        // 자동완성 셀 연결
+        autocompleteModel.autocompletes
             .bind(to: autocompletesTableView.rx.items(
                 cellIdentifier: autocompleteReuseId,
                 cellType: UITableViewCell.self
@@ -125,10 +128,10 @@ final class PhotoListViewController: UIViewController {
         autocompletesTableView.rx.itemSelected
             .subscribe(onNext: { [weak self] indexPath in
                 guard let self = self else { return }
-                let text = viewModel.autocompletes.value[indexPath.item]
+                let text = autocompleteModel.autocompletes.value[indexPath.item]
                 self.searchBar.text = text
                 self.finishSearchBar()
-                viewModel.searchPhoto()
+                searchModel.searchPhotos(byQuery: text)
             })
             .disposed(by: disposeBag)
         
@@ -145,12 +148,12 @@ final class PhotoListViewController: UIViewController {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.finishSearchBar()
-                viewModel.searchPhoto()
+                searchModel.searchPhotos(byQuery: self.searchBar.text ?? "")
             })
             .disposed(by: disposeBag)
         
         // dataSource가 비어있는지 여부에 따라 배경 메시지를 토글한다.
-        viewModel.dataSource
+        searchModel.photos
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] data in
                 guard let self = self else { return }
@@ -167,26 +170,29 @@ final class PhotoListViewController: UIViewController {
             .throttle(.milliseconds(500), latest: true, scheduler: MainScheduler.instance)
             .bind(onNext: { [weak self] contentOffset in
                 guard let self = self else { return }
-                guard !self.isLoadingMore else { return }
                 let contentHeight = self.collectionView.contentSize.height
                 if contentOffset.y > contentHeight - self.collectionView.frame.height {
-                    self.isLoadingMore = true
-                    viewModel.loadMore {
-                        self.isLoadingMore = false
-                    }
+                    searchModel.loadMore()
                 }
             })
             .disposed(by: disposeBag)
         
         // 이미지 셀 선택 동작 바인딩
         collectionView.rx.itemSelected
-            .subscribe(onNext: { [weak self] indexPath in
-                guard let self = self else { return }
-                let item = viewModel.dataSource.value[indexPath.item]
-                viewModel.fetchPhotoDetail(id: item.id)
-                let photoDetailView = PhotoDetailsViewController(viewModel: viewModel)
-                photoDetailView.hidesBottomBarWhenPushed = true
-                self.navigationController?.pushViewController(photoDetailView, animated: true)
+            .subscribe(onNext: { indexPath in
+                searchModel.selectPhoto(at: indexPath.item)
+            })
+            .disposed(by: disposeBag)
+        
+        searchModel.events
+            .subscribe(onNext: { event in
+                switch event {
+                case .presentPhoto(let viewModel):
+                    let photoDetailsView = PhotoDetailsViewController(viewModel: viewModel)
+                    self.navigationController?.pushViewController(photoDetailsView, animated: true)
+                case .presentUser(let viewModel):
+                    break
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -244,12 +250,12 @@ final class PhotoListViewController: UIViewController {
 
 // MARK: - PhotoListLayoutDelegate
 
-extension PhotoListViewController: PhotoListLayoutDelegate {
+extension SearchViewController: PhotoListLayoutDelegate {
     func collectionView(
         _ collectionView: UICollectionView,
         heightForCellAtIndexPath indexPath: IndexPath
     ) -> CGFloat {
-        let photos = self.viewModel.dataSource.value
+        let photos = self.searchViewModel.photos.value
         guard photos.count > indexPath.item else { return 0 }
         let photo = photos[indexPath.item]
         
