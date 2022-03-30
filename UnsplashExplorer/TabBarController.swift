@@ -34,7 +34,7 @@ class TabBarController: UITabBarController {
         editorialViewController.tabBarItem.title = "Editorial"
         
         let searchViewController = UINavigationController(
-            rootViewController: PhotoListCollectionViewController(viewModel: self.viewModel)
+            rootViewController: PhotoListViewController(viewModel: self.viewModel)
         )
         searchViewController.tabBarItem.image = UIImage(systemName: "magnifyingglass")
         searchViewController.tabBarItem.title = "Search"

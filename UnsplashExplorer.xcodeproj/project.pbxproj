@@ -29,7 +29,7 @@
 		F284BE7527E909B300DCEBA3 /* Parsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F284BE7427E909B300DCEBA3 /* Parsing.swift */; };
 		F297B3B527E97A64007F8769 /* PhotoListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3B427E97A64007F8769 /* PhotoListCollectionViewCell.swift */; };
 		F297B3B827E98246007F8769 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F297B3B727E98246007F8769 /* Kingfisher */; };
-		F297B3BA27E98D88007F8769 /* PhotoListCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3B927E98D88007F8769 /* PhotoListCollectionViewController.swift */; };
+		F297B3BA27E98D88007F8769 /* PhotoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3B927E98D88007F8769 /* PhotoListViewController.swift */; };
 		F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3BC27E9931E007F8769 /* String+CGColor.swift */; };
 		F297B3C127E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */; };
 		F297B3C327EA0A0B007F8769 /* PhotoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */; };
@@ -63,7 +63,7 @@
 		F284BE7227E908BF00DCEBA3 /* keys.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = keys.json; sourceTree = "<group>"; };
 		F284BE7427E909B300DCEBA3 /* Parsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsing.swift; sourceTree = "<group>"; };
 		F297B3B427E97A64007F8769 /* PhotoListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCollectionViewCell.swift; sourceTree = "<group>"; };
-		F297B3B927E98D88007F8769 /* PhotoListCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCollectionViewController.swift; sourceTree = "<group>"; };
+		F297B3B927E98D88007F8769 /* PhotoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewController.swift; sourceTree = "<group>"; };
 		F297B3BC27E9931E007F8769 /* String+CGColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+CGColor.swift"; sourceTree = "<group>"; };
 		F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListCollectionViewLayout.swift; sourceTree = "<group>"; };
 		F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListViewModel.swift; sourceTree = "<group>"; };
@@ -136,7 +136,6 @@
 				F2648D4327E81EAE0071ADCF /* AppDelegate.swift */,
 				F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */,
 				F2BA59BB27EC80D90071B62F /* Utilities */,
-				F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */,
 				F2A0E8AA27F43C0800F77E83 /* Editorial */,
 				F2A0E8A627F41EB300F77E83 /* SearchViewModel.swift */,
 				F244967127EECFBC0022AAA8 /* TabBarController.swift */,
@@ -167,7 +166,8 @@
 		F297B3BB27E98D8F007F8769 /* PhotoList */ = {
 			isa = PBXGroup;
 			children = (
-				F297B3B927E98D88007F8769 /* PhotoListCollectionViewController.swift */,
+				F297B3C227EA0A0B007F8769 /* PhotoListViewModel.swift */,
+				F297B3B927E98D88007F8769 /* PhotoListViewController.swift */,
 				F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */,
 				F297B3B427E97A64007F8769 /* PhotoListCollectionViewCell.swift */,
 			);
@@ -341,7 +341,7 @@
 				F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */,
 				F284BE7127E905F100DCEBA3 /* PhotoSearcherError.swift in Sources */,
 				F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */,
-				F297B3BA27E98D88007F8769 /* PhotoListCollectionViewController.swift in Sources */,
+				F297B3BA27E98D88007F8769 /* PhotoListViewController.swift in Sources */,
 				F226C52127EC3A9E0008FFD3 /* LeftIconLabel.swift in Sources */,
 				F284BE6A27E8FC8700DCEBA3 /* UnsplashPhotoFetcher.swift in Sources */,
 				F2A0E8A527F41E4100F77E83 /* EditorialViewModel.swift in Sources */,

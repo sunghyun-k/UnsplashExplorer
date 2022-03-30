@@ -21,6 +21,8 @@ private enum HTTPMethod: String {
     case patch = "PATCH"
 }
 
+// MARK: - Protocols
+
 protocol PhotoFetchable {
     func editorial(
         page: Int,
@@ -33,12 +35,16 @@ protocol PhotoFetchable {
         perPage: Int
     ) -> Observable<Result<SearchPhotosResult, PhotoSearcherError>>
     
-    func autocompleteResults(forQuery keyword: String) -> Observable<[String]>
-    
     func photoDetails(byId: String) -> Observable<Result<PhotoDetails, PhotoSearcherError>>
     
     func userDetails(byUsername username: String) -> Observable<Result<UserDetails, PhotoSearcherError>>
 }
+
+protocol AutocompleteFetchable {
+    func autocompleteResults(forQuery keyword: String) -> Observable<[String]>
+}
+
+// MARK: - Fetcher
 
 class UnsplashPhotoFetcher {
     private let session: URLSession
@@ -63,26 +69,6 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
                 } catch {
                     return .failure(.parsing(description: error.localizedDescription))
                 }
-            }
-    }
-    
-    func autocompleteResults(forQuery query: String) -> Observable<[String]> {
-        guard let url = makeAutocompleteResultsComponents(forQuery: query).url else {
-            return .just([])
-        }
-        var request = URLRequest(url: url)
-        request.httpMethod = HTTPMethod.get.rawValue
-        return session.rx.data(request: request)
-            .map { data -> AutocompleteResult? in
-                do {
-                    return try JSONDecoder().decode(AutocompleteResult.self, from: data)
-                } catch {
-                    return nil
-                }
-            }
-            .map { result -> [String] in
-                guard let result = result else { return [] }
-                return result.autocomplete.map { $0.query }
             }
     }
     
@@ -162,6 +148,28 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
             }
             .catch { error in
                     return .just(.failure(.network(description: error.localizedDescription)))
+            }
+    }
+}
+
+extension UnsplashPhotoFetcher: AutocompleteFetchable {
+    func autocompleteResults(forQuery query: String) -> Observable<[String]> {
+        guard let url = makeAutocompleteResultsComponents(forQuery: query).url else {
+            return .just([])
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.get.rawValue
+        return session.rx.data(request: request)
+            .map { data -> AutocompleteResult? in
+                do {
+                    return try JSONDecoder().decode(AutocompleteResult.self, from: data)
+                } catch {
+                    return nil
+                }
+            }
+            .map { result -> [String] in
+                guard let result = result else { return [] }
+                return result.autocomplete.map { $0.query }
             }
     }
 }

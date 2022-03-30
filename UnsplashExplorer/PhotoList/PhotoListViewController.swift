@@ -11,7 +11,7 @@ import RxCocoa
 
 private let autocompleteReuseId = "AutocompleteTableViewCell"
 
-final class PhotoListCollectionViewController: UIViewController {
+final class PhotoListViewController: UIViewController {
     var viewModel: PhotoListViewModel
     
     // MARK: Configuration
@@ -244,7 +244,7 @@ final class PhotoListCollectionViewController: UIViewController {
 
 // MARK: - PhotoListLayoutDelegate
 
-extension PhotoListCollectionViewController: PhotoListLayoutDelegate {
+extension PhotoListViewController: PhotoListLayoutDelegate {
     func collectionView(
         _ collectionView: UICollectionView,
         heightForCellAtIndexPath indexPath: IndexPath
