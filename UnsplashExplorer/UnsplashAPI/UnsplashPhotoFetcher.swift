@@ -22,17 +22,20 @@ private enum HTTPMethod: String {
 }
 
 protocol PhotoFetchable {
+    func editorial(
+        page: Int,
+        perPage: Int
+    ) -> Observable<Result<[Photo], PhotoSearcherError>>
+    
     func searchPhotos(
         byQuery keyword: String,
         page: Int,
         perPage: Int
     ) -> Observable<Result<SearchPhotosResult, PhotoSearcherError>>
     
-    func photoDetails(byId: String) -> Observable<Result<PhotoDetails, PhotoSearcherError>>
-    
     func autocompleteResults(forQuery keyword: String) -> Observable<[String]>
     
-    func editorials() -> Observable<Result<[Photo], PhotoSearcherError>>
+    func photoDetails(byId: String) -> Observable<Result<PhotoDetails, PhotoSearcherError>>
     
     func userDetails(byUsername username: String) -> Observable<Result<UserDetails, PhotoSearcherError>>
 }
@@ -137,8 +140,11 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
             }
     }
     
-    func editorials() -> Observable<Result<[Photo], PhotoSearcherError>> {
-        guard let url = makeEditorialsComponents().url else {
+    func editorial(
+        page: Int,
+        perPage: Int
+    ) -> Observable<Result<[Photo], PhotoSearcherError>> {
+        guard let url = makeEditorialComponents(page: page, perPage: perPage).url else {
             return .just(.failure(.network(description: "URL 생성 오류")))
         }
         var request = URLRequest(url: url)
@@ -169,6 +175,22 @@ private extension UnsplashPhotoFetcher {
             return data["accessKey"]!
         }()
         static let host = "unsplash.com"
+    }
+    
+    func makeEditorialComponents(
+        page: Int,
+        perPage: Int
+    ) -> URLComponents {
+        var components = URLComponents()
+        components.scheme = UnsplashAPI.scheme
+        components.host = UnsplashAPI.apiHost
+        components.path = "/photos"
+        components.queryItems = [
+            ("client_id", UnsplashAPI.accessKey),
+            ("page", "\(page)"),
+            ("per_page", "\(perPage)")
+        ].map { URLQueryItem(name: $0.0, value: $0.1) }
+        return components
     }
     
     func makeSearchPhotosComponents(
@@ -205,15 +227,6 @@ private extension UnsplashPhotoFetcher {
         components.scheme = UnsplashAPI.scheme
         components.host = UnsplashAPI.host
         components.path = "/nautocomplete/\(query)"
-        return components
-    }
-    
-    func makeEditorialsComponents() -> URLComponents {
-        var components = URLComponents()
-        components.scheme = UnsplashAPI.scheme
-        components.host = UnsplashAPI.apiHost
-        components.path = "/photos"
-        components.queryItems = [URLQueryItem(name: "client_id", value: UnsplashAPI.accessKey)]
         return components
     }
     

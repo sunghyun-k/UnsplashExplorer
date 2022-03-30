@@ -30,7 +30,7 @@ class PhotoListViewModel {
     // MARK: Properties
     private var totalPages = 0
     
-    private let photoSearcher: PhotoFetchable
+    private let photoFetcher: PhotoFetchable
     private let disposeBag = DisposeBag()
     
     init(
@@ -39,7 +39,7 @@ class PhotoListViewModel {
             internalSerialQueueName: "PhotoListViewModel"
         )
     ) {
-        self.photoSearcher = photoSearcher
+        self.photoFetcher = photoSearcher
         searchText
             .skip(1)
             .throttle(.milliseconds(500), latest: true, scheduler: scheduler)
@@ -55,7 +55,7 @@ class PhotoListViewModel {
             autocompletes.accept([])
             return
         }
-        photoSearcher.autocompleteResults(forQuery: keyword)
+        photoFetcher.autocompleteResults(forQuery: keyword)
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] autocompletes in
                 guard let self = self else { return }
@@ -87,7 +87,7 @@ class PhotoListViewModel {
     }
     
     func getEditorials(completion: (() -> Void)? = nil ) {
-        photoSearcher.editorials()
+        photoFetcher.editorial()
             .subscribe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
@@ -108,7 +108,7 @@ class PhotoListViewModel {
         perPage: Int,
         completion: (() -> Void)? = nil
     ) {
-        photoSearcher.searchPhotos(
+        photoFetcher.searchPhotos(
             byQuery: keyword,
             page: page,
             perPage: perPage
@@ -129,7 +129,7 @@ class PhotoListViewModel {
     }
     
     func fetchPhotoDetail(id: String) {
-        photoSearcher.photoDetails(byId: id)
+        photoFetcher.photoDetails(byId: id)
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] value in
                 guard let self = self else { return }
