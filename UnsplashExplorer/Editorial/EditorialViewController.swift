@@ -18,6 +18,7 @@ final class EditorialViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
+    private let refreshControl = UIRefreshControl()
     private lazy var collectionView: UICollectionView = {
         let layout = PhotoListCollectionViewLayout()
         layout.delegate = self
@@ -26,6 +27,7 @@ final class EditorialViewController: UIViewController {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: PhotoListCollectionViewCell.reuseId)
+        collectionView.refreshControl = refreshControl
         return collectionView
     }()
     
@@ -120,6 +122,29 @@ final class EditorialViewController: UIViewController {
                     self.navigationController?.pushViewController(photoDetailsViewController, animated: true)
                 default: break
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.contentOffset
+            .throttle(.milliseconds(500), latest: false, scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] contentOffset in
+                guard let self = self else { return }
+                let contentHeight = self.collectionView.contentSize.height
+                if contentOffset.y > contentHeight - self.collectionView.frame.height {
+                    viewModel.loadMore()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        refreshControl.rx.controlEvent(.valueChanged)
+            .subscribe(onNext: { a in
+                viewModel.refresh()
+            })
+            .disposed(by: disposeBag)
+        viewModel.photos
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] _ in
+                self?.refreshControl.endRefreshing()
             })
             .disposed(by: disposeBag)
     }
