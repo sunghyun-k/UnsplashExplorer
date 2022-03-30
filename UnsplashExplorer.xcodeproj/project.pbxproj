@@ -13,7 +13,7 @@
 		F226C51F27EC1D840008FFD3 /* VLabeledTextLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C51E27EC1D840008FFD3 /* VLabeledTextLabel.swift */; };
 		F226C52127EC3A9E0008FFD3 /* LeftIconLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C52027EC3A9E0008FFD3 /* LeftIconLabel.swift */; };
 		F226C54327EC5CE40008FFD3 /* PhotoDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = F226C54227EC5CE40008FFD3 /* PhotoDetails.swift */; };
-		F244967227EECFBC0022AAA8 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244967127EECFBC0022AAA8 /* TabBarController.swift */; };
+		F244967227EECFBC0022AAA8 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244967127EECFBC0022AAA8 /* MainTabBarController.swift */; };
 		F244967427EED2BD0022AAA8 /* EditorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F244967327EED2BD0022AAA8 /* EditorialViewController.swift */; };
 		F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4327E81EAE0071ADCF /* AppDelegate.swift */; };
 		F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */; };
@@ -47,7 +47,7 @@
 		F226C51E27EC1D840008FFD3 /* VLabeledTextLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VLabeledTextLabel.swift; sourceTree = "<group>"; };
 		F226C52027EC3A9E0008FFD3 /* LeftIconLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftIconLabel.swift; sourceTree = "<group>"; };
 		F226C54227EC5CE40008FFD3 /* PhotoDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetails.swift; sourceTree = "<group>"; };
-		F244967127EECFBC0022AAA8 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		F244967127EECFBC0022AAA8 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		F244967327EED2BD0022AAA8 /* EditorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialViewController.swift; sourceTree = "<group>"; };
 		F2648D4027E81EAE0071ADCF /* UnsplashExplorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnsplashExplorer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2648D4327E81EAE0071ADCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +103,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		F21F5F4427F44FB6009F8124 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */,
+				F297B3B427E97A64007F8769 /* PhotoListCollectionViewCell.swift */,
+				F226C51E27EC1D840008FFD3 /* VLabeledTextLabel.swift */,
+				F226C52027EC3A9E0008FFD3 /* LeftIconLabel.swift */,
+				F244967027EEAF0E0022AAA8 /* HalfModalView */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		F244967027EEAF0E0022AAA8 /* HalfModalView */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,15 +147,14 @@
 			children = (
 				F2648D4327E81EAE0071ADCF /* AppDelegate.swift */,
 				F2648D4527E81EAE0071ADCF /* SceneDelegate.swift */,
-				F2BA59BB27EC80D90071B62F /* Utilities */,
-				F2A0E8AA27F43C0800F77E83 /* Editorial */,
-				F2A0E8A627F41EB300F77E83 /* SearchViewModel.swift */,
-				F2A0E8AB27F449AB00F77E83 /* AutocompleteViewModel.swift */,
-				F244967127EECFBC0022AAA8 /* TabBarController.swift */,
-				F2A0E8A827F4376500F77E83 /* PhotoDetailsViewModel.swift */,
-				F297B3BB27E98D8F007F8769 /* PhotoList */,
-				F2BA59BC27EC81350071B62F /* PhotoDetail */,
 				F284BE6F27E9059800DCEBA3 /* UnsplashAPI */,
+				F244967127EECFBC0022AAA8 /* MainTabBarController.swift */,
+				F2A0E8AA27F43C0800F77E83 /* Editorial */,
+				F2A0E8AB27F449AB00F77E83 /* AutocompleteViewModel.swift */,
+				F297B3BB27E98D8F007F8769 /* Search */,
+				F2BA59BC27EC81350071B62F /* PhotoDetail */,
+				F21F5F4427F44FB6009F8124 /* View */,
+				F2BA59BB27EC80D90071B62F /* Utilities */,
 				F2648D4C27E81EAE0071ADCF /* Assets.xcassets */,
 				F2648D4E27E81EAE0071ADCF /* LaunchScreen.storyboard */,
 				F2648D5127E81EAE0071ADCF /* Info.plist */,
@@ -164,14 +175,13 @@
 			path = UnsplashAPI;
 			sourceTree = "<group>";
 		};
-		F297B3BB27E98D8F007F8769 /* PhotoList */ = {
+		F297B3BB27E98D8F007F8769 /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				F2A0E8A627F41EB300F77E83 /* SearchViewModel.swift */,
 				F297B3B927E98D88007F8769 /* SearchViewController.swift */,
-				F297B3C027E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift */,
-				F297B3B427E97A64007F8769 /* PhotoListCollectionViewCell.swift */,
 			);
-			path = PhotoList;
+			path = Search;
 			sourceTree = "<group>";
 		};
 		F2A0E8AA27F43C0800F77E83 /* Editorial */ = {
@@ -195,10 +205,8 @@
 		F2BA59BC27EC81350071B62F /* PhotoDetail */ = {
 			isa = PBXGroup;
 			children = (
+				F2A0E8A827F4376500F77E83 /* PhotoDetailsViewModel.swift */,
 				F226C51C27EC1BCC0008FFD3 /* PhotoDetailsViewController.swift */,
-				F226C51E27EC1D840008FFD3 /* VLabeledTextLabel.swift */,
-				F226C52027EC3A9E0008FFD3 /* LeftIconLabel.swift */,
-				F244967027EEAF0E0022AAA8 /* HalfModalView */,
 			);
 			path = PhotoDetail;
 			sourceTree = "<group>";
@@ -331,7 +339,7 @@
 				F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */,
 				F2A0E8AC27F449AB00F77E83 /* AutocompleteViewModel.swift in Sources */,
 				F244967427EED2BD0022AAA8 /* EditorialViewController.swift in Sources */,
-				F244967227EECFBC0022AAA8 /* TabBarController.swift in Sources */,
+				F244967227EECFBC0022AAA8 /* MainTabBarController.swift in Sources */,
 				F226C54327EC5CE40008FFD3 /* PhotoDetails.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,
 				F226C51D27EC1BCC0008FFD3 /* PhotoDetailsViewController.swift in Sources */,

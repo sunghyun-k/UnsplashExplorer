@@ -17,9 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        let photoSearcher = UnsplashPhotoFetcher()
-        let viewModel = PhotoListViewModel(photoSearcher: photoSearcher)
-        let tabBarController = TabBarController(viewModel: viewModel)
+        let tabBarController = MainTabBarController()
         
         window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()

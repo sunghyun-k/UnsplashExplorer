@@ -60,6 +60,7 @@ class HalfModalViewController: UIViewController {
     private var dimmedView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
+        view.alpha = 0
         return view
     }()
     
@@ -122,6 +123,7 @@ class HalfModalViewController: UIViewController {
         ]
         
         super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .overFullScreen
     }
     
     required init?(coder: NSCoder) {
