@@ -9,21 +9,21 @@
 import RxSwift
 import RxCocoa
 
-protocol PhotoSearchable {
+protocol PhotoFetchable {
     func searchPhotos(
-        byKeyword keyword: String,
+        byQuery keyword: String,
         page: Int,
         perPage: Int
     ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>>
     
-    func photoDetail(id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>>
+    func photoDetailInfo(byId: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>>
     
-    func autocomplete(byKeyword keyword: String) -> Observable<[String]>
+    func autocompleteResults(forQuery keyword: String) -> Observable<[String]>
     
-    func getEditorials() -> Observable<Result<[PhotoInfo], PhotoSearcherError>>
+    func editorials() -> Observable<Result<[PhotoInfo], PhotoSearcherError>>
 }
 
-class PhotoSearcher {
+class UnsplashPhotoFetcher {
     private let session: URLSession
     
     init(session: URLSession = .shared) {
@@ -31,9 +31,9 @@ class PhotoSearcher {
     }
 }
 
-extension PhotoSearcher: PhotoSearchable {
-    func autocomplete(byKeyword keyword: String) -> Observable<[String]> {
-        guard let url = makeAutocompleteComponents(keyword: keyword).url else {
+extension UnsplashPhotoFetcher: PhotoFetchable {
+    func autocompleteResults(forQuery query: String) -> Observable<[String]> {
+        guard let url = makeAutocompleteResultsComponents(forQuery: query).url else {
             return .just([])
         }
         var request = URLRequest(url: url)
@@ -50,19 +50,18 @@ extension PhotoSearcher: PhotoSearchable {
                 guard let result = result else { return [] }
                 return result.autocomplete.map { $0.query }
             }
-            
     }
     
     func searchPhotos(
-        byKeyword keyword: String,
+        byQuery query: String,
         page: Int,
         perPage: Int
     ) -> Observable<Result<SearchPhotosResponse, PhotoSearcherError>> {
-        guard !keyword.isEmpty else {
+        guard !query.isEmpty else {
             return .just(.failure(.query(description: "쿼리 내용 없음")))
         }
-        guard let url = makePhotoSearchComponents(
-            byKeyword: keyword,
+        guard let url = makeSearchPhotosComponents(
+            byQuery: query,
             page: page,
             perPage: perPage
         ).url else {
@@ -86,8 +85,8 @@ extension PhotoSearcher: PhotoSearchable {
             }
     }
     
-    func photoDetail(id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>> {
-        guard let url = makePhotoDetailComponents(id: id).url else {
+    func photoDetailInfo(byId id: String) -> Observable<Result<PhotoDetailInfo, PhotoSearcherError>> {
+        guard let url = makePhotoDetailInfoComponents(byId: id).url else {
             return .just(.failure(.network(description: "URL 생성 오류")))
         }
         var request = URLRequest(url: url)
@@ -107,8 +106,8 @@ extension PhotoSearcher: PhotoSearchable {
             }
     }
     
-    func getEditorials() -> Observable<Result<[PhotoInfo], PhotoSearcherError>> {
-        guard let url = makeGetPhotosComponents().url else {
+    func editorials() -> Observable<Result<[PhotoInfo], PhotoSearcherError>> {
+        guard let url = makeEditorialsComponents().url else {
             return .just(.failure(.network(description: "URL 생성 오류")))
         }
         var request = URLRequest(url: url)
@@ -130,7 +129,7 @@ extension PhotoSearcher: PhotoSearchable {
     }
 }
 
-private extension PhotoSearcher {
+private extension UnsplashPhotoFetcher {
     struct UnsplashAPI {
         static let scheme = "https"
         static let apiHost = "api.unsplash.com"
@@ -141,8 +140,8 @@ private extension PhotoSearcher {
         static let host = "unsplash.com"
     }
     
-    func makePhotoSearchComponents(
-        byKeyword keyword: String,
+    func makeSearchPhotosComponents(
+        byQuery query: String,
         page: Int,
         perPage: Int
     ) -> URLComponents {
@@ -153,7 +152,7 @@ private extension PhotoSearcher {
         
         components.queryItems = [
             ("client_id", UnsplashAPI.accessKey),
-            ("query", keyword),
+            ("query", query),
             ("page", "\(page)"),
             ("per_page", "\(perPage)")
         ].map { URLQueryItem(name: $0.0, value: $0.1) }
@@ -161,7 +160,7 @@ private extension PhotoSearcher {
         return components
     }
     
-    func makePhotoDetailComponents(id: String) -> URLComponents {
+    func makePhotoDetailInfoComponents(byId id: String) -> URLComponents {
         var components = URLComponents()
         components.scheme = UnsplashAPI.scheme
         components.host = UnsplashAPI.apiHost
@@ -170,15 +169,15 @@ private extension PhotoSearcher {
         return components
     }
     
-    func makeAutocompleteComponents(keyword: String) -> URLComponents {
+    func makeAutocompleteResultsComponents(forQuery query: String) -> URLComponents {
         var components = URLComponents()
         components.scheme = UnsplashAPI.scheme
         components.host = UnsplashAPI.host
-        components.path = "/nautocomplete/\(keyword)"
+        components.path = "/nautocomplete/\(query)"
         return components
     }
     
-    func makeGetPhotosComponents() -> URLComponents {
+    func makeEditorialsComponents() -> URLComponents {
         var components = URLComponents()
         components.scheme = UnsplashAPI.scheme
         components.host = UnsplashAPI.apiHost
