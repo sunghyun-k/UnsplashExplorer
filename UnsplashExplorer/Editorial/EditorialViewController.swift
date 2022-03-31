@@ -26,7 +26,7 @@ final class EditorialViewController: UIViewController {
         layout.numberOfColumns = self.numberOfColumns
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: PhotoListCollectionViewCell.reuseId)
+        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: PhotoListCell.reuseId)
         collectionView.refreshControl = refreshControl
         return collectionView
     }()
@@ -95,8 +95,8 @@ final class EditorialViewController: UIViewController {
     private func bind(viewModel: EditorialViewModel) {
         viewModel.photos
             .bind(to: collectionView.rx.items(
-                cellIdentifier: PhotoListCollectionViewCell.reuseId,
-                cellType: PhotoListCollectionViewCell.self
+                cellIdentifier: PhotoListCell.reuseId,
+                cellType: PhotoListCell.self
             )) { index, photo, cell in
                 cell.setup(
                     backgroundColor: photo.color.cgColor,

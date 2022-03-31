@@ -30,7 +30,7 @@ final class SearchViewController: UIViewController {
         layout.numberOfColumns = self.numberOfColumns
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(PhotoListCollectionViewCell.self, forCellWithReuseIdentifier: PhotoListCollectionViewCell.reuseId)
+        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: PhotoListCell.reuseId)
         return collectionView
     }()
     
@@ -89,8 +89,8 @@ final class SearchViewController: UIViewController {
         // collectionView 데이터 소스
         searchModel.photos
             .bind(to: collectionView.rx.items(
-                cellIdentifier: PhotoListCollectionViewCell.reuseId,
-                cellType: PhotoListCollectionViewCell.self
+                cellIdentifier: PhotoListCell.reuseId,
+                cellType: PhotoListCell.self
             )) { index, photo, cell in
                 cell.setup(
                     backgroundColor: photo.color.cgColor,

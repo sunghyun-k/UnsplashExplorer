@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-final class PhotoListCollectionViewCell: UICollectionViewCell {
+final class PhotoListCell: UICollectionViewCell {
     static let reuseId = "PhotoListCollectionViewCell"
     private lazy var thumbnailImageView: UIImageView = {
         let imageView = UIImageView()
