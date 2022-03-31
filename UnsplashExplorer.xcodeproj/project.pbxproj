@@ -38,6 +38,7 @@
 		F2A0E8AC27F449AB00F77E83 /* AutocompleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A0E8AB27F449AB00F77E83 /* AutocompleteViewModel.swift */; };
 		F2E96BAB27F552C100E24881 /* UserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E96BAA27F552C100E24881 /* UserDetailsViewModel.swift */; };
 		F2E96BAD27F5544700E24881 /* UserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E96BAC27F5544700E24881 /* UserDetailsViewController.swift */; };
+		F2E96BB027F5673800E24881 /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E96BAF27F5673800E24881 /* TagView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,7 @@
 		F2A0E8AB27F449AB00F77E83 /* AutocompleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteViewModel.swift; sourceTree = "<group>"; };
 		F2E96BAA27F552C100E24881 /* UserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewModel.swift; sourceTree = "<group>"; };
 		F2E96BAC27F5544700E24881 /* UserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewController.swift; sourceTree = "<group>"; };
+		F2E96BAF27F5673800E24881 /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 				F297B3B427E97A64007F8769 /* PhotoListCollectionViewCell.swift */,
 				F226C51E27EC1D840008FFD3 /* VLabeledTextLabel.swift */,
 				F226C52027EC3A9E0008FFD3 /* LeftIconLabel.swift */,
+				F2E96BAF27F5673800E24881 /* TagView.swift */,
 				F244967027EEAF0E0022AAA8 /* HalfModalView */,
 			);
 			path = View;
@@ -367,6 +370,7 @@
 				F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */,
 				F297B3BA27E98D88007F8769 /* SearchViewController.swift in Sources */,
 				F226C52127EC3A9E0008FFD3 /* LeftIconLabel.swift in Sources */,
+				F2E96BB027F5673800E24881 /* TagView.swift in Sources */,
 				F284BE6A27E8FC8700DCEBA3 /* UnsplashPhotoFetcher.swift in Sources */,
 				F2A0E8A527F41E4100F77E83 /* EditorialViewModel.swift in Sources */,
 				F297B3C127E9C2CE007F8769 /* PhotoListCollectionViewLayout.swift in Sources */,
