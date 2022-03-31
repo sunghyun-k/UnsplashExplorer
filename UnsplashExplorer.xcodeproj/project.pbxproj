@@ -36,6 +36,8 @@
 		F2A0E8A727F41EB300F77E83 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A0E8A627F41EB300F77E83 /* SearchViewModel.swift */; };
 		F2A0E8A927F4376500F77E83 /* PhotoDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A0E8A827F4376500F77E83 /* PhotoDetailsViewModel.swift */; };
 		F2A0E8AC27F449AB00F77E83 /* AutocompleteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2A0E8AB27F449AB00F77E83 /* AutocompleteViewModel.swift */; };
+		F2E96BAB27F552C100E24881 /* UserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E96BAA27F552C100E24881 /* UserDetailsViewModel.swift */; };
+		F2E96BAD27F5544700E24881 /* UserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2E96BAC27F5544700E24881 /* UserDetailsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +72,8 @@
 		F2A0E8A627F41EB300F77E83 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		F2A0E8A827F4376500F77E83 /* PhotoDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailsViewModel.swift; sourceTree = "<group>"; };
 		F2A0E8AB27F449AB00F77E83 /* AutocompleteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocompleteViewModel.swift; sourceTree = "<group>"; };
+		F2E96BAA27F552C100E24881 /* UserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewModel.swift; sourceTree = "<group>"; };
+		F2E96BAC27F5544700E24881 /* UserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,9 +154,9 @@
 				F284BE6F27E9059800DCEBA3 /* UnsplashAPI */,
 				F244967127EECFBC0022AAA8 /* MainTabBarController.swift */,
 				F2A0E8AA27F43C0800F77E83 /* Editorial */,
-				F2A0E8AB27F449AB00F77E83 /* AutocompleteViewModel.swift */,
 				F297B3BB27E98D8F007F8769 /* Search */,
-				F2BA59BC27EC81350071B62F /* PhotoDetail */,
+				F2BA59BC27EC81350071B62F /* PhotoDetails */,
+				F2E96BAE27F566F300E24881 /* UserDetails */,
 				F21F5F4427F44FB6009F8124 /* View */,
 				F2BA59BB27EC80D90071B62F /* Utilities */,
 				F2648D4C27E81EAE0071ADCF /* Assets.xcassets */,
@@ -180,6 +184,7 @@
 			children = (
 				F2A0E8A627F41EB300F77E83 /* SearchViewModel.swift */,
 				F297B3B927E98D88007F8769 /* SearchViewController.swift */,
+				F2A0E8AB27F449AB00F77E83 /* AutocompleteViewModel.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -202,13 +207,22 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		F2BA59BC27EC81350071B62F /* PhotoDetail */ = {
+		F2BA59BC27EC81350071B62F /* PhotoDetails */ = {
 			isa = PBXGroup;
 			children = (
 				F2A0E8A827F4376500F77E83 /* PhotoDetailsViewModel.swift */,
 				F226C51C27EC1BCC0008FFD3 /* PhotoDetailsViewController.swift */,
 			);
-			path = PhotoDetail;
+			path = PhotoDetails;
+			sourceTree = "<group>";
+		};
+		F2E96BAE27F566F300E24881 /* UserDetails */ = {
+			isa = PBXGroup;
+			children = (
+				F2E96BAA27F552C100E24881 /* UserDetailsViewModel.swift */,
+				F2E96BAC27F5544700E24881 /* UserDetailsViewController.swift */,
+			);
+			path = UserDetails;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -339,6 +353,7 @@
 				F284BE6827E8F30800DCEBA3 /* Responses.swift in Sources */,
 				F2A0E8AC27F449AB00F77E83 /* AutocompleteViewModel.swift in Sources */,
 				F244967427EED2BD0022AAA8 /* EditorialViewController.swift in Sources */,
+				F2E96BAD27F5544700E24881 /* UserDetailsViewController.swift in Sources */,
 				F244967227EECFBC0022AAA8 /* MainTabBarController.swift in Sources */,
 				F226C54327EC5CE40008FFD3 /* PhotoDetails.swift in Sources */,
 				F2648D4427E81EAE0071ADCF /* AppDelegate.swift in Sources */,
@@ -348,6 +363,7 @@
 				F226C51F27EC1D840008FFD3 /* VLabeledTextLabel.swift in Sources */,
 				F2648D4627E81EAE0071ADCF /* SceneDelegate.swift in Sources */,
 				F284BE7127E905F100DCEBA3 /* PhotoSearcherError.swift in Sources */,
+				F2E96BAB27F552C100E24881 /* UserDetailsViewModel.swift in Sources */,
 				F297B3BD27E9931E007F8769 /* String+CGColor.swift in Sources */,
 				F297B3BA27E98D88007F8769 /* SearchViewController.swift in Sources */,
 				F226C52127EC3A9E0008FFD3 /* LeftIconLabel.swift in Sources */,

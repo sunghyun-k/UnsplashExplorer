@@ -10,11 +10,11 @@ import RxSwift
 import RxCocoa
 
 class PhotoDetailsViewModel {
-    private let photoFetcher: PhotoFetchable
-    init(photo: Photo, photoSearcher: PhotoFetchable) {
-        self.photoFetcher = photoSearcher
+    private let fetcher: PhotoFetchable
+    init(photo: Photo, fetcher: PhotoFetchable) {
+        self.fetcher = fetcher
         
-        photoFetcher.photoDetails(byId: photo.id)
+        fetcher.photoDetails(byId: photo.id)
             .subscribe(onNext: { result in
                 switch result {
                 case .success(let photoDetails):

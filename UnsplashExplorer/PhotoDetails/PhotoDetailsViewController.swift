@@ -17,17 +17,6 @@ class PhotoDetailsViewController: UIViewController {
     private let disposeBag = DisposeBag()
     
     // MARK: Views
-    private lazy var allViews = [
-        photoImageView,
-        userProfileImageView,
-        nameLabel,
-        usernameLabel,
-        viewsLabel,
-        downloadsLabel,
-        dateLabel,
-        gearLabel,
-        infoButton
-    ]
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .lightGray
@@ -104,12 +93,6 @@ class PhotoDetailsViewController: UIViewController {
         layout()
         bind(viewModel: viewModel)
     }
-    
-//    override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-//        resetViews()
-//        viewModel.photoDetails.onNext(nil)
-//    }
     
     private func bind(viewModel: PhotoDetailsViewModel) {
         // photoDetail이 fetch되면 뷰에 표시한다
@@ -242,22 +225,5 @@ class PhotoDetailsViewController: UIViewController {
             dateLabel.text = "Published on \(date)"
         }
         gearLabel.text = photoDetail.exif.name
-        allViews.forEach { $0.isHidden = false }
-    }
-    
-    // MARK: Methods
-    
-    private func resetViews() {
-        photoImageView.image = nil
-        photoImageView.backgroundColor = .lightGray
-        userProfileImageView.image = nil
-        nameLabel.text = nil
-        usernameLabel.text = nil
-        viewsLabel.text = nil
-        downloadsLabel.text = nil
-        dateLabel.text = nil
-        gearLabel.text = nil
-        
-        allViews.forEach { $0.isHidden = true }
     }
 }

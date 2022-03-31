@@ -66,7 +66,7 @@ class EditorialViewModel {
     
     func selectPhoto(at index: Int) {
         let photo = photos.value[index]
-        let viewModel = PhotoDetailsViewModel(photo: photo, photoSearcher: self.fetcher)
+        let viewModel = PhotoDetailsViewModel(photo: photo, fetcher: self.fetcher)
         events.onNext(NavigationEvent.presentPhoto(viewModel))
     }
 }

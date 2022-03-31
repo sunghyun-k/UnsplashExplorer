@@ -69,7 +69,7 @@ class SearchViewModel {
     
     func selectPhoto(at index: Int) {
         let photo = photos.value[index]
-        let viewModel = PhotoDetailsViewModel(photo: photo, photoSearcher: self.photoFetcher)
+        let viewModel = PhotoDetailsViewModel(photo: photo, fetcher: self.photoFetcher)
         events.onNext(NavigationEvent.presentPhoto(viewModel))
     }
 }

@@ -18,6 +18,8 @@ struct UserDetails: Decodable {
     let followersCount, followingCount, downloads: Int
     let profileImageURLs: ProfileImageURLs
     let links: UserLinks
+    let bio, location: String?
+    let tags: [Tag]
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -33,5 +35,16 @@ struct UserDetails: Decodable {
         case downloads
         case links
         case profileImageURLs = "profile_image"
+        case bio, location, tags
     }
+}
+
+// MARK: - Tag
+struct Tag: Decodable {
+    let custom: [TagItem]
+}
+
+struct TagItem: Decodable {
+    let type: String
+    let title: String
 }
