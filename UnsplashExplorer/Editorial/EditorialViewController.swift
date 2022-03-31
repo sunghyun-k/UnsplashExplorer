@@ -58,6 +58,7 @@ final class EditorialViewController: UIViewController {
         let label = UILabel()
         label.text = "Unsplash"
         label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.textAlignment = .center
         
         let navigationBarView = UIView()
         [logoImageView, label].forEach {
@@ -69,13 +70,12 @@ final class EditorialViewController: UIViewController {
             make.width.height.equalTo(20)
         }
         label.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
+            make.centerY.centerX.equalToSuperview()
         }
         
         navigationItem.titleView = navigationBarView
         navigationBarView.snp.makeConstraints { make in
             make.width.equalTo(UIScreen.main.bounds.width)
-            make.centerX.centerY.equalToSuperview()
         }
     }
     
@@ -144,9 +144,21 @@ final class EditorialViewController: UIViewController {
         viewModel.photos
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
-                self?.refreshControl.endRefreshing()
+                guard let self = self else { return }
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
+                    self.removeLayoutCache()
+                }
             })
             .disposed(by: disposeBag)
+    }
+    
+    private func removeLayoutCache() {
+        guard let layout = collectionView.collectionViewLayout as? PhotoListCollectionViewLayout else {
+            return
+        }
+        layout.removeLayoutCache()
+        collectionView.contentSize.height = 0
     }
     
 }

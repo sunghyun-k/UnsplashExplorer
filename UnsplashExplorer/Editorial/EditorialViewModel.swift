@@ -24,7 +24,7 @@ class EditorialViewModel {
     }
     
     // MARK: Configuration
-    var loadPerPage = 20
+    var loadPerPage = 10
     
     // MARK: Publishing
     let photos = BehaviorRelay<[Photo]>(value: [])
