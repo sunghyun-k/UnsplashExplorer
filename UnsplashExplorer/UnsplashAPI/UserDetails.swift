@@ -19,7 +19,7 @@ struct UserDetails: Decodable {
     let profileImageURLs: ProfileImageURLs
     let links: UserLinks
     let bio, location: String?
-    let tags: [Tag]
+    let tags: Tags
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -40,7 +40,7 @@ struct UserDetails: Decodable {
 }
 
 // MARK: - Tag
-struct Tag: Decodable {
+struct Tags: Decodable {
     let custom: [TagItem]
 }
 

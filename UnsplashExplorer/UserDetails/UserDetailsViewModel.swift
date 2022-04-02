@@ -14,7 +14,7 @@ class UserDetailsViewModel {
     init(user: User, fetcher: PhotoFetchable) {
         self.fetcher = fetcher
         
-        fetcher.userDetails(byUsername: user.id)
+        fetcher.userDetails(byUsername: user.username)
             .subscribe(onNext: { result in
                 switch result {
                 case .success(let userDetails):

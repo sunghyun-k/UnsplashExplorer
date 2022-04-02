@@ -247,3 +247,4 @@ private extension UnsplashPhotoFetcher {
         return components
     }
 }
+
