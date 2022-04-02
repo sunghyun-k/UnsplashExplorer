@@ -27,22 +27,17 @@ class UserDetailsViewController: UIViewController {
         return label
     }()
     
-    private lazy var bio: UILabel = {
+    private lazy var bioLabel: UILabel = {
         let label = UILabel()
         return label
     }()
     
-    private lazy var location: LeftIconLabel = {
+    private lazy var locationLabel: LeftIconLabel = {
         let label = LeftIconLabel()
         return label
     }()
     
-    private lazy var tags: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        return collectionView
-    }()
+//    private lazy var tags: UIView
     
     init(viewModel: UserDetailsViewModel) {
         self.viewModel = viewModel
@@ -53,7 +48,38 @@ class UserDetailsViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setup(_ user: UserDetails) {
+    private func layout() {
+        let textStackView = UIStackView(arrangedSubviews: [nameLabel, bioLabel, locationLabel])
+        textStackView.alignment = .leading
+        textStackView.spacing = 5
+        textStackView.axis = .vertical
         
+        let profileStackView = UIStackView(arrangedSubviews: [profileImageView, textStackView])
+        profileStackView.spacing = 10
+        profileStackView.alignment = .top
+        
+        view.addSubview(profileStackView)
+        profileStackView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
+    }
+    
+    private func bind(viewModel: UserDetailsViewModel) {
+        viewModel.user
+            .subscribe(onNext: { [weak self] in
+                guard
+                    let self = self,
+                    let user = $0
+                else { return }
+                self.setup(user)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func setup(_ user: UserDetails) {
+        profileImageView.kf.setImage(with: URL(string: user.profileImageURLs.large))
+        nameLabel.text = user.name
+        bioLabel.text = user.bio
+        locationLabel.text = user.location
     }
 }

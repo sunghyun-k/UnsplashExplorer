@@ -49,7 +49,7 @@ extension TagView: UICollectionViewDataSource {
         tags.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        return UICollectionViewCell()
     }
 }
 

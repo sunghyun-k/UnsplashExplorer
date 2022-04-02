@@ -23,6 +23,12 @@ class PhotoDetailsViewController: UIViewController {
         return imageView
     }()
     
+    private lazy var userStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 8
+        return stackView
+    }()
     private lazy var profileImageSize: CGFloat = 40
     private lazy var userProfileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -119,6 +125,30 @@ class PhotoDetailsViewController: UIViewController {
                 self.present(halfModal, animated: false)
             }
             .disposed(by: disposeBag)
+        
+        viewModel.events
+            .subscribe(onNext: { [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .presentUser(let viewModel):
+                    let userDetailsView = UserDetailsViewController(viewModel: viewModel)
+                    self.present(userDetailsView, animated: true)
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        let userTap = UITapGestureRecognizer()
+        userTap.delaysTouchesBegan = false
+        userTap.delaysTouchesEnded = false
+        
+        userStackView.addGestureRecognizer(userTap)
+        userTap.rx.event
+            .bind(onNext: { _ in
+                viewModel.selectUser()
+            })
+            .disposed(by: disposeBag)
     }
     
     private func layout() {
@@ -131,9 +161,10 @@ class PhotoDetailsViewController: UIViewController {
             make.width.equalTo(profileImageSize)
             make.height.equalTo(userProfileImageView.snp.width)
         }
-        let profileStackView = UIStackView(arrangedSubviews: [userProfileImageView, nameStackView])
-        profileStackView.axis = .horizontal
-        profileStackView.spacing = 8
+        
+        [userProfileImageView, nameStackView].forEach {
+            userStackView.addArrangedSubview($0)
+        }
         
         // 조회수, 다운로드 수
         let countRecordStackView = UIStackView(arrangedSubviews: [
@@ -157,7 +188,7 @@ class PhotoDetailsViewController: UIViewController {
         
         // 최종 StackView
         let stackView = UIStackView(arrangedSubviews: [
-            profileStackView,
+            userStackView,
             photoImageView,
             countRecordStackView,
             detailStackView,
@@ -206,7 +237,7 @@ class PhotoDetailsViewController: UIViewController {
             options: [.transition(.fade(0.5))]
         )
         nameLabel.text = photoDetail.user.name
-        usernameLabel.text = photoDetail.user.username
+        usernameLabel.text = "@\(photoDetail.user.username)"
         
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal

@@ -30,8 +30,14 @@ class PhotoDetailsViewModel {
     
     // MARK: Publishing
     let photo = BehaviorRelay<PhotoDetails?>(value: nil)
+    let events = PublishSubject<NavigationEvent>()
     
     func selectUser() {
-        
+        guard let photo = photo.value else {
+            print("No photo infomations")
+            return
+        }
+        let viewModel = UserDetailsViewModel(user: photo.user, fetcher: self.fetcher)
+        events.onNext(.presentUser(viewModel))
     }
 }

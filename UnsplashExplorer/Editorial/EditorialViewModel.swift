@@ -72,6 +72,6 @@ class EditorialViewModel {
 }
 
 enum NavigationEvent {
-    case presentUser(User)//(UserDetailsViewModel)
+    case presentUser(UserDetailsViewModel)
     case presentPhoto(PhotoDetailsViewModel)
 }
