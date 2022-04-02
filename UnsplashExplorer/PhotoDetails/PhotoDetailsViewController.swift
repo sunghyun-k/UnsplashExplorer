@@ -132,7 +132,7 @@ class PhotoDetailsViewController: UIViewController {
                 switch event {
                 case .presentUser(let viewModel):
                     let userDetailsView = UserDetailsViewController(viewModel: viewModel)
-                    self.present(userDetailsView, animated: true)
+                    self.navigationController?.pushViewController(userDetailsView, animated: true)
                 default:
                     break
                 }
