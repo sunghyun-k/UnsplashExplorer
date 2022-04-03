@@ -100,6 +100,8 @@ class UserDetailsViewController: UIViewController {
         
         let stackView = UIStackView(arrangedSubviews: [profileStackView, collectionView])
         stackView.axis = .vertical
+        stackView.spacing = 10
+        stackView.alignment = .center
         let scrollView = UIScrollView()
         scrollView.addSubview(stackView)
         
@@ -115,6 +117,9 @@ class UserDetailsViewController: UIViewController {
         stackView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview()
             make.leading.trailing.equalTo(view)
+        }
+        profileStackView.snp.makeConstraints { make in
+            make.width.equalToSuperview().inset(15)
         }
         
         scrollView.contentInset = view.safeAreaInsets
