@@ -19,16 +19,26 @@ class UserDetailsViewController: UIViewController {
     // MARK: Views
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 60
+        imageView.layer.cornerCurve = .circular
+        imageView.snp.makeConstraints { make in
+            make.width.height.equalTo(120)
+        }
         return imageView
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 26, weight: .bold)
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
     private lazy var bioLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 3
         return label
     }()
     
@@ -68,7 +78,7 @@ class UserDetailsViewController: UIViewController {
         
         view.addSubview(profileStackView)
         profileStackView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(15)
         }
     }
     

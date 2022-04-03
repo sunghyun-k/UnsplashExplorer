@@ -21,6 +21,7 @@ final class PhotoListCell: UICollectionViewCell {
     private lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = profileImageSize / 2
+        imageView.layer.cornerCurve = .circular
         imageView.clipsToBounds = true
         imageView.snp.makeConstraints { make in
             make.width.height.equalTo(profileImageSize)

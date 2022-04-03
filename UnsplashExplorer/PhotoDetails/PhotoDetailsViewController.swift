@@ -33,6 +33,7 @@ class PhotoDetailsViewController: UIViewController {
     private lazy var userProfileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = profileImageSize / 2
+        imageView.layer.cornerCurve = .circular
         imageView.clipsToBounds = true
         return imageView
     }()
