@@ -138,7 +138,7 @@ final class EditorialViewController: UIViewController {
         
         refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { a in
-                viewModel.refresh()
+                viewModel.fetchPhotos()
             })
             .disposed(by: disposeBag)
         viewModel.photos

@@ -13,7 +13,7 @@ class EditorialViewModel {
     private let fetcher: PhotoFetchable
     init(fetcher: PhotoFetchable) {
         self.fetcher = fetcher
-        refresh()
+        fetchPhotos()
     }
     
     private let disposeBag = DisposeBag()
@@ -30,7 +30,7 @@ class EditorialViewModel {
     let photos = BehaviorRelay<[Photo]>(value: [])
     let events = PublishSubject<NavigationEvent>()
     
-    func refresh() {
+    func fetchPhotos() {
         guard !isFetching else { return }
         isFetching = true
         fetcher.editorial(page: 1, perPage: loadPerPage)
@@ -69,9 +69,4 @@ class EditorialViewModel {
         let viewModel = PhotoDetailsViewModel(photo: photo, fetcher: self.fetcher)
         events.onNext(NavigationEvent.presentPhoto(viewModel))
     }
-}
-
-enum NavigationEvent {
-    case presentUser(UserDetailsViewModel)
-    case presentPhoto(PhotoDetailsViewModel)
 }

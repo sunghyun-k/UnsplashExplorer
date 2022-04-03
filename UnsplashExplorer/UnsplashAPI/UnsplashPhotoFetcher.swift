@@ -38,6 +38,12 @@ protocol PhotoFetchable {
     func photoDetails(byId: String) -> Observable<Result<PhotoDetails, PhotoSearcherError>>
     
     func userDetails(byUsername username: String) -> Observable<Result<UserDetails, PhotoSearcherError>>
+    
+    func userPhotos(
+        byUsername username: String,
+        page: Int,
+        perPage: Int
+    ) -> Observable<Result<[Photo], PhotoSearcherError>>
 }
 
 protocol AutocompleteFetchable {
@@ -54,7 +60,9 @@ class UnsplashPhotoFetcher {
     }
 }
 
+// MARK: - PhotoFetchable
 extension UnsplashPhotoFetcher: PhotoFetchable {
+    
     func userDetails(byUsername username: String) -> Observable<Result<UserDetails, PhotoSearcherError>> {
         guard let url = makeUserDetailsComponents(byUsername: username).url else {
             return .just(.failure(.network(description: "URL 생성 오류")))
@@ -147,11 +155,38 @@ extension UnsplashPhotoFetcher: PhotoFetchable {
                 }
             }
             .catch { error in
-                    return .just(.failure(.network(description: error.localizedDescription)))
+                return .just(.failure(.network(description: error.localizedDescription)))
+            }
+    }
+    
+    func userPhotos(
+        byUsername username: String,
+        page: Int,
+        perPage: Int
+    ) -> Observable<Result<[Photo], PhotoSearcherError>> {
+        guard let url = makeUserPhotosComponents(byUsername: username, page: page, perPage: perPage).url else {
+            return .just(.failure(.network(description: "URL 생성 오류")))
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.get.rawValue
+        
+        return session.rx.data(request: request)
+            .map { data in
+                do {
+                    let photos = try JSONDecoder().decode([Photo].self, from: data)
+                    return .success(photos)
+                } catch let error {
+                    print(error)
+                    return .failure(.parsing(description: error.localizedDescription))
+                }
+            }
+            .catch { error in
+                return .just(.failure(.network(description: error.localizedDescription)))
             }
     }
 }
 
+// MARK: - AutocompleteFetchable
 extension UnsplashPhotoFetcher: AutocompleteFetchable {
     func autocompleteResults(forQuery query: String) -> Observable<[String]> {
         guard let url = makeAutocompleteResultsComponents(forQuery: query).url else {
@@ -244,6 +279,23 @@ private extension UnsplashPhotoFetcher {
         components.host = UnsplashAPI.apiHost
         components.path = "/users/\(username)"
         components.queryItems = [URLQueryItem(name: "client_id", value: UnsplashAPI.accessKey)]
+        return components
+    }
+    
+    func makeUserPhotosComponents(
+        byUsername username: String,
+        page: Int,
+        perPage: Int
+    ) -> URLComponents {
+        var components = URLComponents()
+        components.scheme = UnsplashAPI.scheme
+        components.host = UnsplashAPI.apiHost
+        components.path = "/users/\(username)/photos"
+        components.queryItems = [
+            ("client_id", UnsplashAPI.accessKey),
+            ("page", "\(page)"),
+            ("per_page", "\(perPage)")
+        ].map { URLQueryItem(name: $0.0, value: $0.1) }
         return components
     }
 }

@@ -14,6 +14,9 @@ import Kingfisher
 class UserDetailsViewController: UIViewController {
     var viewModel: UserDetailsViewModel
     
+    var cellPadding: CGFloat = 1
+    var numberOfColumns = 3
+    
     private let disposeBag = DisposeBag()
     
     // MARK: Views
@@ -47,6 +50,20 @@ class UserDetailsViewController: UIViewController {
         return label
     }()
     
+    private lazy var collectionView: UICollectionView = {
+        let layout = PhotoListCollectionViewLayout()
+        layout.delegate = self
+        layout.cellPadding = cellPadding
+        layout.numberOfColumns = numberOfColumns
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.register(PhotoListCell.self, forCellWithReuseIdentifier: PhotoListCell.reuseId)
+        collectionView.isScrollEnabled = false
+        return collectionView
+    }()
+    
+    private var collectionViewHeight: Constraint!
+    
 //    private lazy var tags: UIView
     
     init(viewModel: UserDetailsViewModel) {
@@ -66,6 +83,11 @@ class UserDetailsViewController: UIViewController {
         bind(viewModel: viewModel)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+    }
+    
     private func layout() {
         let textStackView = UIStackView(arrangedSubviews: [nameLabel, bioLabel, locationLabel])
         textStackView.alignment = .leading
@@ -76,10 +98,26 @@ class UserDetailsViewController: UIViewController {
         profileStackView.spacing = 10
         profileStackView.alignment = .top
         
-        view.addSubview(profileStackView)
-        profileStackView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(15)
+        let stackView = UIStackView(arrangedSubviews: [profileStackView, collectionView])
+        stackView.axis = .vertical
+        let scrollView = UIScrollView()
+        scrollView.addSubview(stackView)
+        
+        
+        view.addSubview(scrollView)
+        collectionView.snp.makeConstraints { make in
+            make.width.equalTo(view)
+            collectionViewHeight = make.height.equalTo(1000).constraint
         }
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        stackView.snp.makeConstraints { make in
+            make.top.bottom.equalToSuperview()
+            make.leading.trailing.equalTo(view)
+        }
+        
+        scrollView.contentInset = view.safeAreaInsets
     }
     
     private func bind(viewModel: UserDetailsViewModel) {
@@ -93,6 +131,27 @@ class UserDetailsViewController: UIViewController {
                 self.setup(user)
             })
             .disposed(by: disposeBag)
+        
+        viewModel.photos
+            .bind(to: collectionView.rx.items(
+                cellIdentifier: PhotoListCell.reuseId,
+                cellType: PhotoListCell.self
+            )) { index, photo, cell in
+                cell.setup(
+                    backgroundColor: photo.color.cgColor,
+                    username: photo.user.name,
+                    thumbnailImageURL: URL(string: photo.imageURLs.regular),
+                    profileImageURL: URL(string: photo.user.profileImageURLs.small)
+                )
+            }
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.willDisplayCell
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.collectionViewHeight.update(offset: self.collectionView.contentSize.height)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func setup(_ user: UserDetails) {
@@ -100,5 +159,18 @@ class UserDetailsViewController: UIViewController {
         nameLabel.text = user.name
         bioLabel.text = user.bio
         locationLabel.text = user.location
+    }
+}
+
+extension UserDetailsViewController: PhotoListLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, heightForCellAtIndexPath indexPath: IndexPath) -> CGFloat {
+        let photos = self.viewModel.photos.value
+        guard photos.count > indexPath.item else { return 0 }
+        let photo = photos[indexPath.item]
+        
+        let inset = collectionView.contentInset
+        let columnWidth = (collectionView.bounds.width - inset.right - inset.bottom - (self.cellPadding * CGFloat(self.numberOfColumns) * 2)) / CGFloat(self.numberOfColumns)
+        let aspectRatio = CGFloat(photo.height) / CGFloat(photo.width)
+        return columnWidth * aspectRatio
     }
 }
