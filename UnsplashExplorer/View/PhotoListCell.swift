@@ -53,7 +53,7 @@ final class PhotoListCell: UICollectionViewCell {
     
     func setup(
         backgroundColor: CGColor?,
-        username: String,
+        username: String?,
         thumbnailImageURL: URL?,
         profileImageURL: URL?
     ) {

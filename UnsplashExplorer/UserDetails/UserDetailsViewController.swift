@@ -144,9 +144,9 @@ class UserDetailsViewController: UIViewController {
             )) { index, photo, cell in
                 cell.setup(
                     backgroundColor: photo.color.cgColor,
-                    username: photo.user.name,
+                    username: nil,
                     thumbnailImageURL: URL(string: photo.imageURLs.regular),
-                    profileImageURL: URL(string: photo.user.profileImageURLs.small)
+                    profileImageURL: nil
                 )
             }
             .disposed(by: disposeBag)
@@ -155,6 +155,23 @@ class UserDetailsViewController: UIViewController {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 self.collectionViewHeight.update(offset: self.collectionView.contentSize.height)
+            })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .subscribe(onNext: { indexPath in
+                viewModel.selectPhoto(at: indexPath.item)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.events
+            .subscribe(onNext: { event in
+                switch event {
+                case .presentPhoto(let viewModel):
+                    let photoDetailsViewController = PhotoDetailsViewController(viewModel: viewModel)
+                    self.navigationController?.pushViewController(photoDetailsViewController, animated: true)
+                default: break
+                }
             })
             .disposed(by: disposeBag)
     }

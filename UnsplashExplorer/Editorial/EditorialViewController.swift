@@ -115,7 +115,7 @@ final class EditorialViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.events
-            .subscribe(onNext:{ event in
+            .subscribe(onNext: { event in
                 switch event {
                 case .presentPhoto(let viewModel):
                     let photoDetailsViewController = PhotoDetailsViewController(viewModel: viewModel)
